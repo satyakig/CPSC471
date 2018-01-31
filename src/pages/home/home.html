@@ -1,8 +1,13 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Movies
-    </ion-title>
+  <ion-navbar color="dark">
+    <ion-title>Current Movies</ion-title>
+
+      <ion-buttons end>
+        <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+      </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
@@ -14,10 +19,11 @@
       <p>{{movie.Year}}</p>
     </ion-item>
   
-    <img *ngIf="movie.Poster != 'N/A'" src="{{movie.Poster}}">
+    <img *ngIf="!desktop" src="{{movie.Poster}}">
+    <img *ngIf="desktop" src="{{movie.Poster}}">
   
     <ion-card-content>
-      <p>{{movie.Plot}}</p>
+      <p style="text-align: justify;">{{movie.Plot}}</p>
     </ion-card-content>
   
     <ion-row>
@@ -34,12 +40,11 @@
         </button>
       </ion-col>
       <ion-col center text-center>
-        <ion-note>
-          {{movie.Rated}}
-        </ion-note>
+        <button ion-button clear small>
+          <div>{{movie.Rated}}</div>
+        </button>
       </ion-col>
     </ion-row>  
   </ion-card>
-
 
 </ion-content>

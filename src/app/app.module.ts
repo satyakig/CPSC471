@@ -10,24 +10,31 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { Firebase_Config } from './environments';
 import { MyApp } from './app.component';
+import { HomePageModule } from '../pages/home/home.module';
 import { HomePage } from '../pages/home/home';
+import { UpcomingPageModule } from './../pages/upcoming/upcoming.module';
+import { UpcomingPage } from './../pages/upcoming/upcoming';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(Firebase_Config),
     AngularFireDatabaseModule, 
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    HomePageModule,
+    UpcomingPageModule    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    UpcomingPage
   ],
   providers: [
     StatusBar,
