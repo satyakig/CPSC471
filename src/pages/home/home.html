@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Movies
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-card *ngFor="let movie of movies | async">
+    <ion-item>
+      <h2>{{movie.Title}}</h2>
+      <p>{{movie.Year}}</p>
+    </ion-item>
+  
+    <img *ngIf="movie.Poster != 'N/A'" src="{{movie.Poster}}">
+  
+    <ion-card-content>
+      <p>{{movie.Plot}}</p>
+    </ion-card-content>
+  
+    <ion-row>
+      <ion-col>
+        <button ion-button icon-left clear small>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div>{{movie.imdbRating}}</div>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button icon-left clear small>
+          <ion-icon name="clock"></ion-icon>
+          <div>{{movie.Runtime}}</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <ion-note>
+          {{movie.Rated}}
+        </ion-note>
+      </ion-col>
+    </ion-row>  
+  </ion-card>
+
+
+</ion-content>
