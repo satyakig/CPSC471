@@ -20,7 +20,7 @@ export class UpcomingPage {
   public loader: LoadingController,
   public platform: Platform) {
 
-    this.movies = db.list<Movie>('/movies', ref => ref.orderByChild('Year').equalTo('2018')).valueChanges();
+    this.movies = db.list<Movie>('upcomingMovies').valueChanges();
 
     if(this.platform.is('core'))
       this.desktop = true;

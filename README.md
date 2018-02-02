@@ -27,3 +27,17 @@ ionic serve
 3. Press ctrl + shift + j
 4. Click on the "Toggle Device toolbar" button at the top right beside the "Elements" button (looks like a Tablet and a Phone)
 5. You can select what kind of phone you want to view as frop the dropdown at the top
+
+
+## Do NOT upgrade the local Ionic CLI if that message is shown when running the app. Type "n" then enter
+
+
+## Relevant docs for reference and guides
+Ionic(UI/Frontend) Docs:
+    https://ionicframework.com/getting-started/
+    https://ionicframework.com/docs/components/
+    https://ionicframework.com/docs/api/
+
+Firebase(Authentication/Database/Backend) Docs:
+    https://firebase.google.com/docs/database/
+    https://firebase.google.com/docs/auth/

@@ -20,7 +20,7 @@ export class HomePage {
   public loader: LoadingController,
   public platform: Platform) {
 
-    this.movies = db.list<Movie>('/movies', ref => ref.orderByChild('Year').equalTo('2017')).valueChanges();
+    this.movies = db.list<Movie>('currentMovies').valueChanges();
 
     if(this.platform.is('core'))
       this.desktop = true;
@@ -37,7 +37,6 @@ export class HomePage {
       duration: 1000
     });
     loader.present();
-
-    console.log(this.platform._platforms);
   }
+  
 }

@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar color="dark">
+    <ion-navbar color="light">
       <ion-title>Upcoming Movies</ion-title>
   
         <ion-buttons end>
@@ -7,45 +7,29 @@
             <ion-icon name="menu"></ion-icon>
           </button>
         </ion-buttons>
-        
+  
     </ion-navbar>
   </ion-header>
-
-
-<ion-content padding>
-
-  <ion-card *ngFor="let movie of movies | async">
-    <ion-item>
-      <h2>{{movie.Title}}</h2>
-      <p>{{movie.Year}}</p>
-    </ion-item>
   
-    <img *ngIf="!desktop" src="{{movie.Poster}}">
-    <img *ngIf="desktop" src="{{movie.Poster}}">
+  <ion-content padding>
   
-    <ion-card-content>
-      <p style="text-align: justify;">{{movie.Plot}}</p>
-    </ion-card-content>
+    <ion-card *ngFor="let movie of movies | async">
+      <ion-item>
+        <h2 text-wrap style="text-align: center;">{{movie.Title}}</h2>
+        <p text-wrap style="text-align: center;">{{movie.Released}}</p>
+      </ion-item>
+    
+      <img *ngIf="desktop" src="{{movie.Poster}}">
+    
+      <ion-card-content>
+        <p text-wrap style="text-align: justify;" >{{movie.Genre}}</p>
+        <p text-wrap style="text-align: justify;">{{movie.Director}}</p>
+        <p text-wrap style="text-align: justify;">{{movie.Actors}}</p>
+        <br>
+        <p text-wrap style="text-align: justify;">{{movie.Plot}}</p>
+      </ion-card-content>
   
-    <ion-row>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>{{movie.imdbRating}}</div>
-        </button>
-      </ion-col>
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="clock"></ion-icon>
-          <div>{{movie.Runtime}}</div>
-        </button>
-      </ion-col>
-      <ion-col center text-center>
-        <button ion-button clear small>
-          <div>{{movie.Rated}}</div>
-        </button>
-      </ion-col>
-    </ion-row>  
-  </ion-card>
-
-</ion-content>
+    </ion-card>
+  
+  </ion-content>
+  
