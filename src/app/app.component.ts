@@ -34,7 +34,7 @@ export class MyApp {
     this.nav.push(UpcomingPage);
   }
 
-  login(){
+  login() {
     this.nav.push(LoginPage);
   }
   

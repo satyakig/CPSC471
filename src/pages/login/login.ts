@@ -1,21 +1,16 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { User } from '../../app/models/user';
-import { SignupPage } from '../signup/signup';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { User } from './../../data_structures/user';
+import { SignupPage } from '../signup/signup';
 
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
+
 export class LoginPage {
 
   user = {} as User;
@@ -24,14 +19,10 @@ export class LoginPage {
     public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
-
-  async loginuser(user: User){
+  async loginuser(user: User) {
     try{
     const result = this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password);
-      if( result){
+      if(result) {
         this.navCtrl.popToRoot();
       }
     }
@@ -40,7 +31,7 @@ export class LoginPage {
     }
   }
 
-  signup(){
+  signup() {
     this.navCtrl.push('SignupPage');
   }
 
