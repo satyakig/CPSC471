@@ -13,28 +13,21 @@ import { Movie } from './../../data_structures/movie';
 export class HomePage {
 
   movies: Observable<Movie[]>;
-  desktop: boolean = true;
 
   constructor(public navCtrl: NavController,
   public db: AngularFireDatabase,
   public loader: LoadingController,
   public platform: Platform) {
 
-    this.movies = db.list<Movie>('currentMovies').valueChanges();
+    this.movies = db.list<Movie>('currentMovies', ref => ref.orderByChild('Title')).valueChanges();
 
-    if(this.platform.is('core'))
-      this.desktop = true;
-    else if(this.platform.is('mobileweb') || this.platform.is('android') || this.platform.is('ios') || this.platform.is('mobile'))
-      this.desktop = false;
-    else 
-      this.desktop = true;
   }
 
   ionViewDidLoad() {
     let loader = this.loader.create({
       spinner: 'dots',
       content: 'Getting current movies...',
-      duration: 1000
+      duration: 1500
     });
     loader.present();
   }

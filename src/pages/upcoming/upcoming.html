@@ -11,25 +11,24 @@
     </ion-navbar>
   </ion-header>
   
-  <ion-content padding>
+<ion-content padding>
   
-    <ion-card *ngFor="let movie of movies | async">
-      <ion-item>
-        <h2 text-wrap style="text-align: center;">{{movie.Title}}</h2>
-        <p text-wrap style="text-align: center;">{{movie.Released}}</p>
-      </ion-item>
-    
-      <img src="{{movie.Poster}}">
-    
-      <ion-card-content>
-        <p text-wrap style="text-align: justify;" >{{movie.Genre}}</p>
-        <p text-wrap style="text-align: justify;">{{movie.Director}}</p>
-        <p text-wrap style="text-align: justify;">{{movie.Actors}}</p>
-        <br>
-        <p text-wrap style="text-align: justify;">{{movie.Plot}}</p>
-      </ion-card-content>
+  <ion-card *ngFor="let movie of movies | async">
+    <ion-item>
+      <h2 text-wrap style="text-align: center;">{{movie.Title}}</h2>
+      <p text-wrap style="text-align: center;">{{movie.Released}}</p>
+    </ion-item>
   
-    </ion-card>
+    <img src="{{movie.Poster}}">
   
-  </ion-content>
+    <ion-card-content>
+      <p text-wrap style="text-align: justify;" >{{movie.Genre}}</p>
+      <p text-wrap style="text-align: justify;">{{movie.Director}}</p>
+      <p text-wrap style="text-align: justify;">{{movie.Actors}}</p>
+      <br>
+      <p text-wrap style="text-align: justify;">{{movie.Plot}}</p>
+    </ion-card-content>
+
+  </ion-card>
   
+</ion-content>
