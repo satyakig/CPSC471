@@ -5,7 +5,7 @@ import { Nav, Platform, LoadingController } from 'ionic-angular';
 
 import { HomePage } from '../pages/home/home';
 import { UpcomingPage } from './../pages/upcoming/upcoming';
-
+import { LoginPage } from './../pages/login/login';
 
 @Component({
   templateUrl: 'app.html'
@@ -33,5 +33,10 @@ export class MyApp {
   upcoming() {
     this.nav.push(UpcomingPage);
   }
+
+  login(){
+    this.nav.push(LoginPage);
+  }
+  
 }
 

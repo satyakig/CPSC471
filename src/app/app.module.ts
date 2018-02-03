@@ -14,7 +14,10 @@ import { HomePageModule } from '../pages/home/home.module';
 import { HomePage } from '../pages/home/home';
 import { UpcomingPageModule } from './../pages/upcoming/upcoming.module';
 import { UpcomingPage } from './../pages/upcoming/upcoming';
-
+import { LoginPage } from '../pages/login/login';
+import { LoginPageModule } from '../pages/login/login.module';
+import { SignupPage } from '../pages/signup/signup';
+import { SignupPageModule } from '../pages/signup/signup.module';
 
 @NgModule({
   declarations: [
@@ -28,13 +31,17 @@ import { UpcomingPage } from './../pages/upcoming/upcoming';
     AngularFireDatabaseModule, 
     AngularFireAuthModule,
     HomePageModule,
-    UpcomingPageModule    
+    UpcomingPageModule,  
+    LoginPageModule,
+    SignupPageModule  
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    UpcomingPage
+    UpcomingPage,
+    LoginPage,
+    SignupPage
   ],
   providers: [
     StatusBar,
