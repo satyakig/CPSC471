@@ -41,3 +41,10 @@ Ionic(UI/Frontend) Docs:
 Firebase(Authentication/Database/Backend) Docs:
     https://firebase.google.com/docs/database/
     https://firebase.google.com/docs/auth/
+
+
+## Firebase project link:
+    https://console.firebase.google.com/project/cpsc471-6d9c6
+
+## Hosted website
+    https://cpsc471-6d9c6.firebaseapp.com/
