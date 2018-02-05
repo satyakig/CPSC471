@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar color="light">
-      <ion-title>Upcoming Movies</ion-title>
+      <ion-title><b>Upcoming Movies</b></ion-title>
   
         <ion-buttons end>
           <button ion-button menuToggle>
@@ -22,9 +22,9 @@
     <img src="{{movie.Poster}}">
   
     <ion-card-content>
-      <p text-wrap style="text-align: justify;" >{{movie.Genre}}</p>
-      <p text-wrap style="text-align: justify;">{{movie.Director}}</p>
-      <p text-wrap style="text-align: justify;">{{movie.Actors}}</p>
+      <p text-wrap style="text-align: justify;" >Genre: {{movie.Genre}}</p>
+      <p text-wrap style="text-align: justify;">Director: {{movie.Director}}</p>
+      <p text-wrap style="text-align: justify;">Actors: {{movie.Actors}}</p>
       <br>
       <p text-wrap style="text-align: justify;">{{movie.Plot}}</p>
     </ion-card-content>

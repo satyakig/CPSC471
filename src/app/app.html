@@ -15,8 +15,12 @@
                 Upcoming Movies
             </button>
 
-            <button menuClose ion-item (click)="login()" color="dark">
-                    Login/Signup
+            <button menuClose ion-item (click)="login()" color="dark" *ngIf="!loggedIn">
+                Login
+            </button>
+
+            <button menuClose ion-item (click)="logout()" color="dark" *ngIf="loggedIn">
+                Logout
             </button>
         </ion-list>
     </ion-content>

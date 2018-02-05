@@ -1,36 +1,60 @@
 <ion-header>
 
-  <ion-navbar color="light">
-    <ion-title>Login/Signup</ion-title>
+  <ion-navbar color="dark">
+    <ion-title *ngIf="!showSignup"><b>Login</b></ion-title>
+    <ion-title *ngIf="showSignup"><b>Sign Up</b></ion-title>
 
     <ion-buttons end>
-        <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close" color="light"></ion-icon>
+      </button>
+    </ion-buttons>
 
   </ion-navbar>
+
 </ion-header>
 
 
-<ion-content padding id = "login">
-    <h1>Enter name of System Here</h1>
-    <div>An enhanced customer movie theatre experience</div>
-    <h2>Login</h2>
-    <ion-list>
+<ion-content padding>
+    <h1>Movie App</h1>
+    <h3>An enhanced customer movie theatre experience</h3>
+
+    <ion-list *ngIf="!showSignup">
 
       <ion-item>
         <ion-label floating>Email Address</ion-label>
-        <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+        <ion-input type="text" [(ngModel)]="email"></ion-input>
       </ion-item>
     
       <ion-item>
-          <ion-label floating>Password</ion-label>
-          <ion-input type="password" [(ngModel)]="user.password"></ion-input>
-        </ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="pass"></ion-input>
+      </ion-item>
 
-      <button ion-button (click) ="loginuser(user)">Login</button>
-      <button ion-button color = "danger" (click) ="signup()">Signup</button>
+      <button ion-button block large padding (click) ="login()" color="primary2" style="margin-top:30px; margin-bottom: 15px;">Login</button>
+      <button ion-button block large padding outline (click) ="showSignUp()" color="danger" >Sign Up</button>
     
     </ion-list>
+
+    <ion-list *ngIf="showSignup">
+
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input type="text" [(ngModel)]="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Email Address</ion-label>
+        <ion-input type="text" [(ngModel)]="email"></ion-input>
+      </ion-item>      
+    
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="pass"></ion-input>
+      </ion-item>
+
+      <button ion-button block large padding outline (click)="signUp()" color="danger" style="margin-top:30px; margin-bottom: 15px;">Sign Up</button>
+    
+    </ion-list>
+
 </ion-content>
