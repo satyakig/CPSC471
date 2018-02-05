@@ -32,6 +32,10 @@ ionic serve
 ## Do NOT upgrade the local Ionic CLI if that message is shown when running the app. Type "n" then enter
 
 
+## Firebase Project link (Backend/Database/Authentication):
+    https://console.firebase.google.com/project/cpsc471-6d9c6
+
+
 ## Relevant docs for reference and guides
 Ionic(UI/Frontend) Docs:
     https://ionicframework.com/getting-started/
@@ -41,10 +45,7 @@ Ionic(UI/Frontend) Docs:
 Firebase(Authentication/Database/Backend) Docs:
     https://firebase.google.com/docs/database/
     https://firebase.google.com/docs/auth/
+    
 
-
-## Firebase project link:
-    https://console.firebase.google.com/project/cpsc471-6d9c6
-
-## Hosted website
+## Hosted website - live link to project
     https://cpsc471-6d9c6.firebaseapp.com/
