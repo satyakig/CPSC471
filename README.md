@@ -43,7 +43,7 @@ Ionic(UI/Frontend) Docs:
     https://ionicframework.com/docs/api/
 
 Firebase(Authentication/Database/Backend) Docs:
-    https://firebase.google.com/docs/database/
+    https://github.com/angular/angularfire2
     https://firebase.google.com/docs/auth/
     
 
