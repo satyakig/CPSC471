@@ -1,5 +1,5 @@
 ## Getting started and setting up project:
-1. Install Node.js
+1. Install Node.js https://nodejs.org/en/
 2. Run command:
     npm install -g cordova ionic
 3. Move to this project directory and run command:
@@ -8,13 +8,13 @@
     ionic serve
 
 
-## To install all npm modules in package.json, ALWAYS and ONLY use:
+## To install all npm libraries in package.json, ALWAYS and ONLY use:
 npm install -E
 
 
-## To install a NEW specfic package use:
-npm install --save [package name]           # for the latest version
-npm install --save [package name@version]   # for a specific version
+## To install a NEW specfic library use:
+npm install --save [library name]           # for the latest version
+npm install --save [library name@version]   # for a specific version
 
 
 ## To run app with live-reload a.k.a to view the changes you made to the code as you are editing it:
@@ -32,11 +32,11 @@ ionic serve
 ## Do NOT upgrade the local Ionic CLI if that message is shown when running the app. Type "n" then enter
 
 
-## Firebase Project link (Backend/Database/Authentication):
+## Firebase(Backend/Database/Authentication) Project link:
     https://console.firebase.google.com/project/cpsc471-6d9c6
 
 
-## Relevant docs for reference and guides
+## Relevant docs for reference and guides:
 Ionic(UI/Frontend) Docs:
     https://ionicframework.com/getting-started/
     https://ionicframework.com/docs/components/

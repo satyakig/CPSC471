@@ -20,7 +20,6 @@
     <h3>An enhanced customer movie theatre experience</h3>
 
     <ion-list *ngIf="!showSignup">
-
       <ion-item>
         <ion-label floating>Email Address</ion-label>
         <ion-input type="text" [(ngModel)]="email"></ion-input>
@@ -32,12 +31,12 @@
       </ion-item>
 
       <button ion-button block large padding (click) ="login()" color="primary2" style="margin-top:30px; margin-bottom: 15px;">Login</button>
-      <button ion-button block large padding outline (click) ="showSignUp()" color="danger" >Sign Up</button>
-    
+      <div style="text-align:center; text-decoration: none;">
+        <h5 style="text-decoration: none;" (click)='showSignUp()'>Create a new account</h5>
+      </div>   
     </ion-list>
 
     <ion-list *ngIf="showSignup">
-
       <ion-item>
         <ion-label floating>Name</ion-label>
         <ion-input type="text" [(ngModel)]="name"></ion-input>
@@ -54,7 +53,6 @@
       </ion-item>
 
       <button ion-button block large padding outline (click)="signUp()" color="danger" style="margin-top:30px; margin-bottom: 15px;">Sign Up</button>
-    
     </ion-list>
 
 </ion-content>
