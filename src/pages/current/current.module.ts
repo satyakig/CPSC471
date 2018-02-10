@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { UpcomingPage } from './upcoming';
+import { CurrentPage } from './current';
 
 import { SharedPipes } from './../../pipes/shared.pipes';
 
 @NgModule({
   declarations: [
-    UpcomingPage,
+    CurrentPage,
   ],
   imports: [
-    IonicPageModule.forChild(UpcomingPage),
+    IonicPageModule.forChild(CurrentPage),
     SharedPipes
   ],
 })
-export class UpcomingPageModule {}
+export class CurrentPageModule {}

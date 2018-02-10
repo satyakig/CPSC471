@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-navbar color="light">
+    <ion-title><b>Current Movies</b></ion-title>
+
+      <ion-buttons end>
+        <button ion-button menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+      </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <!-- add released sort -->
+  <ion-fab right>
+    <button ion-fab mini color="primary2"><ion-icon name="md-funnel"></ion-icon></button>
+    <ion-fab-list side="down">
+      <button ion-fab color="light" (click)="sort(0)"><ion-icon name="videocam"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(1)"><ion-icon name="md-star"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(2)"><ion-icon name="md-time"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(3)"><ion-icon name="md-swap"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-grid>    
+
+    <ion-row *ngIf="desktop">
+      <ion-col *ngFor="let movie of movies | async" col-4>
+
+        <ion-card (click)="movieClick(movie.imdbID)">
+          <ion-item>
+            <h2 style="text-align: center;"><b>{{movie.Title}}</b></h2>
+          </ion-item>
+        
+          <img src="{{movie.Poster}}" style="display: block; height: 500px;">
+        
+          <ion-card-content>
+            <p style="text-align: center;">{{movie.Released | released}}</p>
+            <p style="text-align: center;">{{movie.Genre}}</p>
+          </ion-card-content>
+        
+          <ion-row>
+            <ion-col>        
+              <button ion-button icon-left clear small>
+                <ion-icon *ngIf="movie.imdbRating > '5.0'" name="md-thumbs-up" color="secondary"></ion-icon>
+                <div *ngIf="movie.imdbRating > '5.0'" style="color: #008000"><b>{{movie.imdbRating}}</b></div>
+  
+                <ion-icon *ngIf="movie.imdbRating <= '5.0'" name="md-thumbs-down" color="danger"></ion-icon>
+                <div *ngIf="movie.imdbRating <= '5.0'" style="color: #ff4444"><b>{{movie.imdbRating}}</b></div>
+              </button>
+            </ion-col>
+  
+            <ion-col>
+              <button ion-button icon-left clear small>
+                <ion-icon name="md-time" color="dark"></ion-icon>
+                <div style="color: #222"><b>{{movie.Runtime | runtime}}</b></div>
+              </button>
+            </ion-col>
+  
+            <ion-col center text-center>
+              <button ion-button clear small>
+                <div style="color: #088da5"><b>{{movie.Rated}}</b></div>
+              </button>
+            </ion-col>
+          </ion-row> 
+        </ion-card>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!desktop">
+      <ion-card *ngFor="let movie of movies | async" (click)="movieClick(movie.imdbID)">
+        <ion-item>
+          <h2 text-wrap style="text-align: center;"><b>{{movie.Title}}</b></h2>
+        </ion-item>
+      
+        <img src="{{movie.Poster}}" style="display: block; height: 350px;">
+      
+        <ion-card-content>
+          <p text-wrap style="text-align: center;">{{movie.Released | released}}</p>
+          <p text-wrap style="text-align: center;">{{movie.Genre}}</p>
+        </ion-card-content>
+      
+        <ion-row>
+          <ion-col>        
+            <button ion-button icon-left clear small>
+              <ion-icon *ngIf="movie.imdbRating > '5.0'" name="md-thumbs-up" color="secondary"></ion-icon>
+              <div *ngIf="movie.imdbRating > '5.0'" style="color: #008000"><b>{{movie.imdbRating}}</b></div>
+
+              <ion-icon *ngIf="movie.imdbRating <= '5.0'" name="md-thumbs-down" color="danger"></ion-icon>
+              <div *ngIf="movie.imdbRating <= '5.0'" style="color: #ff4444"><b>{{movie.imdbRating}}</b></div>
+            </button>
+          </ion-col>
+
+          <ion-col>
+            <button ion-button icon-left clear small>
+              <ion-icon name="md-time" color="dark"></ion-icon>
+              <div style="color: #222"><b>{{movie.Runtime | runtime}}</b></div>
+            </button>
+          </ion-col>
+
+          <ion-col center text-center>
+            <button ion-button clear small>
+              <div style="color: #088da5"><b>{{movie.Rated}}</b></div>
+            </button>
+          </ion-col>
+        </ion-row> 
+      </ion-card>
+    </ion-row>
+
+  </ion-grid> 
+
+</ion-content>

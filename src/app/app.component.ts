@@ -5,7 +5,6 @@ import { Nav, Platform, ModalController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { HomePage } from '../pages/home/home';
-import { UpcomingPage } from './../pages/upcoming/upcoming';
 import { LoginPage } from './../pages/login/login';
 
 @Component({
@@ -38,10 +37,6 @@ export class MyApp {
 
   home() {
     this.nav.popToRoot();
-  }
-
-  upcoming() {
-    this.nav.push(UpcomingPage);
   }
 
   login() {

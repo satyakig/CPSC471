@@ -12,10 +12,15 @@ import { Firebase_Config } from './environments';
 import { MyApp } from './app.component';
 import { HomePageModule } from '../pages/home/home.module';
 import { HomePage } from '../pages/home/home';
+import { CurrentPageModule } from './../pages/current/current.module';
+import { CurrentPage } from './../pages/current/current';
 import { UpcomingPageModule } from './../pages/upcoming/upcoming.module';
 import { UpcomingPage } from './../pages/upcoming/upcoming';
 import { LoginPage } from '../pages/login/login';
 import { LoginPageModule } from '../pages/login/login.module';
+
+import { SharedPipes } from './../pipes/shared.pipes';
+
 
 @NgModule({
   declarations: [
@@ -29,13 +34,16 @@ import { LoginPageModule } from '../pages/login/login.module';
     AngularFireDatabaseModule, 
     AngularFireAuthModule,
     HomePageModule,
+    CurrentPageModule,
     UpcomingPageModule,  
-    LoginPageModule
+    LoginPageModule,
+    SharedPipes.forRoot() 
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
+    CurrentPage,
     UpcomingPage,
     LoginPage
   ],

@@ -1,60 +1,19 @@
 <ion-header>
   <ion-navbar color="light">
-    <ion-title><b>Current Movies</b></ion-title>
+    <ion-title text-center>
+      <b>Movie App</b>
+    </ion-title>
 
-      <ion-buttons end>
-        <button ion-button menuToggle>
-          <ion-icon name="menu"></ion-icon>
-        </button>
-      </ion-buttons>
+    <ion-buttons end>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
 
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
-  <ion-card *ngFor="let movie of movies | async">
-    <ion-item>
-      <h2 text-wrap style="text-align: center;">{{movie.Title}}</h2>
-      <p text-wrap style="text-align: center;">{{movie.Released}}</p>
-    </ion-item>
-  
-    <img src="{{movie.Poster}}">
-  
-    <ion-card-content>
-      <p text-wrap style="text-align: justify;" >Genre: {{movie.Genre}}</p>
-      <p text-wrap style="text-align: justify;">Director: {{movie.Director}}</p>
-      <p text-wrap style="text-align: justify;">Actors: {{movie.Actors}}</p>
-      <p text-wrap *ngIf="movie.Awards != 'N/A'" style="text-align: justify;">Awards: {{movie.Awards}}</p>
-      <p text-wrap style="text-align: justify;">Box Office: {{movie.BoxOffice}}</p>
-      <br>
-      <p text-wrap style="text-align: justify;">{{movie.Plot}}</p>
-    </ion-card-content>
-  
-    <ion-row>
-      <ion-col>        
-        <button ion-button icon-left clear small>
-          <ion-icon *ngIf="movie.imdbRating > '5.0'" name="thumbs-up" color="secondary"></ion-icon>
-          <div *ngIf="movie.imdbRating > '5.0'" style="color: #008000"><b>{{movie.imdbRating}}</b></div>
-
-          <ion-icon *ngIf="movie.imdbRating <= '5.0'" name="thumbs-down" color="danger"></ion-icon>
-          <div *ngIf="movie.imdbRating <= '5.0'" style="color: #ff4444"><b>{{movie.imdbRating}}</b></div>
-        </button>
-      </ion-col>
-
-      <ion-col>
-        <button ion-button icon-left clear small>
-          <ion-icon name="time" color="dark"></ion-icon>
-          <div style="color: #222"><b>{{movie.Runtime}}</b></div>
-        </button>
-      </ion-col>
-
-      <ion-col center text-center>
-        <button ion-button clear small>
-          <div style="color: #088da5"><b>{{movie.Rated}}</b></div>
-        </button>
-      </ion-col>
-    </ion-row> 
-  </ion-card>
-
-</ion-content>
+<ion-tabs color="dark" tabsPlacement="top" tabsHighlight="true">
+  <ion-tab [root]="currentPage" tabTitle="Current Movies"></ion-tab>
+  <ion-tab [root]="upcomingPage" tabTitle="Upcoming Movies"></ion-tab>
+</ion-tabs>
