@@ -40,7 +40,7 @@
             <p style="text-align: center;">{{movie.Genre}}</p>
           </ion-card-content>
         
-          <ion-row>
+          <ion-row nowrap>
             <ion-col>        
               <button ion-button icon-left clear small>
                 <ion-icon *ngIf="movie.imdbRating > '5.0'" name="md-thumbs-up" color="secondary"></ion-icon>
@@ -51,7 +51,7 @@
               </button>
             </ion-col>
   
-            <ion-col>
+            <ion-col col-auto>
               <button ion-button icon-left clear small>
                 <ion-icon name="md-time" color="dark"></ion-icon>
                 <div style="color: #222"><b>{{movie.Runtime | runtime}}</b></div>
@@ -82,7 +82,7 @@
           <p text-wrap style="text-align: center;">{{movie.Genre}}</p>
         </ion-card-content>
       
-        <ion-row>
+        <ion-row nowrap>
           <ion-col>        
             <button ion-button icon-left clear small>
               <ion-icon *ngIf="movie.imdbRating > '5.0'" name="md-thumbs-up" color="secondary"></ion-icon>
@@ -93,14 +93,14 @@
             </button>
           </ion-col>
 
-          <ion-col>
+          <ion-col col-auto>
             <button ion-button icon-left clear small>
               <ion-icon name="md-time" color="dark"></ion-icon>
               <div style="color: #222"><b>{{movie.Runtime | runtime}}</b></div>
             </button>
           </ion-col>
 
-          <ion-col center text-center>
+          <ion-col>
             <button ion-button clear small>
               <div style="color: #088da5"><b>{{movie.Rated}}</b></div>
             </button>

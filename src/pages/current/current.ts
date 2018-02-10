@@ -24,7 +24,7 @@ export class CurrentPage {
     let loader = this.loader.create({
       spinner: 'dots',
       content: 'Getting current movies...',
-      duration: 1500
+      duration: 500
     });
     loader.present();
 
