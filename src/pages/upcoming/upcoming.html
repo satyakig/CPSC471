@@ -1,24 +1,17 @@
 <ion-header>
-    <ion-navbar color="light">
-      <ion-title><b>Upcoming Movies</b></ion-title>
-  
-        <ion-buttons end>
-          <button ion-button menuToggle>
-            <ion-icon name="menu"></ion-icon>
-          </button>
-        </ion-buttons>
-  
-    </ion-navbar>
-  </ion-header>
+  <ion-navbar color="light">
+    <ion-title><b>Upcoming</b></ion-title>
+  </ion-navbar>
+</ion-header>
   
 <ion-content padding>
 
-  <ion-fab right>
+  <ion-fab right #fab>
     <button ion-fab mini color="primary2"><ion-icon name="md-funnel"></ion-icon></button>
     <ion-fab-list side="down">
-      <button ion-fab color="light" (click)="sort(0)"><ion-icon name="videocam"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(1)"><ion-icon name="stopwatch"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(2)"><ion-icon name="md-swap"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(0, fab)"><ion-icon name="videocam"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(1, fab)"><ion-icon name="stopwatch"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(2, fab)"><ion-icon name="md-swap"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
 
@@ -26,14 +19,14 @@
   <ion-grid>    
 
     <ion-row *ngIf="desktop">
-      <ion-col *ngFor="let movie of movies | async" col-4>
+      <ion-col *ngFor="let movie of movies | async" col-3>
 
         <ion-card (click)="movieClick(movie.imdbID)">
           <ion-item>
             <h2 style="text-align: center;"><b>{{movie.Title}}</b></h2>
           </ion-item>
         
-          <img src="{{movie.Poster}}" style="display: block; height: 500px;">
+          <img src="{{movie.Poster}}" style="display: block; height: 400px;">
         
           <ion-card-content>
             <p style="text-align: center;">{{movie.Released | released}}</p>

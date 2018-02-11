@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { Observable } from 'rxjs/Observable';
 
-import { Movie } from './../../data_structures/movie';
 import { CurrentPage } from './../current/current';
 import { UpcomingPage } from './../upcoming/upcoming';
 
@@ -13,6 +11,8 @@ import { UpcomingPage } from './../upcoming/upcoming';
   templateUrl: 'home.html'
 })
 export class HomePage {
+
+  navs = this.navCtrl;
 
   currentPage = CurrentPage;
   upcomingPage = UpcomingPage;

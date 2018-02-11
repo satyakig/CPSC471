@@ -1,19 +1,18 @@
 <ion-header>
   <ion-navbar color="light">
-    <ion-title text-center>
+
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+
+    <ion-title>
       <b>Movie App</b>
     </ion-title>
-
-    <ion-buttons end>
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
 
   </ion-navbar>
 </ion-header>
 
-<ion-tabs color="dark" tabsPlacement="top" tabsHighlight="true">
-  <ion-tab [root]="currentPage" tabTitle="Current Movies"></ion-tab>
-  <ion-tab [root]="upcomingPage" tabTitle="Upcoming Movies"></ion-tab>
+<ion-tabs color="dark" tabsPlacement="down" tabsHighlight="true">
+  <ion-tab [root]="currentPage" tabTitle="Current" tabIcon="md-flame" [rootParams]="navs"></ion-tab>
+  <ion-tab [root]="upcomingPage" tabTitle="Upcoming" tabIcon="timer" [rootParams]="navs"></ion-tab>
 </ion-tabs>

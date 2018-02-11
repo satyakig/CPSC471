@@ -18,6 +18,8 @@ import { UpcomingPageModule } from './../pages/upcoming/upcoming.module';
 import { UpcomingPage } from './../pages/upcoming/upcoming';
 import { LoginPage } from '../pages/login/login';
 import { LoginPageModule } from '../pages/login/login.module';
+import { MoviePage } from '../pages/movie/movie';
+import { MoviePageModule } from '../pages/movie/movie.module';
 
 import { SharedPipes } from './../pipes/shared.pipes';
 
@@ -33,11 +35,12 @@ import { SharedPipes } from './../pipes/shared.pipes';
     AngularFireModule.initializeApp(Firebase_Config),
     AngularFireDatabaseModule, 
     AngularFireAuthModule,
+    SharedPipes.forRoot(),
     HomePageModule,
     CurrentPageModule,
     UpcomingPageModule,  
     LoginPageModule,
-    SharedPipes.forRoot() 
+    MoviePageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -45,7 +48,8 @@ import { SharedPipes } from './../pipes/shared.pipes';
     HomePage,
     CurrentPage,
     UpcomingPage,
-    LoginPage
+    LoginPage,
+    MoviePage
   ],
   providers: [
     StatusBar,

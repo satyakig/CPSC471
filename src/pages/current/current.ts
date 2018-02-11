@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, Platform, ToastController } from 'ionic-angular';
+import { IonicPage, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { FabContainer } from 'ionic-angular/components/fab/fab-container';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
 import { Movie } from './../../data_structures/movie';
- 
+import { MoviePage } from './../movie/movie';
+
 @IonicPage()
 @Component({
   selector: 'page-current',
@@ -12,11 +14,15 @@ import { Movie } from './../../data_structures/movie';
 })
 export class CurrentPage {
 
-  movies: Observable<Movie[]>;  
-  desktop: boolean = false;
+  parentNav: any;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase,
+  movies: Observable<Movie[]>;  
+  desktop: boolean = true;
+
+  constructor(public db: AngularFireDatabase, public navParams: NavParams,
   public loader: LoadingController, public platform: Platform) {
+
+    this.parentNav = navParams.data;
     this.movies = this.db.list<Movie>('currentMovies', ref => ref.orderByChild('Title')).valueChanges();
   }
 
@@ -24,22 +30,23 @@ export class CurrentPage {
     let loader = this.loader.create({
       spinner: 'dots',
       content: 'Getting current movies...',
-      duration: 500
+      duration: 750
     });
     loader.present();
-
+    
     this.desktop = this.platform.is('core');
   }
   
   movieClick(id: string) {
-    console.log(id);
+    this.parentNav.push(MoviePage, { id: id, current: true });
   }
 
-  sort(index: number) {
+  sort(index: number, fab: FabContainer) {
     let loader = this.loader.create({
       spinner: 'dots',
       content: 'Sorting movies...',
     });
+    fab.close();
 
     loader.present().then(() => {
       if(index == 1)
