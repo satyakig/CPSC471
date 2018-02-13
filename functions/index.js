@@ -174,4 +174,4 @@ exports.fixTrailerKeys = functions.https.onRequest((request, response) => {
     }).catch(err => {
         console.log(err.message);
     });
-})
+});
