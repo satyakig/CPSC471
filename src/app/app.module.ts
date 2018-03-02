@@ -20,8 +20,20 @@ import { LoginPage } from '../pages/login/login';
 import { LoginPageModule } from '../pages/login/login.module';
 import { MoviePage } from '../pages/movie/movie';
 import { MoviePageModule } from '../pages/movie/movie.module';
+import { AccountPage } from '../pages/account/account';
+import { AccountPageModule } from '../pages/account/account.module';
+import { InboxPageModule } from '../pages/inbox/inbox.module';
+import { InboxPage } from '../pages/inbox/inbox';
+import { TicketsPage } from '../pages/tickets/tickets';
+import { TicketsPageModule } from '../pages/tickets/tickets.module';
+import { TransactionsPage } from '../pages/transactions/transactions';
+import { TransactionsPageModule } from '../pages/transactions/transactions.module';
+import { AcctSettingPageModule } from '../pages/acct-setting/acct-setting.module';
+import { AcctSettingPage } from '../pages/acct-setting/acct-setting';
+
 
 import { SharedPipes } from './../pipes/shared.pipes';
+
 
 
 @NgModule({
@@ -41,6 +53,11 @@ import { SharedPipes } from './../pipes/shared.pipes';
     UpcomingPageModule,  
     LoginPageModule,
     MoviePageModule,
+    AccountPageModule,
+    InboxPageModule,
+    TicketsPageModule,
+    TransactionsPageModule,
+    AcctSettingPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,7 +66,12 @@ import { SharedPipes } from './../pipes/shared.pipes';
     CurrentPage,
     UpcomingPage,
     LoginPage,
-    MoviePage
+    MoviePage,
+    AccountPage,
+    InboxPage,
+    TicketsPage,
+    TransactionsPage,
+    AcctSettingPage
   ],
   providers: [
     StatusBar,
