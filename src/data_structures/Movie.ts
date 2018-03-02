@@ -1,3 +1,5 @@
+import { Showtime } from './showtime';
+
 export interface Movie {
     imdbID: string,
 
@@ -32,5 +34,6 @@ export interface Movie {
     Response: string,
 
     Poster: string,
-    Videos?: any[]
+    Videos?: any[],
+    Showtimes: Showtime[]
 }

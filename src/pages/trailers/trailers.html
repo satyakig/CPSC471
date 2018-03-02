@@ -1,0 +1,19 @@
+<ion-header (swipe)="swiped($event)">
+
+  <ion-toolbar color="light">
+    <ion-title><b>{{title}} Trailers</b></ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close" color="dark"></ion-icon>
+      </button>
+    </ion-buttons> 
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content no-padding overflow-scroll="false">
+  <ion-row *ngFor="let video of videos" style="margin-top: 10px; margin-bottom: 15px;">
+    <iframe width="100%" height="500" [src]="video.key | sanitize" frameborder="0" allowfullscreen="true"></iframe>
+  </ion-row>
+</ion-content>

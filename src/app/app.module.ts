@@ -20,14 +20,21 @@ import { LoginPage } from '../pages/login/login';
 import { LoginPageModule } from '../pages/login/login.module';
 import { MoviePage } from '../pages/movie/movie';
 import { MoviePageModule } from '../pages/movie/movie.module';
+import { TrailersPage } from '../pages/trailers/trailers';
+import { TrailersPageModule } from '../pages/trailers/trailers.module';
+import { TheatrePage } from '../pages/theatre/theatre';
+import { TheatrePageModule } from '../pages/theatre/theatre.module';
 
 import { SharedPipes } from './../pipes/shared.pipes';
+import { Services } from './../services/services';
+import { AuthService } from './../services/authService';
+import { DateService } from './../services/dateService';
+import { TheatreService } from './../services/theatreService';
 
 
 @NgModule({
   declarations: [
-    MyApp,
-    
+    MyApp,    
   ],
   imports: [
     BrowserModule,
@@ -41,6 +48,8 @@ import { SharedPipes } from './../pipes/shared.pipes';
     UpcomingPageModule,  
     LoginPageModule,
     MoviePageModule,
+    TrailersPageModule,
+    TheatrePageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,12 +58,18 @@ import { SharedPipes } from './../pipes/shared.pipes';
     CurrentPage,
     UpcomingPage,
     LoginPage,
-    MoviePage
+    MoviePage,
+    TrailersPage,
+    TheatrePage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Services,
+    AuthService,
+    TheatreService,
+    DateService
   ]
 })
 export class AppModule {}

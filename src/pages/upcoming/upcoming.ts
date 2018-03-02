@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, LoadingController, Platform } from 'ionic-angular';
 import { FabContainer } from 'ionic-angular/components/fab/fab-container';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
@@ -13,15 +13,13 @@ import { MoviePage } from './../movie/movie';
   templateUrl: 'upcoming.html',
 })
 export class UpcomingPage {
-  parentNav: any;
-
+  
   movies: Observable<Movie[]>;
   desktop: boolean = false;
 
-  constructor(public db: AngularFireDatabase, public navParams: NavParams,
+  constructor(public db: AngularFireDatabase, public navCtrl: NavController,
     public loader: LoadingController, public platform: Platform) {
 
-    this.parentNav = navParams.data;
     this.movies = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Title')).valueChanges();
   }
 
@@ -37,7 +35,7 @@ export class UpcomingPage {
   }
   
   movieClick(id: string) {
-    this.parentNav.push(MoviePage, { id: id, current: false });
+    this.navCtrl.push(MoviePage, { id: id, current: false });
   }
 
   sort(index: number, fab: FabContainer) {

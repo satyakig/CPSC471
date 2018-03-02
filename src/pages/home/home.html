@@ -12,7 +12,21 @@
   </ion-navbar>
 </ion-header>
 
-<ion-tabs color="dark" tabsPlacement="down" tabsHighlight="true">
-  <ion-tab [root]="currentPage" tabTitle="Current" tabIcon="md-flame" [rootParams]="navs"></ion-tab>
-  <ion-tab [root]="upcomingPage" tabTitle="Upcoming" tabIcon="timer" [rootParams]="navs"></ion-tab>
-</ion-tabs>
+<ion-content padding>
+  <ion-item>
+    <ion-select [(ngModel)]="date" (ionChange)="changeDate()" [selectOptions]="selectOptions" style="max-width: 100% !important; width: 100%; text-align: center;">
+      <ion-option *ngFor="let date of dates" [value]="date">{{date}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-list margin-top>
+    <ion-row *ngFor="let location of locations | async">
+      <button ion-item  (click)="locationSelect(location)">
+        <h2 text-wrap>{{location.name}}</h2>
+        <p text-wrap>{{location.address}}</p>
+        <p text-wrap>{{location.theatres.length}} theatres</p>
+      </button>
+    </ion-row>
+  </ion-list>
+
+</ion-content>

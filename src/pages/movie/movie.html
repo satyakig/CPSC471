@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar color="light">
-    <ion-title><b>{{movie.Title}}</b></ion-title>
+    <ion-title><b>{{movie.Title}} at {{locationID}}</b></ion-title>
   </ion-navbar>
 </ion-header>
     
@@ -37,8 +37,16 @@
 
               <p text-wrap style="text-align: justify; padding-top: 25px;" >{{movie.Plot}}</p>
 
+              <ion-row *ngIf="current" nowrap justify-content-between>
+                <ion-col text-center align-self-center *ngFor="let showtime of movie.Showtimes">
+                  <button ion-button small outline color="primary2" (click)="timeSelected(showtime)">
+                    {{showtime.time | time12}}
+                  </button>                  
+                </ion-col>
+              </ion-row>
+
               <ion-row *ngIf="current" nowrap>
-                <ion-col>
+                <ion-col text-center align-self-center>
                   <button *ngIf="movie.imdbRating > '5.0'" ion-button icon-start clear small color="secondary">
                     <ion-icon name="md-thumbs-up"></ion-icon>
                     <b>{{movie.imdbRating}}</b>
@@ -48,39 +56,27 @@
                     <b>{{movie.imdbRating}}</b>
                   </button>
                 </ion-col>
-          
-                <ion-col>
+      
+                <ion-col text-center align-self-center>
                   <button ion-button icon-start clear small color="dark">
-                    <ion-icon name="md-time"></ion-icon>
+                    <ion-icon name="md-time" ></ion-icon>
                     <b>{{movie.Runtime | runtime}}</b>
                   </button>
                 </ion-col>
-          
-                <ion-col>
-                  <button ion-button clear small color="primary2">
-                    <b>{{movie.Rated}}</b>
+      
+                <ion-col *ngIf="movie.Rated != 'UNRATED' && movie.Rated != 'NOT RATED'" text-center align-self-center>
+                  <button ion-button clear small color="drkRed">
+                    <b text-wrap>{{movie.Rated}}</b>
                   </button>
                 </ion-col>
-              </ion-row> 
+              </ion-row>
           </div>
       </ion-col>
   
     </ion-row>
   </ion-grid>
 
-  <ion-grid margin-top color="dark" *ngIf="showVideos && desktop">
-    <ion-row>
-      <ion-col *ngFor="let video of videos" col-auto>
-        <iframe width="700" height="500" [src]="video.key | sanitize" frameborder="0" allowfullscreen="true"></iframe>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid margin-top color="dark" *ngIf="showVideos && !desktop">
-    <ion-row *ngFor="let video of videos" padding-top>
-      <iframe width="100%" height="300" [src]="video.key | sanitize" frameborder="0" allowfullscreen="true"></iframe>
-    </ion-row>
-  </ion-grid>
+  <button ion-button block margin-top color="light" *ngIf="showVideos" (click)="showTrailers()">View Trailers</button>
 
 </ion-content>
   

@@ -12,8 +12,7 @@ const moment = require('moment');
 /**
  * methods to fix up the database
  */
-exports.fixCurrentNumbers = functions.https.onRequest((request, response) => {        
-
+exports.fixCurrentNumbers = functions.https.onRequest((request, response) => {
     return db.ref('/currentMovies').once('value', snap => {
         var updates = {};
 
@@ -47,7 +46,7 @@ exports.fixCurrentNumbers = functions.https.onRequest((request, response) => {
     });
 });
 
-exports.fixUpcomingNumbers = functions.https.onRequest((request, response) => {    
+exports.fixUpcomingNumbers = functions.https.onRequest((request, response) => {
     return db.ref('/upcomingMovies').once('value', snap => {
         var updates = {};
 
@@ -125,7 +124,7 @@ exports.getMovies = functions.https.onRequest((request, response) => {
         };
 
         response.status(200).send(cur + "-hello-\n" + upc);
-    })
+    });
 });
 
 exports.fixTrailerKeys = functions.https.onRequest((request, response) => {
@@ -175,3 +174,125 @@ exports.fixTrailerKeys = functions.https.onRequest((request, response) => {
         console.log(err.message);
     });
 });
+
+exports.addLocations = functions.https.onRequest((request, response) => {
+    const body = request.body;
+    var updates = {};
+    var i = 0;
+    for(location of body) {
+        updates['locations/' + location.key] = location.value;
+        i++
+    }
+
+    return Promise.all([db.ref().update(updates), response.status(200).send(i + " locations wrote")])
+});
+
+exports.addMoviesToLocation = functions.https.onRequest((request, response) => {
+    const prom1 = db.ref('currentMovies').once('value');
+    const keys = ["Eau Claire", "Chinook", "Sunridge", "Westhills", "Crowfoot", "CrossIron Mills"];
+
+    var updates1 = {};
+    for(location of keys) {
+        updates1['locations/' + location + '/movies'] = null;
+    }
+
+    return db.ref().update(updates1).then(() => {
+        return Promise.all([prom1]).then(values => {
+            var curSnap = values[0];
+            var updates2 = {};
+            var i = 0;
+    
+            curSnap.forEach(movieSnap => {
+                let movie = movieSnap.val();
+                let random = Math.floor(Math.random() * Math.floor(6));
+                updates2['locations/' + keys[random] + '/movies/' + movieSnap.key] = movie;
+                i++;
+            });
+            return Promise.all([db.ref().update(updates2), response.status(200).send(i + " movies wrote")]);
+        });
+    });    
+});
+
+exports.addShowings = functions.https.onRequest((request, response) => {
+    const locationsRef = db.ref('locations').once('value');
+    const times = ["900", "1130", "1400", "1630", "1900", "2130", "2359"];
+
+    return locationsRef.then(locationsSnap => {
+        var updates = {};
+
+        locationsSnap.forEach(locationSnap => {
+            var locationId = locationSnap.key;
+
+            var theatreShows = [];
+            var movieIds = [];
+
+            locationSnap.child('theatres').forEach(theatreSnap => {
+                for(time of times) {
+                    theatreShows.push({
+                        theatreNum: theatreSnap.val().theatreNum,
+                        time: time,
+                        movieId: ""
+                    });
+                }
+            });
+
+            var i = 0;
+            locationSnap.child('movies').forEach(movieSnap => {
+                movieIds.push(movieSnap.key);
+                theatreShows[i].movieId = movieSnap.key;
+
+                i++;
+            });
+
+            for(; i < theatreShows.length; i++) {
+                let random = Math.floor(Math.random() * Math.floor(movieIds.length));
+                theatreShows[i].movieId = movieIds[random];
+            }
+
+            for(let j = 0; j < movieIds.length; j++) {
+                let id = movieIds[j];
+                let shows = [];
+
+                for(let k = 0; k < theatreShows.length; k++) {
+                    if(theatreShows[k].movieId == id) {
+                        shows.push({
+                            theatreNum: theatreShows[k].theatreNum,
+                            time: theatreShows[k].time
+                        });
+                    }
+                }
+
+                shows.sort(function(a, b) {
+                    return Number(a.time) - Number(b.time);
+                });
+
+                updates['/locations/' + locationId + '/movies/' + id + '/Showtimes'] = shows;
+            }
+
+        });
+
+        return Promise.all([db.ref().update(updates), response.status(200).send("done")]);
+    });
+});
+
+exports.fixSeats = functions.https.onRequest((request, response) => {
+    return db.ref('locations').once('value', snap => {
+        var updates = {};
+        snap.forEach(locationSnap => {
+            let theatresSnap = locationSnap.child('theatres');
+
+            theatresSnap.forEach(theatreSnap => {
+                let theatre = theatreSnap.val();
+
+                if(theatre.totalRows > 10)
+                    updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalRows'] = Math.floor(Math.random() * 7) + 5;
+                if(theatre.totalCols > 10)
+                    updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalCols'] = Math.floor(Math.random() * 7) + 5;
+            });
+
+        });
+
+        return Promise.all([db.ref().update(updates), response.status(200).send("done")]); 
+    });
+});
+

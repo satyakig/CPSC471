@@ -1,18 +1,19 @@
 <ion-header>
   <ion-navbar color="light">
-    <ion-title><b>Current</b></ion-title>
+    <ion-title><b>{{locationID}} - {{date}}</b></ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <!-- add released sort -->
+
   <ion-fab right #fab>
     <button ion-fab mini color="primary2"><ion-icon name="md-funnel"></ion-icon></button>
     <ion-fab-list side="down">
       <button ion-fab color="light" (click)="sort(0, fab)"><ion-icon name="videocam"></ion-icon></button>
       <button ion-fab color="light" (click)="sort(1, fab)"><ion-icon name="md-star"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(2, fab)"><ion-icon name="md-time"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(3, fab)"><ion-icon name="md-swap"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(2, fab)"><ion-icon name="custom-hourglass"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(3, fab)"><ion-icon name="md-time"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(4, fab)"><ion-icon name="md-swap"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
 
@@ -33,8 +34,12 @@
             <p style="text-align: center;">{{movie.Genre}}</p>
           </ion-card-content>
         
+          <ion-row nowrap justify-content-between>
+            <ion-col text-center align-self-center *ngFor="let showtime of movie.Showtimes">{{showtime.time | time12}}</ion-col>
+          </ion-row>
+
           <ion-row nowrap>
-            <ion-col>
+            <ion-col text-center align-self-center>
               <button *ngIf="movie.imdbRating > '5.0'" ion-button icon-start clear small color="secondary">
                 <ion-icon name="md-thumbs-up"></ion-icon>
                 <b>{{movie.imdbRating}}</b>
@@ -45,15 +50,15 @@
               </button>
             </ion-col>
   
-            <ion-col>
+            <ion-col text-center align-self-center>
               <button ion-button icon-start clear small color="dark">
                 <ion-icon name="md-time" ></ion-icon>
                 <b>{{movie.Runtime | runtime}}</b>
               </button>
             </ion-col>
   
-            <ion-col>
-              <button ion-button clear small color="primary2">
+            <ion-col *ngIf="movie.Rated != 'UNRATED' && movie.Rated != 'NOT RATED'" text-center align-self-center>
+              <button ion-button clear small color="drkRed">
                 <b text-wrap>{{movie.Rated}}</b>
               </button>
             </ion-col>
@@ -78,8 +83,12 @@
           <p text-wrap style="text-align: center;">{{movie.Genre}}</p>
         </ion-card-content>
       
+        <ion-row nowrap justify-content-between>
+          <ion-col text-center align-self-center *ngFor="let showtime of movie.Showtimes">{{showtime.time | time12}}</ion-col>
+        </ion-row>
+        
         <ion-row nowrap>
-          <ion-col>
+          <ion-col text-center align-self-center>
             <button *ngIf="movie.imdbRating > '5.0'" ion-button icon-start clear small color="secondary">
               <ion-icon name="md-thumbs-up"></ion-icon>
               <b>{{movie.imdbRating}}</b>
@@ -90,15 +99,15 @@
             </button>
           </ion-col>
 
-          <ion-col>
+          <ion-col text-center align-self-center>
             <button ion-button icon-start clear small color="dark">
               <ion-icon name="md-time" ></ion-icon>
               <b>{{movie.Runtime | runtime}}</b>
             </button>
           </ion-col>
 
-          <ion-col>
-            <button ion-button clear small color="primary2">
+          <ion-col *ngIf="movie.Rated != 'UNRATED' && movie.Rated != 'NOT RATED'" text-center align-self-center>
+            <button ion-button clear small color="drkRed">
               <b text-wrap>{{movie.Rated}}</b>
             </button>
           </ion-col>
