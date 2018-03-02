@@ -19,6 +19,10 @@
                 Login
             </button>
 
+            <button menuClose ion-item (click)="account()" color="dark" *ngIf="loggedIn">
+                My Account
+            </button>
+
             <button menuClose ion-item (click)="logout()" color="dark" *ngIf="loggedIn">
                 Logout
             </button>

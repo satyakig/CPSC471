@@ -1,0 +1,46 @@
+<ion-header (swipe)="swiped($event)">
+
+  <ion-toolbar color="light">
+    <ion-title><b>Theatre #{{showtime.theatreNum}} at {{location.locationID}}</b></ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close" color="dark"></ion-icon>
+      </button>
+    </ion-buttons> 
+  </ion-toolbar>
+
+</ion-header>
+  
+
+<ion-content padding overflow-scroll="false">  
+
+  <ion-grid no-padding>
+    <ion-row><h3 style="color: #f4f4f4; text-align: center;">{{movie.Title}}</h3></ion-row>
+    <ion-row>
+      <button ion-button block outline color="light" text-center>Screen</button>
+    </ion-row>
+
+    <ion-row *ngFor="let row of rows" nowrap justify-content-around>
+
+      <ion-col *ngFor="let col of cols">
+        <button ion-button ion-only small (click)="clickSeat(row, col)" color="light">
+          <ion-icon name="custom-seat" *ngIf="containsSeat(row, col)" color="primary2"></ion-icon>
+          <ion-icon name="custom-seat" *ngIf="!containsSeat(row, col)" color="secondary"></ion-icon>
+        </button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <ion-item margin-top>
+    <h4>{{location.name}}</h4>
+    <p>{{location.address}}</p>
+    <br>
+    <p>{{date}}</p>
+    <p>Theatre #{{showtime.theatreNum}}</p>
+    <p>Movie starts at {{showtime.time | time12}}</p>
+    <h5></h5>
+  </ion-item>
+  
+</ion-content>
+  

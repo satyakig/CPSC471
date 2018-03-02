@@ -24,12 +24,24 @@ import { TrailersPage } from '../pages/trailers/trailers';
 import { TrailersPageModule } from '../pages/trailers/trailers.module';
 import { TheatrePage } from '../pages/theatre/theatre';
 import { TheatrePageModule } from '../pages/theatre/theatre.module';
+import { AccountPage } from '../pages/account/account';
+import { AccountPageModule } from '../pages/account/account.module';
+import { InboxPageModule } from '../pages/inbox/inbox.module';
+import { InboxPage } from '../pages/inbox/inbox';
+import { TicketsPage } from '../pages/tickets/tickets';
+import { TicketsPageModule } from '../pages/tickets/tickets.module';
+import { TransactionsPage } from '../pages/transactions/transactions';
+import { TransactionsPageModule } from '../pages/transactions/transactions.module';
+import { AcctSettingPageModule } from '../pages/acct-setting/acct-setting.module';
+import { AcctSettingPage } from '../pages/acct-setting/acct-setting';
+
 
 import { SharedPipes } from './../pipes/shared.pipes';
 import { Services } from './../services/services';
 import { AuthService } from './../services/authService';
 import { DateService } from './../services/dateService';
 import { TheatreService } from './../services/theatreService';
+
 
 
 @NgModule({
@@ -50,6 +62,11 @@ import { TheatreService } from './../services/theatreService';
     MoviePageModule,
     TrailersPageModule,
     TheatrePageModule,
+    AccountPageModule,
+    InboxPageModule,
+    TicketsPageModule,
+    TransactionsPageModule,
+    AcctSettingPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -61,6 +78,11 @@ import { TheatreService } from './../services/theatreService';
     MoviePage,
     TrailersPage,
     TheatrePage,
+    AccountPage,
+    InboxPage,
+    TicketsPage,
+    TransactionsPage,
+    AcctSettingPage
   ],
   providers: [
     StatusBar,

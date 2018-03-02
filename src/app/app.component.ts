@@ -7,6 +7,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { HomePage } from '../pages/home/home';
 import { UpcomingPage } from '../pages/upcoming/upcoming';
 import { LoginPage } from './../pages/login/login';
+import { AccountPage } from './../pages/account/account';
 
 @Component({
   templateUrl: 'app.html'
@@ -48,6 +49,12 @@ export class MyApp {
     let modal = this.modalCtrl.create(LoginPage);
     modal.present();
   }  
+
+  account() {
+    let modal = this.modalCtrl.create(AccountPage);
+    modal.present();
+
+  }
 
   logout() {
     this.nav.popToRoot().then(() => {

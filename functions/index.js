@@ -296,3 +296,18 @@ exports.fixSeats = functions.https.onRequest((request, response) => {
     });
 });
 
+
+
+
+
+
+
+exports.userCreate = functions.auth.user().onCreate(event => {
+    var body = {
+        time: moment().unix(),
+        title: "Welcome to Movie App",
+        message: "Thanks for signing up to Movie App!"
+    }
+    return db.ref('users/' + event.data.uid + '/messages').push().set(body);
+});
+
