@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
+
 import { InboxPage } from '../inbox/inbox';
 import { TicketsPage } from '../tickets/tickets';
 import { AcctSettingPage } from '../acct-setting/acct-setting';
@@ -26,10 +26,7 @@ export class AccountPage {
   public viewCtrl: ViewController) 
   { }
 
-
-
   close() {
     this.viewCtrl.dismiss();
   }
-
 }

@@ -43,9 +43,12 @@ Ionic(UI/Frontend) Docs:
     <https://ionicframework.com/docs/api/>
 
 Firebase(Authentication/Database/Backend) Docs:
-    <https://github.com/angular/angularfire2> (how to use firebase with our framework)
+    <https://github.com/angular/angularfire2> (USE THIS FOR DATABASE DOCS)
     <https://firebase.google.com/docs/auth/>
     <https://firebase.google.com/docs/database/>
+
+Angular/Ionic Pipes guide:
+    <https://angular.io/guide/pipes>
     
 
 # Hosted website - live link to project

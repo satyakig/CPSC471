@@ -53,7 +53,6 @@ export class MyApp {
   account() {
     let modal = this.modalCtrl.create(AccountPage);
     modal.present();
-
   }
 
   logout() {
