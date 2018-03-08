@@ -9,5 +9,8 @@ export interface Location {
 
     movies: Movie[],
     items: Item[],
-    theatres: Theatre[]
+    theatres: Theatre[],
+
+    bookedSeats: any[],
+    orders: any[]
 }

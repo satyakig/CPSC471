@@ -7,18 +7,21 @@
 4. To run the project:
     ionic serve
 
+# After pulling from GIT, make sure all the Node.js packages are installed correctly:
+    npm install -E
+
 
 # To install all npm libraries in package.json, ALWAYS and ONLY use:
-npm install -E
+    npm install -E
 
 
 # To install a NEW specfic library use:
-npm install --save [library name]           # for the latest version
-npm install --save [library name@version]   # for a specific version
+    npm install --save [library name]           # for the latest version
+    npm install --save [library name@version]   # for a specific version
 
 
 # To run app with live-reload a.k.a to view the changes you made to the code as you are editing it:
-ionic serve
+    ionic serve
 
 
 # To view project in mobile view (default browser must be chrome):

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { InboxPage } from './../inbox/inbox';
 
 @IonicPage()
 @Component({
@@ -64,7 +63,6 @@ export class LoginPage {
           userID: this.afAuth.auth.currentUser.uid
         }).then(() => {
           loader.dismiss();
-          this.showSuccessSignUp();
           this.viewCtrl.dismiss();
         });
 
@@ -100,5 +98,4 @@ export class LoginPage {
     });
     alert.present();
   }
-
 }

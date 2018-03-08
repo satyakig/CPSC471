@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TheatrePage } from './theatre';
+import { CheckoutPage } from './checkout';
 
 import { SharedPipes } from './../../pipes/shared.pipes';
 
 
 @NgModule({
   declarations: [
-    TheatrePage,
+    CheckoutPage,
   ],
   imports: [
-    IonicPageModule.forChild(TheatrePage),
+    IonicPageModule.forChild(CheckoutPage),
     SharedPipes
   ],
 })
-export class TheatrePageModule {}
+export class CheckoutPageModule {}

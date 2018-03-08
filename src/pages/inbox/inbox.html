@@ -9,8 +9,8 @@
   <ion-list *ngFor="let message of messages | async">
     <ion-item (click)="messageClick(message)">
       <h5>{{message.title}}</h5>
-      <h5>{{message.date | time}}</h5>
-      <h5>{{message.message}}</h5>
+      <p>{{message.date | timeUnix: 'h:mma - MMM D'}}</p>
+      <p>{{message.message}}</p>
     </ion-item>
   </ion-list>
 </ion-content>

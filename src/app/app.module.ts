@@ -6,6 +6,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 
 import { Firebase_Config } from './environments';
@@ -22,8 +24,6 @@ import { MoviePage } from '../pages/movie/movie';
 import { MoviePageModule } from '../pages/movie/movie.module';
 import { TrailersPage } from '../pages/trailers/trailers';
 import { TrailersPageModule } from '../pages/trailers/trailers.module';
-import { TheatrePage } from '../pages/theatre/theatre';
-import { TheatrePageModule } from '../pages/theatre/theatre.module';
 import { AccountPage } from '../pages/account/account';
 import { AccountPageModule } from '../pages/account/account.module';
 import { InboxPageModule } from '../pages/inbox/inbox.module';
@@ -34,7 +34,12 @@ import { TransactionsPage } from '../pages/transactions/transactions';
 import { TransactionsPageModule } from '../pages/transactions/transactions.module';
 import { AcctSettingPageModule } from '../pages/acct-setting/acct-setting.module';
 import { AcctSettingPage } from '../pages/acct-setting/acct-setting';
-
+import { CheckoutPageModule } from '../pages/checkout/checkout.module';
+import { CheckoutPage } from '../pages/checkout/checkout';
+import { TicketPage } from '../pages/ticket/ticket';
+import { TicketPageModule } from '../pages/ticket/ticket.module';
+import { EmployeePage } from '../pages/employee/employee';
+import { EmployeePageModule } from '../pages/employee/employee.module';
 
 import { SharedPipes } from './../pipes/shared.pipes';
 import { Services } from './../services/services';
@@ -61,12 +66,15 @@ import { TheatreService } from './../services/theatreService';
     LoginPageModule,
     MoviePageModule,
     TrailersPageModule,
-    TheatrePageModule,
     AccountPageModule,
     InboxPageModule,
     TicketsPageModule,
     TransactionsPageModule,
-    AcctSettingPageModule
+    AcctSettingPageModule,
+    CheckoutPageModule,
+    TicketPageModule,
+    EmployeePageModule,
+    NgxQRCodeModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -77,21 +85,24 @@ import { TheatreService } from './../services/theatreService';
     LoginPage,
     MoviePage,
     TrailersPage,
-    TheatrePage,
     AccountPage,
     InboxPage,
     TicketsPage,
     TransactionsPage,
-    AcctSettingPage
+    AcctSettingPage,
+    CheckoutPage,
+    TicketPage,
+    EmployeePage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    BarcodeScanner,
     Services,
     AuthService,
     TheatreService,
-    DateService
+    DateService,
   ]
 })
 export class AppModule {}

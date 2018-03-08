@@ -34,11 +34,13 @@
             <p style="text-align: center;">{{movie.Genre}}</p>
           </ion-card-content>
         
-          <ion-row nowrap justify-content-between>
-            <ion-col text-center align-self-center *ngFor="let showtime of movie.Showtimes">{{showtime.time | time12}}</ion-col>
+          <ion-row nowrap justify-content-between class="noClick">
+            <ion-col text-center align-self-center *ngFor="let show of movie.Shows">
+              <button ion-button clear small color="primary2">{{show.time | time12}}</button>            
+            </ion-col>
           </ion-row>
-
-          <ion-row nowrap>
+                    
+          <ion-row nowrap class="noClick">
             <ion-col text-center align-self-center>
               <button *ngIf="movie.imdbRating > '5.0'" ion-button icon-start clear small color="secondary">
                 <ion-icon name="md-thumbs-up"></ion-icon>
@@ -83,11 +85,13 @@
           <p text-wrap style="text-align: center;">{{movie.Genre}}</p>
         </ion-card-content>
       
-        <ion-row nowrap justify-content-between>
-          <ion-col text-center align-self-center *ngFor="let showtime of movie.Showtimes">{{showtime.time | time12}}</ion-col>
+        <ion-row nowrap justify-content-between class="noClick">
+          <ion-col text-center align-self-center *ngFor="let show of movie.Shows">
+            <button ion-button clear small color="primary2">{{show.time | time12}}</button>            
+          </ion-col>
         </ion-row>
         
-        <ion-row nowrap>
+        <ion-row nowrap class="noClick">
           <ion-col text-center align-self-center>
             <button *ngIf="movie.imdbRating > '5.0'" ion-button icon-start clear small color="secondary">
               <ion-icon name="md-thumbs-up"></ion-icon>

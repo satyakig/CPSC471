@@ -1,4 +1,4 @@
-import { Showtime } from './showtime';
+import { Show } from './show';
 
 export interface Movie {
     imdbID: string,
@@ -35,5 +35,5 @@ export interface Movie {
 
     Poster: string,
     Videos?: any[],
-    Showtimes: Showtime[]
+    Shows: Show[]
 }

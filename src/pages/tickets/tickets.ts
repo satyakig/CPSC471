@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, LoadingController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabase } from 'angularfire2/database';
 
+import { Services } from './../../services/services';
+import { Ticket } from './../../data_structures/ticket';
+import { TicketPage } from './../ticket/ticket';
 
 @IonicPage()
 @Component({
@@ -8,12 +13,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'tickets.html',
 })
 export class TicketsPage {
+  tickets: Observable<Ticket[]>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(public services: Services, public modalCtrl: ModalController, public fDb: AngularFireDatabase,
+    public loader: LoadingController) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TicketsPage');
+    let loader = this.loader.create({
+      spinner: 'dots',
+      content: 'Fetching tickets...',
+    });
+    loader.present();
+    this.tickets = this.fDb.list<Ticket>('users/' + this.services.auth.getUID() + '/tickets').valueChanges();
+    loader.dismiss();
   }
 
+  openTicket(ticket: Ticket) {
+    let modal = this.modalCtrl.create(TicketPage, {ticket: ticket, type: 'cust'});
+    modal.present();
+  }
 }

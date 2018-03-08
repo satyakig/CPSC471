@@ -2,30 +2,52 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core'
 import { Subscription } from 'rxjs/Subscription';
+import { ToastController, AlertController } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { User } from './../data_structures/user';
+import { Message } from './../data_structures/message';
 
 @Injectable()
 export class AuthService {
 
-    private sub: Subscription = null;
-    private name: string = "";
+    private sub1: Subscription = null;
+    private sub2: Subscription = null;
 
-    constructor(private fAuth: AngularFireAuth, private fDb: AngularFireDatabase) {
+    private name: string = "";
+    private access: number = 2;
+
+    constructor(private fAuth: AngularFireAuth, private fDb: AngularFireDatabase, public toastCtrl: ToastController,
+    public alertCtrl: AlertController) {
 
         this.fAuth.authState.subscribe((auth) => {
-            if(auth) {
-                
-                this.sub = this.fDb.object<User>('users/' + this.getUID()).valueChanges().subscribe(
+            if(auth) {                
+                this.sub1 = this.fDb.object<User>('users/' + this.getUID()).valueChanges().subscribe(
                     user => {
                         this.name = user.name;
+                        this.access = user.access;
                     }
                 );
+
+                this.sub2 = this.fDb.list<Message>('users/' + this.getUID() + '/messages').snapshotChanges(['child_added'])
+                .subscribe(actions => {
+                    actions.forEach(action => {
+                        let sent = action.payload.val().date;
+                        let now = this.nowUnix();
+
+                        if(sent >= now - 30)
+                            this.showToast(action.payload.val().message);
+                    });
+                });
             }
             else {
-                if(this.sub != null)
-                    this.sub.unsubscribe();
+                this.name = "";
+                this.access = 2;
+
+                if(this.sub1 != null)
+                    this.sub1.unsubscribe();
+                if(this.sub2 != null)
+                    this.sub2.unsubscribe();
             }
         });
     }
@@ -57,5 +79,34 @@ export class AuthService {
 
     getName() {
         return this.name;
+    }
+
+    getAccess() {
+        return this.access;
+    }
+
+    nowUnix() {
+        return moment().unix();
+    }
+
+    showAlert(title: string, message: string) {
+        let alert = this.alertCtrl.create({
+          title: title,
+          subTitle: message,
+          buttons: ['OK']
+        });
+        alert.present();
+    }
+
+    showToast(message: string) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: 5000,
+            position: 'top',
+            showCloseButton: true,
+            closeButtonText: "OK"
+        });
+        
+        toast.present();
     }
 }

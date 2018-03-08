@@ -14,5 +14,4 @@ export class TransactionsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad TransactionsPage');
   }
-
 }

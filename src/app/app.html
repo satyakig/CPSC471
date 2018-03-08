@@ -6,29 +6,39 @@
     </ion-header>
   
     <ion-content>
-        <ion-list>
-            <button menuClose ion-item (click)="home()" color="dark">
-                Home
+        <ion-list no-lines>
+            <button ion-item menuClose ion-item (click)="home()" color="dark">
+                <ion-icon name="home" color="primary" item-left></ion-icon>
+                <b>Home</b>
             </button>
 
-            <button menuClose ion-item (click)="upcomingMovies()" color="dark">
-                Upcoming Movies
+            <button ion-item  menuClose ion-item (click)="upcomingMovies()" color="dark">
+                <ion-icon name="play" color="danger" item-left></ion-icon>
+                <b>Upcoming Movies</b>
             </button>
 
-            <button menuClose ion-item (click)="login()" color="dark" *ngIf="!loggedIn">
-                Login
+            <button ion-item  menuClose ion-item (click)="account()" color="dark" *ngIf="loggedIn">
+                <ion-icon name="person" color="light" item-left></ion-icon>
+                <b>My Account</b>
             </button>
 
-            <button menuClose ion-item (click)="account()" color="dark" *ngIf="loggedIn">
-                My Account
+            <button ion-item  menuClose ion-item (click)="employee()" color="dark" *ngIf="loggedIn && (access == 1 || access == 0)">
+                <ion-icon name="logo-usd" color="secondary" item-left></ion-icon>
+                <b>Employee Portal</b>
             </button>
 
-            <button menuClose ion-item (click)="logout()" color="dark" *ngIf="loggedIn">
-                Logout
+            <button ion-item  menuClose ion-item (click)="login()" color="dark" *ngIf="!loggedIn">
+                <ion-icon name="log-in" color="drkRed" item-left></ion-icon>
+                <b>Login</b>
+            </button>
+
+            <button ion-item menuClose ion-item (click)="logout()" color="dark" *ngIf="loggedIn">
+                <ion-icon name="log-out" color="drkRed" item-left></ion-icon>
+                <b>Logout</b>
             </button>
         </ion-list>
     </ion-content>
     
 </ion-menu>
 
-<ion-nav [root]="rootPage" #nav></ion-nav>
+<ion-nav [root]="root" #nav></ion-nav>

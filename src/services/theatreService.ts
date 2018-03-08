@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core'
+import { AngularFireDatabase } from 'angularfire2/database';
+import * as moment from 'moment';
 
 import { Seat } from './../data_structures/seat';
 import { Movie } from './../data_structures/movie';
-import { Showtime } from './../data_structures/showtime';
+import { Ticket } from './../data_structures/ticket';
+import { Show } from './../data_structures/show';
+import { AuthService } from './authService';
 
 @Injectable()
 export class TheatreService {
@@ -14,29 +18,63 @@ export class TheatreService {
         name: ""
     }
 
-    private showtime: Showtime = {
+    private show: Show = {
+        showID: "",
         time: "",
-        theatreNum: -1
+        theatreNum: -1,
+        unixDate: 0,
+        unixDateTime: 0
     }
 
     private seats: Seat[] = [];
 
-    clearSelections() {
-        this.location = {
-            address: "",
-            locationID: "",
-            name: ""
-        }
-        this.showtime = {
-            time: "",
-            theatreNum: -1
-        }
+    constructor(public fDb: AngularFireDatabase, public auth: AuthService) {  }
+
+    clearSeats() {
         this.seats = [];
-        this.movie = null;
+    }
+
+    clearShow() {
+        this.show.showID = "";
+        this.show.theatreNum = -1;
+        this.show.time = "";
+        this.show.unixDateTime = 0;
+    }
+
+    clearLocation() {
+        this.location.address = "";
+        this.location.locationID = "";
+        this.location.name = "";
+    }
+
+    setMovie(mov: Movie) {
+        this.clearShow();
+        this.clearSeats();
+        this.movie = mov;
+    }
+
+    getMovie() {
+        return this.movie;
+    }    
+
+    getMovieTitle() {
+        if(this.movie == null)
+            return "";
+        else
+            return this.movie.Title;
+    }
+
+    getMovieRuntime() {
+        if(this.movie == null)
+            return 0;
+        else
+            return this.movie.Runtime;
     }
 
     setLocation(loc: any) {
-        this.clearSelections();
+        this.clearLocation();
+        this.clearShow();
+        this.clearSeats();
         this.location.name = loc.name;
         this.location.locationID = loc.locationID;
         this.location.address = loc.address;
@@ -56,39 +94,61 @@ export class TheatreService {
 
     getLocationID() {
         return this.location.locationID;
-    } 
+    }
+
+    setShowDate(date: string) {
+        this.show.unixDate = moment(date, 'dddd, MMM DD').unix();
+    }
+    
+    setShow(show: any) {
+        let mom = moment(show.time, "Hmm").format("H:mm:ss");
+
+        this.show.showID = show.showID;
+        this.show.time = show.time;
+        this.show.theatreNum = show.theatreNum;
+        this.show.unixDateTime = this.show.unixDate + moment.duration(mom).asSeconds();
+    }    
 
     getShow() {
-        return this.showtime;
+        return this.show;
     }
 
     getShowTime() {
-        return this.showtime.time;
+        return this.show.time;
     }
     
     getShowTheatreNum() {
-        return this.showtime.theatreNum;
+        return this.show.theatreNum;
     }
 
-    setShow(time: any, num: any) {
-        this.showtime.time = time;
-        this.showtime.theatreNum = num;
+    getShowDate() {
+        return moment.unix(this.show.unixDate).format('dddd, MMM DD');
+    }
+
+    getShowDateUnix() {
+        return this.show.unixDate
+    }   
+    
+    getShowDateTimeUnix() {
+        return this.show.unixDateTime
+    }
+
+    getShowID() {
+        return this.show.showID;
     }
 
     isValid() {
         if(this.location.address == "" || this.location.locationID == "" || this.location.name == "")
             return false;
-        else if(this.showtime.time == "" || this.showtime.theatreNum == -1)
+        else if(this.show.time == "" || this.show.theatreNum == -1 || this.show.showID == "" || this.show.unixDate == 0 || this.show.unixDateTime == 0)
             return false;
         else if(this.movie == null)
-            return false;
-        else if(this.seats.length == 0)
             return false;
         else
             return true;
     }
 
-    seatSelected(row: number, col: number) {
+    selectSeat(row: number, col: number) {
         var i = 0;
         for(; i < this.seats.length; i++) {
             if(this.seats[i].row == row && this.seats[i].col == col)
@@ -103,15 +163,35 @@ export class TheatreService {
         return this.seats;
     }
 
+    removeSeat(row: number, col: number) {
+        for(let i = 0; i < this.seats.length; i++) {
+            if(this.seats[i].row == row && this.seats[i].col == col)
+                this.seats.splice(i, 1);
+        }
+        return this.seats;
+    }
+
     getSeats() {
         return this.seats;
     }
 
-    setMovie(mov: Movie) {
-        this.movie = mov;
-    }
+    writeTicket() {
+        let pKey = this.fDb.list('users/' + this.auth.getUID() + '/tickets').push({}).key;
 
-    getMovie() {
-        return this.movie;
+        let ticket: Ticket = {
+            ticketID: pKey,
+            customerEmail: this.auth.getEmail(),
+            customerName: this.auth.getName(),
+            movieID: this.movie.imdbID,
+            movieName: this.movie.Title,
+            show: this.show,
+            seats: this.seats,
+            quantity: this.seats.length,
+            price: this.seats.length * 5,
+            location: this.location
+        }
+
+        this.fDb.object('users/' + this.auth.getUID() + '/tickets/' + pKey).set(ticket);
+        return;
     }
 }

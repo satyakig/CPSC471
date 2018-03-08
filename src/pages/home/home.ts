@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, LoadingController, Platform } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -14,6 +14,7 @@ import { Services } from './../../services/services';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  locations: Observable<Location[]>;
 
   date: string = "";
   dates: string[] = [];
@@ -21,10 +22,7 @@ export class HomePage {
     title: 'Choose a date',
   };
 
-  locations: Observable<Location[]>;
-  
-  constructor(public db: AngularFireDatabase, public navCtrl: NavController, public loader: LoadingController,
-  public platform: Platform, public services: Services) {
+  constructor(public db: AngularFireDatabase, public navCtrl: NavController, public services: Services) {
 
     this.locations = this.db.list<Location>('locations').valueChanges();
 
@@ -35,12 +33,17 @@ export class HomePage {
     }  
   }
 
+  ionViewDidLoad() {
+    this.services.theatre.setShowDate(this.date);
+  }
+
   changeDate() {
-    this.services.date.setSelectedDate(this.date);
+    this.services.theatre.setShowDate(this.date);
   }
   
   locationSelect(location: any) {
+    this.services.theatre.setShowDate(this.date);
     this.services.theatre.setLocation(location);
     this.navCtrl.push(CurrentPage);
-  }  
+  }
 }

@@ -4,10 +4,9 @@ import * as momentTz from 'moment-timezone';
 
 @Injectable()
 export class DateService {
-    private selectedDate = this.getCurrentTime('dddd, MMM DD');
 
-    constructor() { }   
-
+    constructor() { }
+    
     getCurrentTime(format?: string) {
         if(format)
             return momentTz.tz("America/Edmonton").format(format);
@@ -15,23 +14,11 @@ export class DateService {
             return momentTz.tz("America/Edmonton").format("hh:mma - MMM DD, YYYY");
     }
 
-    getUnixMilliSec() {
+    getCurrentUnixMilliSec() {
         return moment().valueOf();
     }
 
-    getUnixSec() {
+    getCurrentUnixSec() {
         return moment().unix();
-    }
-
-    getSelectedDate() {
-        return this.selectedDate;
-    }
-
-    getSelectedUnixDate() {
-        return moment(this.selectedDate, 'dddd, MMM DD').unix();
-    }
-
-    setSelectedDate(date: string) {
-        this.selectedDate = date;
     }
 }

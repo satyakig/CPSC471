@@ -1,20 +1,12 @@
 <ion-header>
-
   <ion-navbar color="light"> 
     <ion-title>My Account</ion-title>
-
-    <ion-buttons end>
-      <button ion-button icon-only (click)="close()">
-        <ion-icon name="close" color="dark"></ion-icon>
-      </button>
-    </ion-buttons>
-
   </ion-navbar>
-
 </ion-header>
+
 <ion-tabs color="dark" tabsPlacement="down" tabsHighlight="true">
-  <ion-tab [root]="inbox" tabTitle="Inbox" tabIcon="mail"></ion-tab>
   <ion-tab [root]="tickets" tabTitle="My Tickets" tabIcon="film"></ion-tab>
+  <ion-tab [root]="inbox" tabTitle="Inbox" tabIcon="mail"></ion-tab>
   <ion-tab [root]="transaction" tabTitle="Previous Transactions" tabIcon="cart"></ion-tab>
   <ion-tab [root]="acctsetting" tabTitle="Account Settings" tabIcon="settings"></ion-tab>
 </ion-tabs>

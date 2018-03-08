@@ -1,0 +1,46 @@
+<ion-header (swipe)="swiped($event)">
+  <ion-toolbar color="light">
+    <ion-title><b>{{ticket.movieName}} Ticket</b></ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close" color="dark"></ion-icon>
+      </button>
+    </ion-buttons> 
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-title style="padding-left: 15px;"><b>{{ticket.movieName}}</b></ion-card-title>
+    <ion-card-header>
+      {{ticket.show.time | time12}}<br>
+      {{ticket.show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ticket.location.name}}<br>
+      {{ticket.location.address}}<br>
+      Theatre #{{ticket.show.theatreNum}}<br>
+    </ion-card-content>
+
+    <ion-card-header>{{ticket.seats.length}} seat(s) selected</ion-card-header>
+    <ion-row>
+      <ion-col *ngFor="let seat of ticket.seats">
+        <ion-item text-center no-lines>
+          <ion-icon name="custom-seat" color="secondary"></ion-icon>
+          {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
+        </ion-item>
+      </ion-col>      
+    </ion-row>
+  </ion-card>
+
+  <button padding ion-button block outline color="light" *ngIf="type == 'cust'" (click)="viewDetails()" style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px;">
+    View Movie Details
+  </button>
+
+  <div *ngIf="code && type == 'cust'" style="text-align: center;">
+    <ngx-qrcode [qrc-value]="code"></ngx-qrcode>
+  </div>
+</ion-content>

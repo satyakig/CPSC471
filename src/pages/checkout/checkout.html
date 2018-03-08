@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-navbar color="light">
+    <ion-title><b>Checkout</b></ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-card>
+    <ion-card-title style="padding-left: 15px;"><b>{{name}}</b></ion-card-title>
+
+    <ion-card-content>
+      {{location.name}}<br>
+      {{location.address}}<br>
+      Theatre #{{show.theatreNum}}<br>
+    </ion-card-content>
+
+    <ion-card-header>
+      <b>{{movieTitle}}</b><br>
+      {{movieRuntime | runtime}}<br>
+      {{show.time | time12}}<br>
+      {{show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-grid padding>
+    <ion-row class="noClick">
+      <button ion-button block outline color="light" text-center>Theatre #{{show.theatreNum}} Screen</button>
+    </ion-row>
+
+    <ion-row *ngFor="let row of rows" nowrap justify-content-around>
+
+      <ion-col *ngFor="let col of cols">
+        <button ion-button ion-only small color="danger" *ngIf="isSeatTaken(row, col)">
+          <ion-icon name="custom-seat" color="dark"></ion-icon>
+        </button>
+
+        <button ion-button ion-only small (click)="clickSeat(row, col)" color="secondary" 
+        *ngIf="isSeatSelected(row, col) && !isSeatTaken(row, col)">
+          <ion-icon name="custom-seat" color="dark"></ion-icon>
+        </button>
+
+        <button ion-button ion-only small (click)="clickSeat(row, col)" color="light" 
+        *ngIf="!isSeatSelected(row, col) && !isSeatTaken(row, col)">
+          <ion-icon name="custom-seat" color="dark"></ion-icon>
+        </button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <ion-card *ngIf="selectedSeats.length > 0">
+    <ion-card-header>{{selectedSeats.length}} seat(s) selected</ion-card-header>
+
+    <ion-row>
+      <ion-col *ngFor="let seat of selectedSeats">
+        <ion-item text-center no-lines>
+          <ion-icon name="custom-seat" color="secondary"></ion-icon>
+          {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
+        </ion-item>
+      </ion-col>      
+    </ion-row>
+
+    <button ion-button block *ngIf="selectedSeats.length > 0" color="secondary" (click)="checkout()">Checkout</button>
+  </ion-card>
+
+</ion-content>

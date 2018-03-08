@@ -35,13 +35,13 @@ export class CurrentPage {
     loader.present();
 
     this.locationID = this.services.theatre.getLocationID();
-    this.date = this.services.date.getSelectedDate();
+    this.date = this.services.theatre.getShowDate();
     this.movies = this.db.list<Movie>('locations/' + this.locationID + '/movies', ref => ref.orderByChild('Title')).valueChanges();
     this.desktop = this.platform.is('core');
   }
   
   movieClick(id: string) {
-    this.navCtrl.push(MoviePage, { id: id, current: true });
+    this.navCtrl.push(MoviePage, {id: id, current: true, type: 'page'});
   }
 
   sort(index: number, fab: FabContainer) {

@@ -35,7 +35,7 @@ export class UpcomingPage {
   }
   
   movieClick(id: string) {
-    this.navCtrl.push(MoviePage, { id: id, current: false });
+    this.navCtrl.push(MoviePage, { id: id, current: false, type: 'page' });
   }
 
   sort(index: number, fab: FabContainer) {

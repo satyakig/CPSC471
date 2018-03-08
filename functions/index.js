@@ -9,6 +9,70 @@ const momentTz = require('moment-timezone');
 const moment = require('moment');
 
 
+exports.userCreate = functions.auth.user().onCreate(event => {
+    const now = moment().unix();
+    const uid = event.data.uid;
+
+    var pKey = db.ref('users/' + event.data.uid + '/messages').push().key;
+    var messsage = {
+        date: now,
+        title: "Welcome to Movie App",
+        message: "Thank you for signing up to Movie App!"
+    }
+
+    var updates = {};
+    updates['users/' + uid + '/access'] = 2;
+    updates['users/' + uid + '/messages/' + pKey] = messsage;
+    updates['users/' + uid + '/createdOn'] = now;
+
+    return db.ref().update(updates);
+});
+
+exports.newTicket = functions.database.ref('users/{uid}/tickets/{tid}').onCreate(event => {
+    const uid = event.params.uid;
+    const tid = event.params.tid;
+    const now = moment().unix();
+    const ticket = event.data.val();
+
+    const locationID = event.data.val().location.locationID;
+    const showID = event.data.val().show.showID;
+    const date = event.data.val().show.unixDate;
+    const seats = event.data.val().seats;
+
+    var updates = {};
+
+    for(seat of seats) {
+        let pKey = db.ref('locations/' + locationID + '/bookedSeats/' + date + '/' + showID).push().key;
+        updates['locations/' + locationID + '/bookedSeats/' + date + '/' + showID + '/' + pKey] = {
+            col: seat.col,
+            row: seat.row
+        }    
+    }
+
+    let pKey2 = db.ref('users/' + uid + '/messages').push().key;
+
+    updates['users/' + uid + '/messages/' + pKey2] = {
+        message: 'Thank you for purchasing ticket(s) to ' + ticket.movieName + '.',
+        title: 'New Ticket',
+        date: moment().unix()
+    }
+
+    return db.ref().update(updates);
+});
+
+exports.userDelete = functions.auth.user().onDelete(event => {
+    return db.ref('users/' + event.data.uid).remove();
+});
+
+
+
+
+
+
+
+
+
+
 /**
  * methods to fix up the database
  */
@@ -255,9 +319,11 @@ exports.addShowings = functions.https.onRequest((request, response) => {
 
                 for(let k = 0; k < theatreShows.length; k++) {
                     if(theatreShows[k].movieId == id) {
+                        let showID = db.ref('xyz').push().key;
                         shows.push({
                             theatreNum: theatreShows[k].theatreNum,
-                            time: theatreShows[k].time
+                            time: theatreShows[k].time,
+                            showID: showID
                         });
                     }
                 }
@@ -266,7 +332,7 @@ exports.addShowings = functions.https.onRequest((request, response) => {
                     return Number(a.time) - Number(b.time);
                 });
 
-                updates['/locations/' + locationId + '/movies/' + id + '/Showtimes'] = shows;
+                updates['/locations/' + locationId + '/movies/' + id + '/Shows'] = shows;
             }
 
         });
@@ -286,8 +352,8 @@ exports.fixSeats = functions.https.onRequest((request, response) => {
 
                 if(theatre.totalRows > 10)
                     updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalRows'] = Math.floor(Math.random() * 7) + 5;
-                if(theatre.totalCols > 10)
-                    updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalCols'] = Math.floor(Math.random() * 7) + 5;
+                if(theatre.totalCols > 9)
+                    updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalCols'] = Math.floor(Math.random() * 6) + 5;
             });
 
         });
@@ -295,19 +361,3 @@ exports.fixSeats = functions.https.onRequest((request, response) => {
         return Promise.all([db.ref().update(updates), response.status(200).send("done")]); 
     });
 });
-
-
-
-
-
-
-
-exports.userCreate = functions.auth.user().onCreate(event => {
-    var body = {
-        time: moment().unix(),
-        title: "Welcome to Movie App",
-        message: "Thanks for signing up to Movie App!"
-    }
-    return db.ref('users/' + event.data.uid + '/messages').push().set(body);
-});
-

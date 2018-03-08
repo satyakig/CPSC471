@@ -1,18 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TicketsPage } from './tickets';
+import { EmployeePage } from './employee';
 
-import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { SharedPipes } from './../../pipes/shared.pipes';
 
 @NgModule({
   declarations: [
-    TicketsPage,
+    EmployeePage,
   ],
   imports: [
-    IonicPageModule.forChild(TicketsPage),
-    NgxQRCodeModule,
+    IonicPageModule.forChild(EmployeePage),
     SharedPipes
   ],
 })
-export class TicketsPageModule {}
+export class EmployeePageModule {}

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, NavController, LoadingController, Platform, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, NavController, LoadingController, Platform, ModalController, AlertController, ViewController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Movie } from './../../data_structures/movie';
 import { Services } from './../../services/services';
 import { TrailersPage } from './../trailers/trailers';
-import { TheatrePage } from './../theatre/theatre';
+import { CheckoutPage } from './../checkout/checkout';
+import { LoginPage } from './../login/login';
 
 @IonicPage()
 @Component({
@@ -14,6 +15,8 @@ import { TheatrePage } from './../theatre/theatre';
 })
 export class MoviePage {
   movieID: string = "";
+  type: string = "";
+
   locationID: string = "";
   current: boolean = true;
   desktop: boolean = true;
@@ -45,13 +48,14 @@ export class MoviePage {
     Response: '',
     Poster: '',
     Videos: [],
-    Showtimes: []    
+    Shows: []    
   }; 
 
   showVideos: boolean = false;
 
-  constructor(public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams,
-  public loader: LoadingController, public platform: Platform, public modalCtrl: ModalController, public services: Services) { } 
+  constructor(public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams, 
+    public alertCtrl: AlertController, public loader: LoadingController, public platform: Platform, 
+    public modalCtrl: ModalController, public services: Services, public viewCtrl: ViewController) { } 
 
   ionViewDidLoad() {
     let loader = this.loader.create({
@@ -62,6 +66,7 @@ export class MoviePage {
 
     this.movieID = this.navParams.get('id');
     this.current = this.navParams.get('current');
+    this.type = this.navParams.get('type');    
     this.desktop = this.platform.is('core');
     this.locationID = this.services.theatre.getLocationID();
     
@@ -88,14 +93,41 @@ export class MoviePage {
     loader.dismiss();
   }
 
-  timeSelected(value: any) {
-    this.services.theatre.setShow(value.time, value.theatreNum);
-    let modal = this.modalCtrl.create(TheatrePage);
-    modal.present();
+  showSelected(show: any) {
+    this.services.theatre.setShow(show);
+
+    if(this.services.auth.isLoggedIn()) {
+      if(this.services.theatre.isValid()) 
+        this.navCtrl.push(CheckoutPage);
+      else {
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          subTitle: 'Something went wrong. Invalid data saved.',
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+    }    
+    else {
+      let modal = this.modalCtrl.create(LoginPage);
+      modal.present();
+      modal.onDidDismiss(() => {
+        if(this.services.auth.isLoggedIn())
+          this.showSelected(show);
+      });
+    }      
   }
 
   showTrailers() {
     let modal = this.modalCtrl.create(TrailersPage, {videos: this.movie.Videos, title: this.movie.Title});
     modal.present();   
+  }
+
+  swiped(event) {
+    this.viewCtrl.dismiss();
+  }
+
+  close() {
+    this.viewCtrl.dismiss();
   }
 }
