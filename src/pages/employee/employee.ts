@@ -29,7 +29,7 @@ export class EmployeePage {
 
   scanTicket() {
    this.barcode.scan().then(barcodeData => {
-      let ticket = barcodeData.text;
+      let ticket = JSON.parse(barcodeData.text);
       let modal = this.modalCtrl.create(TicketPage, {ticket: ticket, type: 'emp'});
       modal.present();
     }).catch(err => {

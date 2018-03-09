@@ -1,29 +1,9 @@
 <ion-header>
 
   <ion-navbar color="light">
-    <ion-title *ngIf="type == 'page' && current"><b>{{movie.Title}} at {{locationID}}</b></ion-title>
-    <ion-title *ngIf="(type == 'page' && !current) || type == 'modal'"><b>{{movie.Title}}</b></ion-title>
-
-    <ion-buttons end *ngIf="type == 'modal'">
-      <button ion-button icon-only (click)="close()">
-        <ion-icon name="close" color="dark"></ion-icon>
-      </button>
-    </ion-buttons>
+    <ion-title *ngIf="current"><b>{{movie.Title}} at {{locationID}}</b></ion-title>
+    <ion-title *ngIf="!current"><b>{{movie.Title}}</b></ion-title>
   </ion-navbar>
-
-  <!-- <ion-navbar color="light" *ngIf="type == 'page' && !current">
-    <ion-title><b>{{movie.Title}}</b></ion-title>
-  </ion-navbar>
-
-  <ion-toolbar color="light" *ngIf="type == 'modal'">
-    <ion-title><b>{{movie.Title}}</b></ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="close()">
-        <ion-icon name="close" color="dark"></ion-icon>
-      </button>
-    </ion-buttons> 
-  </ion-toolbar> -->
-
 </ion-header>
     
 <ion-content padding>
@@ -86,7 +66,7 @@
                 </ion-col>                
               </ion-row>
 
-              <ion-row *ngIf="current && type == 'page'" justify-content-between>
+              <ion-row *ngIf="current" justify-content-between>
                 <ion-col text-center align-self-center *ngFor="let show of movie.Shows">
                   <button ion-button outline color="primary2" (click)="showSelected(show)">
                     {{show.time | time12}}
@@ -102,7 +82,6 @@
   
     </ion-row>
   </ion-grid>
-
 
 </ion-content>
   

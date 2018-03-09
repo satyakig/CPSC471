@@ -35,7 +35,7 @@ export class UpcomingPage {
   }
   
   movieClick(id: string) {
-    this.navCtrl.push(MoviePage, { id: id, current: false, type: 'page' });
+    this.navCtrl.push(MoviePage, { id: id, current: false});
   }
 
   sort(index: number, fab: FabContainer) {
@@ -44,8 +44,7 @@ export class UpcomingPage {
       content: 'Sorting movies...',
     });
 
-    fab.close();
-    
+    fab.close();    
     loader.present().then(() => {
       if(index == 1)
         this.movies = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Released')).valueChanges();
@@ -55,5 +54,4 @@ export class UpcomingPage {
         this.movies = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Title')).valueChanges();
     }).then(() => loader.dismiss());
   }
-
 }

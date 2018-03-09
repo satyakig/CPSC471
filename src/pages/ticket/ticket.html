@@ -1,6 +1,6 @@
 <ion-header (swipe)="swiped($event)">
   <ion-toolbar color="light">
-    <ion-title><b>{{ticket.movieName}} Ticket</b></ion-title>
+    <ion-title ><b>{{ticket.movieName}} Ticket</b></ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="close()">
@@ -36,11 +36,76 @@
     </ion-row>
   </ion-card>
 
-  <button padding ion-button block outline color="light" *ngIf="type == 'cust'" (click)="viewDetails()" style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px;">
-    View Movie Details
-  </button>
-
-  <div *ngIf="code && type == 'cust'" style="text-align: center;">
+  <ion-item *ngIf="code && type == 'cust'" text-center color="dark" no-lines>
     <ngx-qrcode [qrc-value]="code"></ngx-qrcode>
-  </div>
+  </ion-item>
+
+  <ion-grid no-padding *ngIf="type == 'cust'">
+    <ion-row align-items-stretch>
+      
+      <ion-col col-auto align-self-stretch>
+        <img src="{{movie.Poster}}" style="display: block; height: 450px; width: 525px;">
+      </ion-col>
+  
+      <ion-col>
+          <div class="info">
+              <h2 text-wrap><b>{{movie.Title}}</b></h2>
+              <p text-wrap>{{movie.Released | released}}</p>
+              <p text-wrap style="text-align: justify;">{{movie.Genre}}</p>
+              <p *ngIf="movie.Awards != 'N/A'" text-wrap style="text-align: justify;">Awards: {{movie.Awards}}</p>
+              <br>
+
+              <p text-wrap style="text-align: justify;">Director: {{movie.Director}}</p>
+              <p text-wrap style="text-align: justify;">Writers: {{movie.Writer}}</p>
+              <p text-wrap style="text-align: justify;">Actors: {{movie.Actors}}</p>
+              <br>
+
+              <p text-wrap style="text-align: justify;">Country: {{movie.Country}}</p>
+              <p text-wrap style="text-align: justify;">Language: {{movie.Language}}</p>
+              <br> 
+
+              <p *ngIf="movie.BoxOffice != 'N/A'" text-wrap style="text-align: justify;">Box Office: {{movie.BoxOffice}}</p>
+              <p *ngIf="movie.Production != 'N/A'" text-wrap style="text-align: justify;">Production: {{movie.Production}}</p>
+              <a *ngIf="movie.Website != 'N/A'" href="{{movie.Website}}" target="_blank">Visit Movie Website</a>
+
+              <p text-wrap style="text-align: justify; padding-top: 25px;" >{{movie.Plot}}</p>
+
+              <ion-row nowrap>
+                <ion-col text-center align-self-center>
+                  <ion-item color="light" *ngIf="movie.imdbRating > '5.0'" no-lines text-center>
+                    <ion-icon name="md-thumbs-up" color="secondary"></ion-icon>
+                    <b style="color: #008000">{{movie.imdbRating}}</b>
+                  </ion-item>
+
+                  <ion-item color="light" *ngIf="movie.imdbRating <= '5.0'" no-lines text-center>
+                    <ion-icon name="md-thumbs-down" color="danger"></ion-icon>
+                    <b style="color: #ff4444">{{movie.imdbRating}}</b>
+                  </ion-item>
+                </ion-col>
+      
+                <ion-col text-center align-self-center>
+                  <ion-item color="light" no-lines text-center>
+                    <ion-icon name="md-time"></ion-icon>
+                    <b>{{movie.Runtime | runtime}}</b>
+                  </ion-item>
+                </ion-col>
+      
+                <ion-col *ngIf="movie.Rated != 'UNRATED' && movie.Rated != 'NOT RATED'" text-center align-self-center>
+                  <ion-item color="light" no-lines text-center>
+                    <b text-wrap style="color: #800000">{{movie.Rated}}</b>
+                  </ion-item>
+                </ion-col>                
+              </ion-row>
+
+              <ion-row>
+                <button ion-button block outline color="dark" (click)="showTrailers()" *ngIf="movie.Videos != undefined && movie.Videos != null && movie.Videos.length != 0">
+                  View Trailers
+                </button>
+              </ion-row>
+          </div>
+      </ion-col>
+  
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

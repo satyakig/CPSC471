@@ -6,8 +6,8 @@ export interface Ticket {
     customerEmail: string,
     customerName: string,
 
-    movieID: string,
     movieName: string,
+    movieID: string,
 
     show: Show,
     seats: Seat[],

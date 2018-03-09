@@ -15,7 +15,6 @@ import { LoginPage } from './../login/login';
 })
 export class MoviePage {
   movieID: string = "";
-  type: string = "";
 
   locationID: string = "";
   current: boolean = true;
@@ -66,7 +65,6 @@ export class MoviePage {
 
     this.movieID = this.navParams.get('id');
     this.current = this.navParams.get('current');
-    this.type = this.navParams.get('type');    
     this.desktop = this.platform.is('core');
     this.locationID = this.services.theatre.getLocationID();
     
@@ -121,13 +119,5 @@ export class MoviePage {
   showTrailers() {
     let modal = this.modalCtrl.create(TrailersPage, {videos: this.movie.Videos, title: this.movie.Title});
     modal.present();   
-  }
-
-  swiped(event) {
-    this.viewCtrl.dismiss();
-  }
-
-  close() {
-    this.viewCtrl.dismiss();
   }
 }

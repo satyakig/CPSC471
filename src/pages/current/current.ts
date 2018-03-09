@@ -41,7 +41,7 @@ export class CurrentPage {
   }
   
   movieClick(id: string) {
-    this.navCtrl.push(MoviePage, {id: id, current: true, type: 'page'});
+    this.navCtrl.push(MoviePage, {id: id, current: true});
   }
 
   sort(index: number, fab: FabContainer) {
