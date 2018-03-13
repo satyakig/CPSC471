@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core'
 
 export class CardPipe implements PipeTransform {
 
-    transform(value: any) {
-        return ("**" + value.splice(12));
+    transform(value: string) {
+        return ("**" + value.slice(12));
     }
 }
