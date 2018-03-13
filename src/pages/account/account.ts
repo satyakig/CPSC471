@@ -5,7 +5,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { InboxPage } from '../inbox/inbox';
 import { TicketsPage } from '../tickets/tickets';
 import { AcctSettingPage } from '../acct-setting/acct-setting';
-import { TransactionsPage } from '../transactions/transactions';
+import { ArchivePage } from '../archive/archive';
 
 
 @IonicPage()
@@ -14,13 +14,10 @@ import { TransactionsPage } from '../transactions/transactions';
   templateUrl: 'account.html',
 })
 export class AccountPage {
-
-  navs = this.navCtrl;
-
   inbox = InboxPage;
   tickets = TicketsPage;
+  archive = ArchivePage;
   acctsetting = AcctSettingPage;
-  transaction = TransactionsPage;
 
   constructor(public navCtrl: NavController, public fAuth: AngularFireAuth) 
   { 

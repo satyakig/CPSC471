@@ -16,16 +16,18 @@ export class AuthService {
 
     private name: string = "";
     private access: number = 2;
+    private card: string = "";
 
     constructor(private fAuth: AngularFireAuth, private fDb: AngularFireDatabase, public toastCtrl: ToastController,
     public alertCtrl: AlertController) {
 
         this.fAuth.authState.subscribe((auth) => {
-            if(auth) {                
+            if(auth) {
                 this.sub1 = this.fDb.object<User>('users/' + this.getUID()).valueChanges().subscribe(
                     user => {
                         this.name = user.name;
                         this.access = user.access;
+                        this.card = user.card;
                     }
                 );
 
@@ -35,7 +37,7 @@ export class AuthService {
                         let sent = action.payload.val().date;
                         let now = this.nowUnix();
 
-                        if(sent >= now - 30)
+                        if(sent >= now - 10)
                             this.showToast(action.payload.val().message);
                     });
                 });
@@ -43,6 +45,7 @@ export class AuthService {
             else {
                 this.name = "";
                 this.access = 2;
+                this.card = "";
 
                 if(this.sub1 != null)
                     this.sub1.unsubscribe();
@@ -84,6 +87,10 @@ export class AuthService {
     getAccess() {
         return this.access;
     }
+    
+    getCard() {
+        return this.card;
+    }
 
     nowUnix() {
         return moment().unix();
@@ -106,7 +113,6 @@ export class AuthService {
             showCloseButton: true,
             closeButtonText: "OK"
         });
-        
         toast.present();
     }
 }

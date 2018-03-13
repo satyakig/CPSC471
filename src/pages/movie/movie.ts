@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavParams, NavController, LoadingController, Platform, ModalController, AlertController, ViewController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Movie } from './../../data_structures/movie';
 import { Services } from './../../services/services';
 import { TrailersPage } from './../trailers/trailers';
 import { CheckoutPage } from './../checkout/checkout';
 import { LoginPage } from './../login/login';
+import { Show } from '../../data_structures/show';
 
 @IonicPage()
 @Component({
@@ -14,6 +16,10 @@ import { LoginPage } from './../login/login';
   templateUrl: 'movie.html',
 })
 export class MoviePage {
+  sub1: Subscription = null;
+  sub2: Subscription = null;
+  sub3: Subscription = null;
+
   movieID: string = "";
 
   locationID: string = "";
@@ -51,6 +57,7 @@ export class MoviePage {
   }; 
 
   showVideos: boolean = false;
+  now: number = 0;
 
   constructor(public db: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams, 
     public alertCtrl: AlertController, public loader: LoadingController, public platform: Platform, 
@@ -69,7 +76,7 @@ export class MoviePage {
     this.locationID = this.services.theatre.getLocationID();
     
     if(this.navParams.get('current'))
-      this.db.object<Movie>('locations/' + this.locationID + '/movies/' + this.movieID).valueChanges().subscribe(data => {
+      this.sub1 = this.db.object<Movie>('locations/' + this.locationID + '/movies/' + this.movieID).valueChanges().subscribe(data => {
         this.movie = data;
         this.services.theatre.setMovie(this.movie);
 
@@ -79,7 +86,7 @@ export class MoviePage {
           this.showVideos = true; 
       });
     else
-      this.db.object<Movie>('upcomingMovies/' + this.movieID).valueChanges().subscribe(data => {
+      this.sub2 = this.db.object<Movie>('upcomingMovies/' + this.movieID).valueChanges().subscribe(data => {
         this.movie = data;
 
         if(data.Videos == undefined || data.Videos == null || data.Videos == [])
@@ -87,6 +94,10 @@ export class MoviePage {
         else 
           this.showVideos = true;        
       });
+
+    this.sub3 = this.services.date.get24HrTimeSub().subscribe(data => {
+      this.now = Number(data);
+    });
 
     loader.dismiss();
   }
@@ -116,8 +127,24 @@ export class MoviePage {
     }      
   }
 
+  isShowValid(show: Show) {
+    let showtime = Number(show.time);
+    if(this.services.theatre.getShowDateUnix() > this.services.date.getCurrentUnixSec())
+      return true;
+    else
+      return showtime > this.now;
+  }
+
   showTrailers() {
     let modal = this.modalCtrl.create(TrailersPage, {videos: this.movie.Videos, title: this.movie.Title});
     modal.present();   
+  }
+
+  ionViewWillUnload() {
+    if(this.sub1 != null)
+      this.sub1.unsubscribe();
+    if(this.sub2 != null)
+      this.sub2.unsubscribe();
+    this.sub3.unsubscribe();
   }
 }

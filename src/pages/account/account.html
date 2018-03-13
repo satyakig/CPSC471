@@ -1,13 +1,13 @@
 <ion-header>
   <ion-navbar color="light"> 
-    <ion-title>My Account</ion-title>
+    <ion-title><b>My Account</b></ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-tabs color="dark" tabsPlacement="down" tabsHighlight="true">
-  <ion-tab [root]="tickets" tabTitle="My Tickets" tabIcon="film"></ion-tab>
+  <ion-tab [root]="tickets" tabTitle="Tickets" tabIcon="film"></ion-tab>
+  <ion-tab [root]="archive" tabTitle="Archive" tabIcon="archive"></ion-tab>
   <ion-tab [root]="inbox" tabTitle="Inbox" tabIcon="mail"></ion-tab>
-  <ion-tab [root]="transaction" tabTitle="Previous Transactions" tabIcon="cart"></ion-tab>
   <ion-tab [root]="acctsetting" tabTitle="Settings" tabIcon="settings"></ion-tab>
 </ion-tabs>
 

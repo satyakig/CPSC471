@@ -1,13 +1,11 @@
 <ion-header (swipe)="swiped($event)">
   <ion-toolbar color="light">
-    <ion-title ><b>{{ticket.movieName}} Ticket</b></ion-title>
-
+    <ion-title><b>Ticket#&nbsp;&nbsp;{{ticket.ticketID}}</b></ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="close()">
         <ion-icon name="close" color="dark"></ion-icon>
       </button>
     </ion-buttons> 
-
   </ion-toolbar>
 </ion-header>
 
@@ -15,32 +13,71 @@
   <ion-card>
     <ion-card-title style="padding-left: 15px;"><b>{{ticket.movieName}}</b></ion-card-title>
     <ion-card-header>
+      Theatre #{{ticket.show.theatreNum}}<br>
       {{ticket.show.time | time12}}<br>
-      {{ticket.show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>
+      {{ticket.show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>        
+      {{ticket.show.type}}<br>
     </ion-card-header>
 
     <ion-card-content>
       {{ticket.location.name}}<br>
       {{ticket.location.address}}<br>
-      Theatre #{{ticket.show.theatreNum}}<br>
-    </ion-card-content>
-
-    <ion-card-header>{{ticket.seats.length}} seat(s) selected</ion-card-header>
-    <ion-row>
-      <ion-col *ngFor="let seat of ticket.seats">
-        <ion-item text-center no-lines>
-          <ion-icon name="custom-seat" color="secondary"></ion-icon>
-          {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
-        </ion-item>
-      </ion-col>      
-    </ion-row>
+    </ion-card-content>  
+    
+    <ion-card-header class="middle">
+      Total Price: {{ticket.price | currency:'CAD':'1.2-2'}}<br>
+      {{ticket.seats.length}} seat(s)<br>
+      <ion-row>
+        <ion-col *ngFor="let seat of ticket.seats">
+          <ion-item text-center no-lines>
+            <ion-icon name="custom-seat" color="secondary"></ion-icon>
+            {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
+          </ion-item>
+        </ion-col>      
+      </ion-row>
+    </ion-card-header>    
   </ion-card>
 
-  <ion-item *ngIf="code && type == 'cust'" text-center color="dark" no-lines>
+  <div *ngIf="orders.length > 0">
+    <h6 style="color: #f4f4f4; margin-top: 30px; margin-left: 15px;">Your order(s) for this movie:</h6>
+    <ion-card *ngFor="let order of orders">
+      <ion-card-header>
+        Total: {{order.totalPrice | currency:'CAD':'1.2-2'}}<br>
+        {{order.orderedOn | timeUnix: 'hh:mma'}}<br>
+        {{order.status | status}}
+      </ion-card-header>
+      <ion-card-content class="middle">
+        <ion-row nowrap *ngFor="let item of order.items" justify-content-center class="middle">
+          <ion-col>{{item.name}}</ion-col>
+          <ion-col>QTY: {{item.quantity}}</ion-col>
+        </ion-row> 
+        <button ion-button outline block *ngIf="order.status == 0" color="secondary" (click)="prepare(order)">Prepare</button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  
+
+  <button ion-button block padding color="secondary" (click)="addConcessions()" *ngIf="canOrder">
+    Add Concessions
+  </button>
+
+  <button ion-button block padding color="primary2" (click)="viewCode(true)" *ngIf="!viewQR">
+    QR Code
+  </button>
+  <button ion-button block padding outline color="primary2" (click)="viewCode(false)" *ngIf="viewQR">
+    Cancel
+  </button>
+  <ion-item *ngIf="viewQR" text-center color="dark" no-lines>
     <ngx-qrcode [qrc-value]="code"></ngx-qrcode>
   </ion-item>
 
-  <ion-grid no-padding *ngIf="type == 'cust'">
+  <button ion-button block padding color="light" (click)="viewDetails(true)" *ngIf="!viewMovie">
+    Movie Details
+  </button>
+  <button ion-button block padding outline color="light" (click)="viewDetails(false)" *ngIf="viewMovie">
+    Cancel
+  </button>  
+  <ion-grid no-padding *ngIf="viewMovie">
     <ion-row align-items-stretch>
       
       <ion-col col-auto align-self-stretch>
@@ -107,5 +144,4 @@
   
     </ion-row>
   </ion-grid>
-
 </ion-content>

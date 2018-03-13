@@ -5,8 +5,14 @@ const db = admin.database();
 const auth = admin.auth();
 
 const http = require('request');
+const compare = require('secure-compare');
+const cors = require('cors')({origin: true});
 const momentTz = require('moment-timezone');
 const moment = require('moment');
+
+const clientKey = functions.config().client.key;
+
+
 
 
 exports.userCreate = functions.auth.user().onCreate(event => {
@@ -28,43 +34,213 @@ exports.userCreate = functions.auth.user().onCreate(event => {
     return db.ref().update(updates);
 });
 
-exports.newTicket = functions.database.ref('users/{uid}/tickets/{tid}').onCreate(event => {
+exports.setUserAccess = functions.database.ref('/users/{uid}/access').onWrite(event => {
+    const access = event.data.val();
     const uid = event.params.uid;
-    const tid = event.params.tid;
-    const now = moment().unix();
-    const ticket = event.data.val();
 
-    const locationID = event.data.val().location.locationID;
-    const showID = event.data.val().show.showID;
-    const date = event.data.val().show.unixDate;
-    const seats = event.data.val().seats;
-
-    var updates = {};
-
-    for(seat of seats) {
-        let pKey = db.ref('locations/' + locationID + '/bookedSeats/' + date + '/' + showID).push().key;
-        updates['locations/' + locationID + '/bookedSeats/' + date + '/' + showID + '/' + pKey] = {
-            col: seat.col,
-            row: seat.row
-        }    
-    }
-
-    let pKey2 = db.ref('users/' + uid + '/messages').push().key;
-
-    updates['users/' + uid + '/messages/' + pKey2] = {
-        message: 'Thank you for purchasing ticket(s) to ' + ticket.movieName + '.',
-        title: 'New Ticket',
-        date: moment().unix()
-    }
-
-    return db.ref().update(updates);
+    if(access === 0)
+        return auth.setCustomUserClaims(event.params.uid, {access: 0});
+    else if(access === 1)
+        return auth.setCustomUserClaims(event.params.uid, {access: 1});
+    else
+        return auth.setCustomUserClaims(event.params.uid, {access: 2});
 });
 
 exports.userDelete = functions.auth.user().onDelete(event => {
     return db.ref('users/' + event.data.uid).remove();
 });
 
+exports.orderTicket = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
+        if(compare(request.query.key, clientKey)) {  
+            const info = request.body;           
+            
+            if(!isTicketValid(info))
+                return response.status(400).send("Invalid data.");
+            else {
+                const seats = info.seats;
+                const date = info.show.unixDate; 
+                const locationID = info.location.locationID;
+                const showID = info.show.showID;
 
+                const prom1 = auth.getUserByEmail(info.customerEmail);
+                const prom2 = db.ref('locations/' + locationID + '/bookedSeats/' + date + '/' + showID).once('value');
+
+                return Promise.all([prom1, prom2]).then(results => {
+                    const uid = results[0].uid;
+                    const bookSeatsSnap = results[1];
+
+                    bookSeatsSnap.forEach(seatSnap => {
+                        let seat = seatSnap.val();
+                        for(let i = 0; i < seats.length; i++) {
+                            if(seats[i].col == seat.col && seats[i].row == seat.row)
+                                return response.status(400).send("Sorry, these seats have already been taken."); 
+                        }
+                    });
+
+                    const now = moment().unix();
+                    const tid = db.ref('tickets').push().key;  
+                    const mid = db.ref('users/' + uid + '/messages').push().key;
+
+                    var updates = {};
+                    var ticket = {
+                        ticketID: tid,
+                        orderedOn: now,                        
+                        customerEmail: info.customerEmail,
+                        customerName: info.customerName,                    
+                        movieName: info.movieName,
+                        movieID: info.movieID,                    
+                        show: info.show,
+                        seats: info.seats,                    
+                        quantity: info.quantity,
+                        price: info.price,                    
+                        location: info.location
+                    }
+
+                    updates['users/' + uid + '/tickets/' + tid] = ticket;
+                    updates['users/' + uid + '/messages/' + mid] = {
+                        message: 'Thank you for purchasing ticket(s) to ' + ticket.movieName + '.',
+                        title: 'New Ticket',
+                        date: now
+                    }
+                    for(seat of seats) {
+                        let pKey = db.ref('locations/' + locationID + '/bookedSeats/' + date + '/' + showID).push().key;
+                        updates['locations/' + locationID + '/bookedSeats/' + date + '/' + showID + '/' + pKey] = {
+                            col: seat.col,
+                            row: seat.row
+                        }    
+                    }                   
+                    
+                    const prom3 = response.status(200).send("Your ticket has been booked!");
+                    const prom4 = db.ref().update(updates);
+
+                    return Promise.all([prom3, prom4]);
+                }).catch(err => {
+                    return response.status(400).send(err.message);
+                });
+            }
+        }
+        else
+            return response.status(400).send("Invalid authentication key");
+    });
+});
+
+exports.orderConcession = functions.database.ref('/users/{uid}/orders/{oid}').onCreate(event => {
+    const order = event.data.val();
+    const uid = event.params.uid;
+    const oid = event.params.oid;
+    const now = moment().unix();
+    const mid = db.ref('users/' + uid + '/messages').push().key;
+    
+    var updates = {};
+    updates['locations/' + order.location.locationID + '/orders/' + oid] = order;
+    updates['users/' + uid + '/messages/' + mid] = {
+        message: 'Please let us know when you would like us to start preparing your order.',
+        title: 'New Order',
+        date: now
+    }    
+    return db.ref().update(updates);
+});
+
+exports.prepareConcession = functions.https.onRequest((request, response) => {
+    cors(request, response, () => {
+        if(compare(request.query.key, clientKey)) {  
+            const info = request.body;           
+            
+            if(!isOrderValid(info))
+                return response.status(400).send("Invalid data.");
+            else {
+                const locationID = info.location.locationID;
+                const oid = info.orderID;
+                const email = info.customerEmail;
+                return auth.getUserByEmail(email).then(userRec => {
+                    const uid = userRec.uid;
+                    const mid = db.ref('users/' + uid + '/messages').push().key;
+                    const now = moment().unix();
+
+                    var updates = {};
+                    updates['locations/' + locationID + '/orders/' + oid + '/status'] = 1;
+                    updates['users/' + uid + '/orders/' + oid + '/status'] = 1;
+                    updates['users/' + uid + '/messages/' + mid] = {
+                        message: 'Your order is now being prepared.',
+                        title: 'Preparing Order',
+                        date: now
+                    }
+                    
+                    const prom3 = response.status(200).send("Your order is now being prepared.");
+                    const prom4 = db.ref().update(updates);
+
+                    return Promise.all([prom3, prom4]);
+                }).catch(err => {
+                    return response.status(400).send(err.message);
+                });
+            }
+        }
+        else
+            return response.status(400).send("Invalid authentication key");
+    });
+});
+
+exports.concessionPrepared = functions.database.ref('/locations/{lid}/orders/{oid}/status').onUpdate(event => {
+    const status = event.data.val();
+    const lid = event.params.lid;
+    const oid = event.params.oid;
+
+    if(status == 2) {
+        return db.ref('locations/' + lid + '/orders/' + oid).once('value', snap => {
+            const email = snap.val().customerEmail;
+            return auth.getUserByEmail(email).then(userRec => {
+                const uid = userRec.uid;
+                const mid = db.ref('users/' + uid + '/messages').push().key;
+                const now = moment().unix();
+
+                var updates = {};
+                updates['users/' + uid + '/orders/' + oid + '/status'] = 2;
+                updates['users/' + uid + '/messages/' + mid] = {
+                    message: 'Your order is ready to be picked up!',
+                    title: 'Order Prepared',
+                    date: now
+                }
+
+                return db.ref().update(updates);
+            });
+        }).catch(err => {
+            console.log(err.message);
+        });
+    }
+    else
+        return null;
+});
+
+function isTicketValid(ticket) {
+    if(!ticket.customerEmail || !ticket.customerName || !ticket.movieName || !ticket.movieName)
+        return false;
+    else if(!ticket.quantity || ticket.quantity <= 0 || !ticket.price || ticket.price <= 0)
+        return false;
+    else if(!ticket.location || !ticket.location.address || !ticket.location.name || !ticket.location.locationID)
+        return false;
+    else if(!ticket.seats || ticket.seats.length <= 0)
+        return false;
+    else if(!ticket.show || !ticket.show.showID || !ticket.show.time || !ticket.show.type)
+        return false;
+    else if(ticket.show.theatreNum < 0 || ticket.show.price <= 0 || ticket.show.unixDate <= 0 || ticket.show.unixDateTime <= 0)
+        return false;
+    else
+        return true;
+}
+
+function isOrderValid(order) {
+    if(!order.orderID || !order.ticketID || !order.customerEmail || !order.customerName) 
+        return false;
+    else if(order.orderedOn < 0|| order.status < 0 || order.totalPrice < 0)
+        return false;
+    else if(!order.location || !order.location.address || !order.location.name || !order.location.locationID)
+        return false;
+    else if(!order.items || order.items.length <= 0)
+        return false;
+    else 
+        return true;
+}
 
 
 
@@ -76,12 +252,19 @@ exports.userDelete = functions.auth.user().onDelete(event => {
 /**
  * methods to fix up the database
  */
-exports.fixCurrentNumbers = functions.https.onRequest((request, response) => {
-    return db.ref('/currentMovies').once('value', snap => {
+exports.fixNumbers = functions.https.onRequest((request, response) => {
+    const cur = db.ref('/currentMovies').once('value');
+    const upc = db.ref('/upcomingMovies').once('value');
+
+    return Promise.all([cur, upc]).then(results => {
+        var curSnap = results[0];
+        var upcSnap = results[1];
+
         var updates = {};
+        var message = "";
 
         let i = 0, j = 0;
-        snap.forEach(childSnap => {
+        curSnap.forEach(childSnap => {
             i++;
             let movie = childSnap.val();
 
@@ -103,19 +286,11 @@ exports.fixCurrentNumbers = functions.https.onRequest((request, response) => {
                 console.log(childSnap.key, err);
             }    
         });
+        message = (j + " current movies passed, " + (i-j) + " movies failed, " + i + ". ");
 
-        return Promise.all([db.ref().update(updates), response.status(200).send(j + " current movies passed, " + (i-j) + " movies failed, " + i)]);
-    }).catch(err => {
-        console.log(err.message);
-    });
-});
 
-exports.fixUpcomingNumbers = functions.https.onRequest((request, response) => {
-    return db.ref('/upcomingMovies').once('value', snap => {
-        var updates = {};
-
-        let i = 0, j = 0;
-        snap.forEach(childSnap => {
+        i = 0, j = 0;
+        upcSnap.forEach(childSnap => {
             let movie = childSnap.val();
             i++;
 
@@ -131,8 +306,9 @@ exports.fixUpcomingNumbers = functions.https.onRequest((request, response) => {
             }
                  
         });
+        message += (j + " upcoming movies passed, " + (i-j) + " movies failed, " + i + ".");
 
-        return Promise.all([db.ref().update(updates), response.status(200).send(j + " upcoming movies passed, " + (i-j) + " movies failed, " + i)]);
+        return Promise.all([db.ref().update(updates), response.status(200).send(message)]);
     }).catch(err => {
         console.log(err.message);
     });
@@ -262,6 +438,8 @@ exports.addMoviesToLocation = functions.https.onRequest((request, response) => {
 
     return db.ref().update(updates1).then(() => {
         return Promise.all([prom1]).then(values => {
+            var arr = [0, 0, 0, 0, 0, 0];
+
             var curSnap = values[0];
             var updates2 = {};
             var i = 0;
@@ -269,16 +447,25 @@ exports.addMoviesToLocation = functions.https.onRequest((request, response) => {
             curSnap.forEach(movieSnap => {
                 let movie = movieSnap.val();
                 let random = Math.floor(Math.random() * Math.floor(6));
+                let temp = arr[random];
+                temp++;
+                arr[random] = temp;
+
                 updates2['locations/' + keys[random] + '/movies/' + movieSnap.key] = movie;
                 i++;
             });
-            return Promise.all([db.ref().update(updates2), response.status(200).send(i + " movies wrote")]);
+
+            var message = ("Chinook - " + arr[1] + ",\nCrossIron Mills - " + arr[5] + ",\nCrowfoot - " + arr[4]);
+            message += (",\nEau Claire - " + arr[0] + ",\nSunridge - " + arr[2] + ",\nWesthills - " + arr[3]);
+            return Promise.all([db.ref().update(updates2), response.status(200).send(message)]);
         });
     });    
 });
 
 exports.addShowings = functions.https.onRequest((request, response) => {
     const locationsRef = db.ref('locations').once('value');
+    const types = ["Regular", "3D", "UltraAVX", "IMAX"];
+    const prices = [5, 10, 15, 20];
     const times = ["900", "1130", "1400", "1630", "1900", "2130", "2359"];
 
     return locationsRef.then(locationsSnap => {
@@ -304,7 +491,6 @@ exports.addShowings = functions.https.onRequest((request, response) => {
             locationSnap.child('movies').forEach(movieSnap => {
                 movieIds.push(movieSnap.key);
                 theatreShows[i].movieId = movieSnap.key;
-
                 i++;
             });
 
@@ -320,10 +506,14 @@ exports.addShowings = functions.https.onRequest((request, response) => {
                 for(let k = 0; k < theatreShows.length; k++) {
                     if(theatreShows[k].movieId == id) {
                         let showID = db.ref('xyz').push().key;
+                        let rand = Math.floor(Math.random() * Math.floor(types.length));
+
                         shows.push({
                             theatreNum: theatreShows[k].theatreNum,
                             time: theatreShows[k].time,
-                            showID: showID
+                            showID: showID,
+                            type: types[rand],
+                            price: prices[rand]
                         });
                     }
                 }
@@ -341,23 +531,30 @@ exports.addShowings = functions.https.onRequest((request, response) => {
     });
 });
 
-exports.fixSeats = functions.https.onRequest((request, response) => {
-    return db.ref('locations').once('value', snap => {
-        var updates = {};
-        snap.forEach(locationSnap => {
-            let theatresSnap = locationSnap.child('theatres');
+// exports.fixUpcomingNumbers = functions.https.onRequest((request, response) => {
+//     return db.ref('/upcomingMovies').once('value', snap => {
+//         var updates = {};
 
-            theatresSnap.forEach(theatreSnap => {
-                let theatre = theatreSnap.val();
+//         let i = 0, j = 0;
+//         snap.forEach(childSnap => {
+//             let movie = childSnap.val();
+//             i++;
 
-                if(theatre.totalRows > 10)
-                    updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalRows'] = Math.floor(Math.random() * 7) + 5;
-                if(theatre.totalCols > 9)
-                    updates['locations/' + locationSnap.key + '/theatres/' + theatreSnap.key + '/totalCols'] = Math.floor(Math.random() * 6) + 5;
-            });
+//             try {
+//                 if(movie.Released == null || movie.Released == undefined || movie.Released.includes("N/A"))
+//                     updates['/upcomingMovies/' + childSnap.key] = null;     
+//                 else
+//                     updates['/upcomingMovies/' + childSnap.key + '/Released'] = moment(movie.Released, "DD MMM YYYY").unix();
+//                 j++;
+//             }
+//             catch(err) {
+//                 console.log(childSnap.key, err);
+//             }
+                 
+//         });
 
-        });
-
-        return Promise.all([db.ref().update(updates), response.status(200).send("done")]); 
-    });
-});
+//         return Promise.all([db.ref().update(updates), response.status(200).send(j + " upcoming movies passed, " + (i-j) + " movies failed, " + i)]);
+//     }).catch(err => {
+//         console.log(err.message);
+//     });
+// });

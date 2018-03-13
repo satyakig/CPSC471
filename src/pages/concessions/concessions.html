@@ -1,0 +1,42 @@
+<ion-header (swipe)="swiped($event)">
+  <ion-toolbar color="light">
+    <ion-title><b>Add Concessions</b></ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close" color="dark"></ion-icon>
+      </button>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-header text-center>{{ticket.location.name}}</ion-card-header>
+
+    <ion-item *ngFor="let item of items, let i = index" no-lines>
+      <ion-grid no-padding>
+        <ion-row nowrap align-items-center>
+          <ion-col>{{item.name}} - {{item.price | currency:'CAD':'symbol-narrow':'1.2-2'}}</ion-col>
+          <ion-col>
+            <ion-row nowrap text-ceter justify-content-around align-items-center>
+              <ion-col>
+                <button ion-button icon-only small color="danger" (click)="removeItem(item, i)">
+                  <ion-icon name="remove"></ion-icon>
+                </button>
+              </ion-col>
+              <ion-col>{{item.quantity}}</ion-col>
+              <ion-col>
+                <button ion-button icon-only small color="secondary" (click)="addItem(item, i)">
+                  <ion-icon name="add"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>  
+      </ion-grid>        
+    </ion-item>
+
+    <button ion-button block color="secondary" [disabled]="!validOrder()" (click)="checkout()">Checkout with {{card | card}}</button>
+
+  </ion-card>
+</ion-content>

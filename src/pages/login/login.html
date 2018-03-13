@@ -20,37 +20,59 @@
     <h3>An enhanced movie experience</h3>
 
     <ion-list *ngIf="!showSignup">
-      <ion-item>
-        <ion-label floating>Email Address</ion-label>
-        <ion-input type="text" [(ngModel)]="email"></ion-input>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="pass"></ion-input>
-      </ion-item>
+      <form [formGroup]="formSignIn" (ngSubmit)="login()" method="post">
+        <ion-item-group>  
+          <ion-item>
+            <ion-label floating>Email Address</ion-label>
+            <ion-input formControlName="email" type="text" id="email" placeholder="Email" required="required"></ion-input>
+          </ion-item>
 
-      <button ion-button block large padding (click) ="login()" color="primary2" style="margin-top:30px; margin-bottom: 15px;">Login</button>
+          <ion-item>
+            <ion-label floating>Password</ion-label>
+            <ion-input formControlName="password" type="password" id="password" placeholder="Password" required="required" clearOnEdit=false></ion-input>
+          </ion-item>
+
+          <div style="text-align:right; margin-top: 5px;">
+            <a (click)='forgotPassword()'>Forgot your password?</a>
+          </div>            
+
+          <button ion-button block large padding color="primary2" type="submit" style="margin-top:30px; margin-bottom: 15px;">
+            Login
+          </button>
+        </ion-item-group>
+      </form>
+
       <button ion-button block large outline padding (click)="showSignUp()" color="drkRed">Create New Account</button>
     </ion-list>
 
     <ion-list *ngIf="showSignup">
-      <ion-item>
-        <ion-label floating>Name</ion-label>
-        <ion-input type="text" [(ngModel)]="name"></ion-input>
-      </ion-item>
+      <form [formGroup]="formSignUp" (ngSubmit)="signUp()" method="post">
+        <ion-item-group>  
+          <ion-item>
+            <ion-label floating>Name</ion-label>
+            <ion-input formControlName="name" type="text" id="name" placeholder="Name" required="required"></ion-input>
+          </ion-item>
 
-      <ion-item>
-        <ion-label floating>Email Address</ion-label>
-        <ion-input type="text" [(ngModel)]="email"></ion-input>
-      </ion-item>      
-    
-      <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="pass"></ion-input>
-      </ion-item>
+          <ion-item>
+            <ion-label floating>Email Address</ion-label>
+            <ion-input formControlName="email" type="text" id="email" placeholder="Email" required="required"></ion-input>
+          </ion-item>
 
-      <button ion-button block large padding outline (click)="signUp()" color="drkRed" style="margin-top:30px; margin-bottom: 15px;">Sign Up</button>
+          <ion-item>
+            <ion-label floating>Credit Card #</ion-label>
+            <ion-input formControlName="card" type="text" maxlength="16" id="card" placeholder="Credit Card #" required="required"></ion-input>
+          </ion-item> 
+
+          <ion-item>
+            <ion-label floating>Password</ion-label>
+            <ion-input formControlName="password" type="password" id="password" placeholder="Password" required="required" clearOnEdit=false></ion-input>
+          </ion-item>     
+
+          <button ion-button block large padding color="drkRed" type="submit" style="margin-top:30px; margin-bottom: 15px;">
+            Sign Up
+          </button>
+        </ion-item-group>
+      </form>
     </ion-list>
 
 </ion-content>

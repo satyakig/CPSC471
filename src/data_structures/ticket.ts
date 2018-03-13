@@ -3,6 +3,8 @@ import { Seat } from './seat';
 
 export interface Ticket {
     ticketID: string,
+    orderedOn: number,
+    
     customerEmail: string,
     customerName: string,
 

@@ -8,7 +8,5 @@ import { DateService } from './dateService';
 export class Services {
 
     constructor(public auth: AuthService, public theatre: TheatreService, public date: DateService) 
-    { 
-
-    }   
+    { }   
 }

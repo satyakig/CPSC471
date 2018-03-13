@@ -7,20 +7,19 @@
 <ion-content>
   
   <ion-card>
-    <ion-card-title style="padding-left: 15px;"><b>{{name}}</b></ion-card-title>
+    <ion-card-title style="padding-left: 15px;"><b>{{movieTitle}}</b></ion-card-title>
+    <ion-card-header>
+      {{movieRuntime | runtime}}<br>
+      {{show.time | time12}} - {{show.unixDate | timeUnix: 'dddd, MMM DD'}}<br><br>
+      {{show.type}}<br>
+      {{show.price | currency:'CAD':'1.2-2'}} per person<br>
+      Theatre #{{show.theatreNum}}
+    </ion-card-header>
 
     <ion-card-content>
       {{location.name}}<br>
       {{location.address}}<br>
-      Theatre #{{show.theatreNum}}<br>
-    </ion-card-content>
-
-    <ion-card-header>
-      <b>{{movieTitle}}</b><br>
-      {{movieRuntime | runtime}}<br>
-      {{show.time | time12}}<br>
-      {{show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>
-    </ion-card-header>
+    </ion-card-content>    
   </ion-card>
 
   <ion-grid padding>
@@ -49,19 +48,20 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card *ngIf="selectedSeats.length > 0">
-    <ion-card-header>{{selectedSeats.length}} seat(s) selected</ion-card-header>
-
-    <ion-row>
-      <ion-col *ngFor="let seat of selectedSeats">
-        <ion-item text-center no-lines>
-          <ion-icon name="custom-seat" color="secondary"></ion-icon>
-          {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
-        </ion-item>
-      </ion-col>      
-    </ion-row>
-
-    <button ion-button block *ngIf="selectedSeats.length > 0" color="secondary" (click)="checkout()">Checkout</button>
+  <ion-card *ngIf="selectedSeats.length > 0" class="middle">
+    <ion-card-header>
+      <b>{{selectedSeats.length}} seat(s) selected</b><br>
+      <b>Total Price: {{calculateTotal() | currency:'CAD':'1.2-2'}}</b><br>
+      <ion-row>
+        <ion-col *ngFor="let seat of selectedSeats">
+          <ion-item text-center no-lines>
+            <ion-icon name="custom-seat" color="secondary"></ion-icon>
+            {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
+          </ion-item>
+        </ion-col>      
+      </ion-row>
+    </ion-card-header>
+    <button ion-button block color="secondary" (click)="checkout()">Checkout with {{card | card}}</button>
   </ion-card>
 
 </ion-content>

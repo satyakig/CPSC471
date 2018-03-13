@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { HttpModule } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireModule } from 'angularfire2';
@@ -30,8 +31,8 @@ import { InboxPageModule } from '../pages/inbox/inbox.module';
 import { InboxPage } from '../pages/inbox/inbox';
 import { TicketsPage } from '../pages/tickets/tickets';
 import { TicketsPageModule } from '../pages/tickets/tickets.module';
-import { TransactionsPage } from '../pages/transactions/transactions';
-import { TransactionsPageModule } from '../pages/transactions/transactions.module';
+import { ArchivePage } from '../pages/archive/archive';
+import { ArchivePageModule } from '../pages/archive/archive.module';
 import { AcctSettingPageModule } from '../pages/acct-setting/acct-setting.module';
 import { AcctSettingPage } from '../pages/acct-setting/acct-setting';
 import { CheckoutPageModule } from '../pages/checkout/checkout.module';
@@ -40,6 +41,12 @@ import { TicketPage } from '../pages/ticket/ticket';
 import { TicketPageModule } from '../pages/ticket/ticket.module';
 import { EmployeePage } from '../pages/employee/employee';
 import { EmployeePageModule } from '../pages/employee/employee.module';
+import { TicketScanPage } from '../pages/ticket-scan/ticket-scan';
+import { TicketScanPageModule } from '../pages/ticket-scan/ticket-scan.module';
+import { OrdersEmpPage } from '../pages/orders-emp/orders-emp';
+import { OrdersEmpPageModule } from '../pages/orders-emp/orders-emp.module';
+import { ConcessionsPage } from '../pages/concessions/concessions';
+import { ConcessionsPageModule } from '../pages/concessions/concessions.module';
 
 import { SharedPipes } from './../pipes/shared.pipes';
 import { Services } from './../services/services';
@@ -59,6 +66,7 @@ import { TheatreService } from './../services/theatreService';
     AngularFireModule.initializeApp(Firebase_Config),
     AngularFireDatabaseModule, 
     AngularFireAuthModule,
+    HttpModule,
     SharedPipes.forRoot(),
     HomePageModule,
     CurrentPageModule,
@@ -69,11 +77,14 @@ import { TheatreService } from './../services/theatreService';
     AccountPageModule,
     InboxPageModule,
     TicketsPageModule,
-    TransactionsPageModule,
+    ArchivePageModule,
     AcctSettingPageModule,
     CheckoutPageModule,
     TicketPageModule,
     EmployeePageModule,
+    TicketScanPageModule,
+    OrdersEmpPageModule,
+    ConcessionsPageModule,
     NgxQRCodeModule,
   ],
   bootstrap: [IonicApp],
@@ -88,11 +99,14 @@ import { TheatreService } from './../services/theatreService';
     AccountPage,
     InboxPage,
     TicketsPage,
-    TransactionsPage,
+    ArchivePage,
     AcctSettingPage,
     CheckoutPage,
     TicketPage,
     EmployeePage,
+    TicketScanPage,
+    OrdersEmpPage,
+    ConcessionsPage,
   ],
   providers: [
     StatusBar,

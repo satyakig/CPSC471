@@ -4,13 +4,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
-  <ion-list *ngFor="let message of messages | async">
-    <ion-item (click)="messageClick(message)">
-      <h5>{{message.title}}</h5>
-      <p>{{message.date | timeUnix: 'h:mma - MMM D'}}</p>
-      <p>{{message.message}}</p>
-    </ion-item>
-  </ion-list>
+<ion-content padding overflow-scroll="false">
+  <ion-card *ngFor="let message of messages | async" (click)="messageClick(message)">
+    <ion-card-header>{{message.title}}</ion-card-header>
+    <ion-card-content>
+      {{message.date | timeUnix: 'h:mma - MMM D'}}<br>
+      {{message.message}}
+    </ion-card-content>
+  </ion-card>
 </ion-content>

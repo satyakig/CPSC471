@@ -24,12 +24,15 @@ export class TicketsPage {
       content: 'Fetching tickets...',
     });
     loader.present();
-    this.tickets = this.fDb.list<Ticket>('users/' + this.services.auth.getUID() + '/tickets').valueChanges();
+    
+    this.tickets =  this.fDb.list<Ticket>('users/' + this.services.auth.getUID() + '/tickets', ref => ref.orderByChild('show/unixDateTime')
+    .startAt(this.services.date.getToday())).valueChanges();
+
     loader.dismiss();
   }
 
   openTicket(ticket: Ticket) {
-    let modal = this.modalCtrl.create(TicketPage, {ticket: ticket, type: 'cust'});
+    let modal = this.modalCtrl.create(TicketPage, {ticket: ticket});
     modal.present();
   }
 }

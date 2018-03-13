@@ -1,12 +1,22 @@
 <ion-header>
-
   <ion-navbar>
-    <ion-title>AcctSetting</ion-title>
+    <ion-title>Profile</ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
-
+  <ion-list>
+    <button ion-item (click)="changeName()" color="backG" style="padding-left:0px">
+      <ion-icon name="person" padding-right padding-left></ion-icon>
+      {{name}}
+    </button>
+    <button ion-item (click)="changeEmail()" color="backG" style="padding-left:0px">
+      <ion-icon name="mail" padding-right padding-left></ion-icon>
+      {{email}}
+    </button>
+    <button ion-item (click)="changeCard()" color="backG" style="padding-left:0px">
+      <ion-icon name="card" padding-right padding-left></ion-icon>
+      {{card}}
+    </button>
+  </ion-list>
 </ion-content>

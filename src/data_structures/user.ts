@@ -8,7 +8,7 @@ export interface User {
     access: number,
 
     createdOn: number
-    billingInfo: any,
+    card: string,
 
     messages: Message[],
     tickets: Ticket[]

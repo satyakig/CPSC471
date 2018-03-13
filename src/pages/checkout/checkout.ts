@@ -16,6 +16,7 @@ import { Theatre } from './../../data_structures/theatre';
 export class CheckoutPage {
   loggedIn: boolean = false;
   name: string = "";
+  card: string = "";
   
   movieTitle: string = "";
   movieRuntime: number = 0;
@@ -30,6 +31,8 @@ export class CheckoutPage {
     showID: "",
     time: "",
     theatreNum: -1,
+    type: "",
+    price: 0,
     unixDate: 0,
     unixDateTime: 0
   }
@@ -61,6 +64,7 @@ export class CheckoutPage {
     loader.present();
 
     this.name = this.services.auth.getName();
+    this.card = this.services.auth.getCard();
     this.movieTitle = this.services.theatre.getMovieTitle();
     this.movieRuntime = this.services.theatre.getMovieRuntime();
     this.location = this.services.theatre.getLocation();
@@ -113,20 +117,31 @@ export class CheckoutPage {
     return false;
   }
 
+  calculateTotal() {
+    return this.show.price * this.selectedSeats.length;
+  }
+
   checkout() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Ordering ticket(s)...',
+      content: 'Ordering ticket...',
     });
     loader.present();
 
     if(this.services.theatre.isValid() && this.services.theatre.getSeats().length > 0) {
-      this.services.theatre.writeTicket();
-      this.services.theatre.clearLocation();
-      this.services.theatre.clearSeats();
-      this.services.theatre.clearShow();
-      this.navCtrl.popToRoot();
-      loader.dismiss();
+      this.services.theatre.orderNewTicket().subscribe(
+        data => {
+          this.services.theatre.clearLocation();
+          this.services.theatre.clearSeats();
+          this.services.theatre.clearShow();
+          this.navCtrl.popToRoot();
+          loader.dismiss();
+        },
+        err => {
+          this.showAlert("Error", err.text());
+          loader.dismiss();
+        }
+      );
     }
     else {
       this.showAlert("Error", "Something went wrong.");

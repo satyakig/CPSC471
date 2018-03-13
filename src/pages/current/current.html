@@ -5,22 +5,25 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-searchbar padding [(ngModel)]="searchText" [showCancelButton]="showCancel" [animated]="animate" [autocorrect]="correct"
+    [spellcheck]="spell" [debounce]="bounce" (ionInput)="onInput($event)" (ionCancel)="onCancel($event)" 
+    class="search" color="light">
+  </ion-searchbar>
 
-  <ion-fab right #fab>
-    <button ion-fab mini color="primary2"><ion-icon name="md-funnel"></ion-icon></button>
-    <ion-fab-list side="down">
+  <ion-fab middle right #fab>
+    <button ion-fab mini color="light"><ion-icon name="md-funnel"></ion-icon></button>
+    <ion-fab-list side="left">
       <button ion-fab color="light" (click)="sort(0, fab)"><ion-icon name="videocam"></ion-icon></button>
       <button ion-fab color="light" (click)="sort(1, fab)"><ion-icon name="md-star"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(2, fab)"><ion-icon name="custom-hourglass"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(3, fab)"><ion-icon name="md-time"></ion-icon></button>
-      <button ion-fab color="light" (click)="sort(4, fab)"><ion-icon name="md-swap"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(2, fab)"><ion-icon name="md-time"></ion-icon></button>
+      <button ion-fab color="light" (click)="sort(3, fab)"><ion-icon name="md-swap"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
 
   <ion-grid>    
 
     <ion-row *ngIf="desktop">
-      <ion-col *ngFor="let movie of movies | async" col-3>
+      <ion-col *ngFor="let movie of filteredMovies" col-3>
 
         <ion-card (click)="movieClick(movie.imdbID)">
           <ion-item>
@@ -34,7 +37,7 @@
             <p style="text-align: center;">{{movie.Genre}}</p>
           </ion-card-content>
         
-          <ion-row nowrap justify-content-between class="noClick">
+          <ion-row justify-content-between class="noClick">
             <ion-col text-center align-self-center *ngFor="let show of movie.Shows">
               <button ion-button clear small color="primary2">{{show.time | time12}}</button>            
             </ion-col>
@@ -73,7 +76,7 @@
 
     <ion-row *ngIf="!desktop">
 
-      <ion-card *ngFor="let movie of movies | async" (click)="movieClick(movie.imdbID)">
+      <ion-card *ngFor="let movie of filteredMovies" (click)="movieClick(movie.imdbID)">
         <ion-item>
           <h2 text-wrap style="text-align: center;"><b>{{movie.Title}}</b></h2>
         </ion-item>
@@ -85,7 +88,7 @@
           <p text-wrap style="text-align: center;">{{movie.Genre}}</p>
         </ion-card-content>
       
-        <ion-row nowrap justify-content-between class="noClick">
+        <ion-row justify-content-between class="noClick">
           <ion-col text-center align-self-center *ngFor="let show of movie.Shows">
             <button ion-button clear small color="primary2">{{show.time | time12}}</button>            
           </ion-col>

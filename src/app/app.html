@@ -1,4 +1,4 @@
-<ion-menu [content]="nav" persistent="true" side="left">
+<ion-menu [content]="nav" persistent="true" side="left" (ionOpen)="refreshAccess()" (ionClose)="refreshAccess()">
     <ion-header>
         <ion-toolbar color="light">
             <ion-title>Menu</ion-title>
@@ -8,32 +8,32 @@
     <ion-content>
         <ion-list no-lines>
             <button ion-item menuClose ion-item (click)="home()" color="dark">
-                <ion-icon name="home" color="primary" item-left></ion-icon>
+                <ion-icon name="home" item-left></ion-icon>
                 <b>Home</b>
             </button>
 
             <button ion-item menuClose ion-item (click)="upcomingMovies()" color="dark">
-                <ion-icon name="play" color="danger" item-left></ion-icon>
-                <b>Upcoming Movies</b>
+                <ion-icon name="play" item-left></ion-icon>
+                <b>Coming Soon</b>
             </button>
 
             <button ion-item menuClose ion-item (click)="account()" color="dark" *ngIf="loggedIn">
-                <ion-icon name="person" color="light" item-left></ion-icon>
+                <ion-icon name="person" item-left></ion-icon>
                 <b>My Account</b>
             </button>
 
-            <button ion-item menuClose ion-item (click)="employee()" color="dark" *ngIf="loggedIn">
-                <ion-icon name="logo-usd" color="secondary" item-left></ion-icon>
+            <button ion-item menuClose ion-item (click)="employee()" color="dark" *ngIf="loggedIn && (access == 0 || access == 1)">
+                <ion-icon name="logo-usd" item-left></ion-icon>
                 <b>Employee Portal</b>
             </button>
 
             <button ion-item menuClose ion-item (click)="login()" color="dark" *ngIf="!loggedIn">
-                <ion-icon name="log-in" color="drkRed" item-left></ion-icon>
+                <ion-icon name="log-in" item-left></ion-icon>
                 <b>Login</b>
             </button>
 
             <button ion-item menuClose ion-item (click)="logout()" color="dark" *ngIf="loggedIn">
-                <ion-icon name="log-out" color="drkRed" item-left></ion-icon>
+                <ion-icon name="log-out" item-left></ion-icon>
                 <b>Logout</b>
             </button>
         </ion-list>

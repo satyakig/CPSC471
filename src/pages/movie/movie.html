@@ -68,7 +68,7 @@
 
               <ion-row *ngIf="current" justify-content-between>
                 <ion-col text-center align-self-center *ngFor="let show of movie.Shows">
-                  <button ion-button outline color="primary2" (click)="showSelected(show)">
+                  <button ion-button outline color="primary2" [disabled]="!isShowValid(show)" (click)="showSelected(show)">
                     {{show.time | time12}}
                   </button>                  
                 </ion-col>

@@ -1,19 +1,17 @@
 <ion-header>
-
   <ion-navbar>
     <ion-title>Tickets</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding overflow-scroll="false">
   <ion-list>
     <button ion-item color="light" *ngFor="let ticket of tickets | async" (click)="openTicket(ticket)">
       <h2 text-wrap>{{ticket.movieName}}</h2>
       <p text-wrap>{{ticket.location.name}}</p>
       <p text-wrap>Theatre #{{ticket.show.theatreNum}}</p>
-      <p text-wrap>{{ticket.show.time | time12}}</p>
+      <p text-wrap>{{ticket.show.time | time12}} - {{ticket.show.unixDateTime | timeUnix:'MMM DD'}}</p>
     </button>
   </ion-list>
 </ion-content>

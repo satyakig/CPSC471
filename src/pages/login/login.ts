@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, LoadingController, AlertController } from 'ionic-angular';
+import { IonicPage, ViewController, LoadingController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -10,16 +11,26 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 
 export class LoginPage {
-  email: string = '';
-  pass: string = '';
-  name: string = '';
+  formSignIn: FormGroup;
+  formSignUp: FormGroup;  
 
   showSignup: boolean = false;
 
-  constructor(private afAuth: AngularFireAuth, public afDb: AngularFireDatabase, public navCtrl: NavController, 
-    public navParams: NavParams, public viewCtrl: ViewController, public alertCtrl: AlertController, 
-    public loadingCtrl: LoadingController) 
-  { }
+  constructor(private afAuth: AngularFireAuth, public afDb: AngularFireDatabase, public viewCtrl: ViewController, 
+    public alertCtrl: AlertController, public loadingCtrl: LoadingController, public form: FormBuilder) 
+    {
+      this.formSignIn = this.form.group({
+        email: ['', Validators.required],
+        password: ['', Validators.required]
+      });
+
+      this.formSignUp = this.form.group({
+        name: ['', Validators.required],
+        email: ['', Validators.required],
+        card: ['', Validators.required],
+        password: ['', Validators.required]
+      });
+    }
 
   login() {
     let loader = this.loadingCtrl.create({
@@ -28,18 +39,23 @@ export class LoginPage {
     });
     loader.present();
 
-    if(this.email != '' && this.pass != '') {
-      this.afAuth.auth.signInWithEmailAndPassword(this.email, this.pass).then(() => {
+    if(this.formSignIn.valid) {
+      let username = this.formSignIn.get('email').value;
+      let password =  this.formSignIn.get('password').value;
+      username = username.trim();
+      password = password.trim();
+
+      this.afAuth.auth.signInWithEmailAndPassword(username, password).then(() => {
         loader.dismiss();
         this.viewCtrl.dismiss();
       }).catch(err => {
         loader.dismiss();
-        this.showError(err.message);
+        this.showAlert("Error", err.message);
       });
     }
     else {
       loader.dismiss();
-      this.showError("Fields cannot be empty.");    
+      this.showAlert("Error", "Fields cannot be empty.");    
     }
   }
 
@@ -53,37 +69,97 @@ export class LoginPage {
       content: 'Signing up...',
     });
     loader.present();
+    
+    if(this.formSignUp.valid) {
+      let email = this.formSignUp.get('email').value;
+      let password =  this.formSignUp.get('password').value;
+      let name =  this.formSignUp.get('name').value;
+      let card =  this.formSignUp.get('card').value;
 
-    if(this.email != '' && this.pass != '' && this.name != '') {
-      this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.pass).then(() => {
+      email = email.trim();
+      password = password.trim();
+      name = name.trim();
 
-        this.afDb.object('users/' + this.afAuth.auth.currentUser.uid).set({
-          email: this.afAuth.auth.currentUser.email,
-          name: this.name.trim(),
-          userID: this.afAuth.auth.currentUser.uid
-        }).then(() => {
+      if(email != "" && password != "" && name != "") {
+        if(this.isValidNumber(card)) {
+          this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(() => {
+            this.afDb.object('users/' + this.afAuth.auth.currentUser.uid).set({
+              email: email,
+              name: name,
+              userID: this.afAuth.auth.currentUser.uid,
+              card: card
+            }).then(() => {
+              loader.dismiss();
+              this.viewCtrl.dismiss();
+            });
+          }).catch(err => {
+            loader.dismiss();
+            this.showAlert("Error", err.message);
+          });
+        }
+        else {
           loader.dismiss();
-          this.viewCtrl.dismiss();
-        });
-
-      }).catch(err => {
+          this.showAlert("Error", "Invalid credit card number.");    
+        }
+      }
+      else {
         loader.dismiss();
-        this.showError(err.message);
-      });
+        this.showAlert("Error", "Fields cannot be empty.");    
+      }      
     }
     else {
       loader.dismiss();
-      this.showError("Fields cannot be empty.");    
+      this.showAlert("Error", "Fields cannot be empty.");    
     }
+  }
+
+  forgotPassword() {
+    let alert = this.alertCtrl.create({
+      title: 'Forgot Password',
+      subTitle: 'Please enter the email that you used to sign up.',
+      inputs: [
+        {
+          name: 'email',
+          placeholder: 'Email'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Reset Password',
+          handler: data => {
+            this.afAuth.auth.sendPasswordResetEmail(data.email).then(dt => {
+              this.showAlert("Password Reset", "An Email will be sent to the address you provided, if an account is associated with it. Please follow those instructions to reset your password.");
+            }).catch(err => {
+              this.showAlert("Error", err.message);
+            });
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }       
+      ]
+    });
+    alert.present();
+  }
+
+  isValidNumber(val: string) {
+    for(let i = 0; i < val.length; i++) {
+      if(val.charCodeAt(i) < 48 || val.charCodeAt(i) > 57)
+        return false;
+    }
+    if(val.length != 16)
+      return false;
+    return true;
   }
 
   close() {
     this.viewCtrl.dismiss();
   }
 
-  showError(msg: string) {
+  showAlert(title: string, msg: string) {
     let alert = this.alertCtrl.create({
-      title: 'Error',
+      title: title,
       subTitle: msg,
       buttons: ['OK']
     });

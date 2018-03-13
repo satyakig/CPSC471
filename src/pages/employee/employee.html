@@ -1,14 +1,10 @@
 <ion-header>
-  <ion-navbar color="light">
+  <ion-navbar color="light"> 
     <ion-title><b>Employee Portal</b></ion-title>
   </ion-navbar>
 </ion-header>
-
-<ion-content padding>
-
-  <button ion-button block outline icon-start color="light" (click)="scanTicket()">
-    <ion-icon name="camera"></ion-icon>
-    Scan Ticket
-  </button>
-
-</ion-content>
+  
+<ion-tabs color="dark" tabsPlacement="down" tabsHighlight="true">
+  <ion-tab [root]="scan" tabTitle="Scan Tickets" tabIcon="film"></ion-tab>
+  <ion-tab [root]="orders" tabTitle="Orders" tabIcon="cart"></ion-tab>
+</ion-tabs>

@@ -20,25 +20,26 @@ export class MyApp {
 
   root = HomePage;
   loggedIn: boolean = false;
+  access: number = 2;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public afAuth: AngularFireAuth,
     public splashScreen: SplashScreen, public modalCtrl: ModalController, public services: Services, 
     public loader: LoadingController, public alertCtrl: AlertController) {
 
-    this.afAuth.authState.subscribe(
-      (auth) => {
-        if(auth) {
-          this.loggedIn = this.services.auth.isLoggedIn();
-        }
-        else {
-          this.loggedIn = false;
-        }            
-      }
-    );
-
     platform.ready().then(() => {
       statusBar.styleLightContent();
       splashScreen.hide();
+      
+      afAuth.authState.subscribe((auth) => {
+        if(auth) {
+          this.refreshAccess();
+          this.loggedIn = true;
+        }
+        else {
+          this.loggedIn = false;
+          this.refreshAccess();
+        }
+      });
     });
   }
 
@@ -56,11 +57,31 @@ export class MyApp {
 
   employee() {
     let access = this.services.auth.getAccess();
-
     if(access == 1 || access == 0)
       this.nav.push(EmployeePage);
     else
       this.showAlert('Invalid User', "You don't have access to view this page.");
+  }
+
+  refreshAccess() {
+    this.access = this.services.auth.getAccess();
+  }
+
+  login() {
+    let modal = this.modalCtrl.create(LoginPage);
+    modal.present();
+    modal.onDidDismiss(() => {
+      this.refreshAccess();
+    });
+  }  
+
+  logout() {
+    let loader = this.loader.create({ content: "Logging out..."});
+    loader.present(); 
+    this.afAuth.auth.signOut().then(() => {
+      this.refreshAccess();
+    });
+    loader.dismiss();
   }
 
   showAlert(title: string, message: string) {
@@ -70,17 +91,5 @@ export class MyApp {
       buttons: ['OK']
     });
     alert.present();
-  }
-
-  login() {
-    let modal = this.modalCtrl.create(LoginPage);
-    modal.present();
-  }  
-
-  logout() {
-    let loader = this.loader.create({ content: "Logging out..."});
-    loader.present(); 
-    this.afAuth.auth.signOut();
-    loader.dismiss();
   }
 }

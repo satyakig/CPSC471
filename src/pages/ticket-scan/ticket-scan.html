@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Scanner</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <button ion-button block icon-start color="light" (click)="scanTicket()">
+    <ion-icon name="camera"></ion-icon>
+    Scan Ticket
+  </button>
+
+  <ion-card *ngIf="ticket">
+    <ion-card-title style="padding-left: 15px;"><b>{{ticket.movieName}}</b></ion-card-title>
+    <ion-card-header>
+      Theatre #{{ticket.show.theatreNum}}<br>
+      {{ticket.show.time | time12}}<br>
+      {{ticket.show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>        
+      {{ticket.show.type}}<br>
+    </ion-card-header>
+    
+    <ion-card-content>
+      Customer Name: {{ticket.customerName}}<br>
+      Customer Email: {{ticket.customerEmail}}
+    </ion-card-content>
+
+    <ion-card-content>
+      {{ticket.location.name}}<br>
+      {{ticket.location.address}}<br>
+    </ion-card-content>  
+    
+    <ion-card-content>
+      Total Price: {{ticket.price | currency:'CAD':'1.2-2'}}<br>
+      {{ticket.seats.length}} seat(s)<br>
+      <ion-row>
+        <ion-col *ngFor="let seat of ticket.seats">
+          <ion-item text-center no-lines>
+            <ion-icon name="custom-seat" color="secondary"></ion-icon>
+            {{seat.row | seat:'row'}}{{seat.col | seat:'col'}}
+          </ion-item>
+        </ion-col>      
+      </ion-row>
+    </ion-card-content>  
+    
+    <div *ngIf="showOrders">
+      <ion-card *ngFor="let order of orders | async">
+        <ion-card-header>
+          Ordered by: {{order.customerName}}<br>
+          Total: {{order.totalPrice | currency:'CAD':'1.2-2'}}<br>
+          {{order.orderedOn | timeUnix: 'hh:mma'}}<br>
+          {{order.status | status}}
+        </ion-card-header>
+        <ion-card-content class="middle">
+          <ion-row nowrap *ngFor="let item of order.items" justify-content-center class="middle">
+            <ion-col>{{item.name}}</ion-col>
+            <ion-col>QTY: {{item.quantity}}</ion-col>
+          </ion-row> 
+        </ion-card-content>
+      </ion-card>
+    </div>
+    
+  </ion-card>
+
+</ion-content>
