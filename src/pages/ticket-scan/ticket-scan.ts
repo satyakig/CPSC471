@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, AlertController } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import { Device } from '@ionic-native/device';
 
 import { Services } from './../../services/services';
 import { Ticket } from './../../data_structures/ticket';
@@ -19,19 +20,33 @@ export class TicketScanPage {
 
   showOrders: boolean = false;
   
-  constructor(public services: Services,public fDb: AngularFireDatabase, public barcode: BarcodeScanner) { }
+  constructor(public services: Services,public fDb: AngularFireDatabase, public barcode: BarcodeScanner,
+    public alertCtrl: AlertController, public device: Device) { }
 
   scanTicket() {
-    this.barcode.scan().then(barcodeData => {
-      this.ticket = JSON.parse(barcodeData.text);
-      this.orders = this.fDb.list<Order>('locations/' + this.ticket.location.locationID + '/orders',
-      ref => ref.orderByChild('ticketID').equalTo(this.ticket.ticketID)).valueChanges();
+    if(this.device.platform == "browser")
+      this.showAlert("Error", "You need to use the Android or iOS app to scan a ticket.")
+    else {
+      this.barcode.scan().then(barcodeData => {
+        this.ticket = JSON.parse(barcodeData.text);
+        this.orders = this.fDb.list<Order>('locations/' + this.ticket.location.locationID + '/orders',
+        ref => ref.orderByChild('ticketID').equalTo(this.ticket.ticketID)).valueChanges();
+  
+        this.showOrders = true;
+      }).catch(err => {
+        this.ticket = null;
+        this.showOrders = false;
+      });
+    }    
+  }
 
-      this.showOrders = true;
-    }).catch(err => {
-      this.ticket = null;
-      this.showOrders = false;
+  showAlert(title: string, message: string) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: message,
+      buttons: ['OK']
     });
+    alert.present();
   }
 
 }

@@ -9,7 +9,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
-
+import { Device } from '@ionic-native/device';
 
 import { Firebase_Config } from './environments';
 import { MyApp } from './app.component';
@@ -117,6 +117,7 @@ import { TheatreService } from './../services/theatreService';
     AuthService,
     TheatreService,
     DateService,
+    Device,
   ]
 })
 export class AppModule {}
