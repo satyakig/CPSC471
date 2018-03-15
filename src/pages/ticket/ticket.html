@@ -41,7 +41,7 @@
   <div *ngIf="orders.length > 0">
     <h6 style="color: #f4f4f4; margin-top: 30px; margin-left: 15px;">Your order(s) for this movie:</h6>
     <ion-card *ngFor="let order of orders">
-      <ion-card-header>
+      <ion-card-header text-wrap>
         Total: {{order.totalPrice | currency:'CAD':'1.2-2'}}<br>
         {{order.orderedOn | timeUnix: 'hh:mma'}}<br>
         {{order.status | status}}

@@ -124,7 +124,6 @@ export class TicketPage {
 
     this.services.theatre.prepareConcessions(order).subscribe(
       data => {
-        this.showAlert("Success", data.text());
         loader.dismiss();
       },
       err => {

@@ -17,6 +17,15 @@ $colors: (
   drkGrey:    #0e2f44, 
 );
 
+$toast-ios-background:(#000000);
+$toast-md-background:(#000000);
+$toast-wp-background:(#000000);
+$toast-ios-title-color:(#ffffff);
+$toast-md-title-color:(#ffffff);
+$toast-wp-title-color:(#ffffff);
+$toast-ios-title-font-size:(1.75rem);
+$toast-md-title-font-size:(1.75rem);
+$toast-md-title-font-size:(1.75rem);
 
 @import "ionic.theme.default";
 @import "ionic.ionicons";
