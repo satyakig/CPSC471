@@ -36,6 +36,7 @@
       </ion-grid>        
     </ion-item>
 
+    <ion-card-header *ngIf="total > 0" text-center>Total: {{total | currency:'CAD':'1.2-2'}}</ion-card-header>
     <button ion-button block color="secondary" [disabled]="!validOrder()" (click)="checkout()">Checkout with&nbsp;&nbsp;&nbsp;{{card | card}}</button>
 
   </ion-card>

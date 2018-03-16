@@ -39,11 +39,15 @@ export class ConcessionsPage {
     }
   }
   items: Item[] = [];
+  total: number = 0;
   sub: Subscription = null;
   card: string = "";
 
   constructor(public navParams: NavParams, public viewCtrl: ViewController, public loadingCtrl: LoadingController,
     public services: Services, public fDb: AngularFireDatabase, public alertCtrl: AlertController) {
+      setInterval(() => {
+        this.total = this.updateTotal()
+    }, 500);
   }
 
   ionViewDidLoad() {
@@ -75,6 +79,16 @@ export class ConcessionsPage {
   removeItem(item: Item, index: number) {
     if(this.items[index].quantity > 0)
       this.items[index].quantity--;
+  }
+
+  updateTotal(): number {
+    let price = 0;
+    for(let item of this.items) {
+      if(item.quantity > 0) {
+        price += (item.quantity * item.price);
+      }
+    }
+    return price;
   }
 
   checkout() {
