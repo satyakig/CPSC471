@@ -44,22 +44,24 @@ export class CheckoutPage {
 
   constructor(public fDb: AngularFireDatabase, public fAuth: AngularFireAuth, public navCtrl: NavController, public modalCtrl: ModalController, 
     public loader: LoadingController, public alertCtrl: AlertController, public services: Services) {
-      this.fAuth.authState.subscribe((auth) => {
-        if(auth) {    
-          this.loggedIn = true;    
-        }
-        else {
-          this.loggedIn = false;
-          this.showAlert('Error', 'You must be logged in to view this page!');        
+
+    this.fAuth.authState.subscribe((auth) => {
+      if(auth)
+        this.loggedIn = true;
+      else {
+        this.loggedIn = false;
+        if(this.navCtrl.getActive().instance instanceof CheckoutPage) {
           this.navCtrl.pop();
+          this.showAlert('Error', 'You must be logged in to view this page!');
         }
+      }
     });
   }
 
   ionViewWillEnter() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Please wait...',
+      content: 'Please wait',
     });
     loader.present();
 
@@ -124,7 +126,7 @@ export class CheckoutPage {
   checkout() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Ordering ticket...',
+      content: 'Ordering ticket',
     });
     loader.present();
 

@@ -3,12 +3,11 @@ import { Ticket } from './ticket';
 
 export interface User {
     userID: string,
-    email: string,
     name: string,
+    email: string,
     access: number,
-
-    createdOn: number
     card: string,
+    createdOn: number
 
     messages: Message[],
     tickets: Ticket[]

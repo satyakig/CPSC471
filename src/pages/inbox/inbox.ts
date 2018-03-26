@@ -22,7 +22,7 @@ export class InboxPage {
   ionViewDidLoad() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Fetching messages...',
+      content: 'Fetching messages',
     });
     loader.present();
     this.messages = this.afDb.list<Message>('users/' + this.services.auth.getUID() + '/messages').valueChanges().map(array => array.reverse());

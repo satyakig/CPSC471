@@ -76,7 +76,10 @@ export class MyApp {
   }  
 
   logout() {
-    let loader = this.loader.create({ content: "Logging out..."});
+    let loader = this.loader.create({
+      spinner: 'dots',
+      content: 'Logging out',
+    });
     loader.present(); 
     this.afAuth.auth.signOut().then(() => {
       this.refreshAccess();

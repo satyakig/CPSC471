@@ -2,7 +2,10 @@ $font-path: "../assets/fonts";
 $app-direction: ltr;
 
 @import "ionic.globals";
-
+@import "ionic.theme.default";
+@import "ionic.ionicons";
+@import "roboto";
+@import "noto-sans";
 
 $colors: (
   primary:    #488aff,
@@ -27,7 +30,6 @@ $toast-ios-title-font-size:(1.75rem);
 $toast-md-title-font-size:(1.75rem);
 $toast-md-title-font-size:(1.75rem);
 
-@import "ionic.theme.default";
-@import "ionic.ionicons";
-@import "roboto";
-@import "noto-sans";
+$loading-md-spinner-dots-color:(#222);
+$loading-wp-spinner-dots-color:(#222);
+$loading-ios-spinner-dots-color:(#222);

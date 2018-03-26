@@ -19,16 +19,18 @@ exports.userCreate = functions.auth.user().onCreate(event => {
     const now = moment().unix();
     const uid = event.data.uid;
 
-    var pKey = db.ref('users/' + event.data.uid + '/messages').push().key;
+    var mid = db.ref('users/' + event.data.uid + '/messages').push().key;
     var messsage = {
         date: now,
         title: "Welcome to Movie App",
-        message: "Thank you for signing up to Movie App!"
+        message: "Thank you for signing up to Movie App!",
+        read: false,
+        messageID: mid
     }
 
     var updates = {};
     updates['users/' + uid + '/access'] = 2;
-    updates['users/' + uid + '/messages/' + pKey] = messsage;
+    updates['users/' + uid + '/messages/' + mid] = messsage;
     updates['users/' + uid + '/createdOn'] = now;
 
     return db.ref().update(updates);
@@ -101,7 +103,9 @@ exports.orderTicket = functions.https.onRequest((request, response) => {
                     updates['users/' + uid + '/messages/' + mid] = {
                         message: 'Thank you for purchasing ticket(s) to ' + ticket.movieName + '.',
                         title: 'New Ticket',
-                        date: now
+                        date: now,
+                        read: false,
+                        messageID: mid
                     }
                     for(seat of seats) {
                         let pKey = db.ref('locations/' + locationID + '/bookedSeats/' + date + '/' + showID).push().key;
@@ -137,7 +141,9 @@ exports.orderConcession = functions.database.ref('/users/{uid}/orders/{oid}').on
     updates['users/' + uid + '/messages/' + mid] = {
         message: 'Please let us know when you would like us to start preparing your order.',
         title: 'New Order',
-        date: now
+        date: now,
+        read: false,
+        messageID: mid
     }    
     return db.ref().update(updates);
 });
@@ -164,7 +170,9 @@ exports.prepareConcession = functions.https.onRequest((request, response) => {
                     updates['users/' + uid + '/messages/' + mid] = {
                         message: 'Your order is now being prepared.',
                         title: 'Preparing Order',
-                        date: now
+                        date: now,
+                        read: false,
+                        messageID: mid
                     }
                     
                     const prom3 = response.status(200).send("Your order is now being prepared.");
@@ -199,7 +207,9 @@ exports.concessionPrepared = functions.database.ref('/locations/{lid}/orders/{oi
                 updates['users/' + uid + '/messages/' + mid] = {
                     message: 'Your order is ready to be picked up!',
                     title: 'Order Prepared',
-                    date: now
+                    date: now,
+                    read: false,
+                    messageID: mid
                 }
 
                 return db.ref().update(updates);

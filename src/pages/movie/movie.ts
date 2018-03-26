@@ -66,7 +66,7 @@ export class MoviePage {
   ionViewDidLoad() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Fetching movie info...',
+      content: 'Fetching movie info',
     });
     loader.present();
 

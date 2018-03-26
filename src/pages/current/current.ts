@@ -35,7 +35,7 @@ export class CurrentPage {
   ionViewDidLoad() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Getting current movies...',
+      content: 'Getting current movies',
       duration: 500
     });
     loader.present();
@@ -56,7 +56,7 @@ export class CurrentPage {
   sort(index: number, fab: FabContainer) {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Sorting movies...',
+      content: 'Sorting movies',
     });
     fab.close();
 
@@ -103,7 +103,7 @@ export class CurrentPage {
   onInput(event) {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Sorting movies...',
+      content: 'Sorting movies',
     });
     loader.present();
     this.searchText = this.searchText.trim();
@@ -117,7 +117,7 @@ export class CurrentPage {
   onCancel(event) {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Please wait...',
+      content: 'Please wait',
     });
     loader.present();
     this.filterMovies();

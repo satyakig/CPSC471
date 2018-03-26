@@ -21,7 +21,7 @@ export class TicketsPage {
   ionViewDidLoad() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Fetching tickets...',
+      content: 'Fetching tickets',
     });
     loader.present();
     

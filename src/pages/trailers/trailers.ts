@@ -17,7 +17,7 @@ export class TrailersPage {
   ionViewWillEnter() {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Fetching trailers...',
+      content: 'Fetching trailers',
       duration: 350
     });
     loader.present();

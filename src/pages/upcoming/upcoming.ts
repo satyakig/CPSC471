@@ -32,7 +32,7 @@ export class UpcomingPage {
   ionViewDidLoad() {   
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Getting upcoming movies...',
+      content: 'Getting upcoming movies',
       duration: 1500
     });
     loader.present();
@@ -52,7 +52,7 @@ export class UpcomingPage {
   sort(index: number, fab: FabContainer) {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Sorting movies...',
+      content: 'Sorting movies',
     });
 
     fab.close();    
@@ -89,7 +89,7 @@ export class UpcomingPage {
   onInput(event) {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Sorting movies...',
+      content: 'Sorting movies',
     });
     loader.present();
     this.searchText = this.searchText.trim();
@@ -103,7 +103,7 @@ export class UpcomingPage {
   onCancel(event) {
     let loader = this.loader.create({
       spinner: 'dots',
-      content: 'Please wait...',
+      content: 'Please wait',
     });
     loader.present();
     this.filterMovies();

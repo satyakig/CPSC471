@@ -31,14 +31,10 @@ export class AuthService {
                     }
                 );
 
-                this.sub2 = this.fDb.list<Message>('users/' + this.getUID() + '/messages').snapshotChanges(['child_added'])
-                .subscribe(actions => {
-                    actions.forEach(action => {
-                        let sent = action.payload.val().date;
-                        let now = this.nowUnix();
-
-                        if(sent >= now - 10)
-                            this.showToast(action.payload.val().message);
+                this.sub2 = this.fDb.list<Message>('users/' + this.getUID() + '/messages', ref => ref.orderByChild('read').equalTo(false))
+                .valueChanges().subscribe(list => {
+                    list.forEach(msg => {
+                        this.showToast(msg);
                     });
                 });
             }
@@ -105,14 +101,17 @@ export class AuthService {
         alert.present();
     }
 
-    showToast(message: string) {
-        let toast = this.toastCtrl.create({
-            message: message,
-            duration: 5000,
-            position: 'top',
-            showCloseButton: true,
-            closeButtonText: "OK"
-        });
-        toast.present();
+    showToast(message: Message) {
+        this.fDb.object('users/' + this.getUID() + '/messages/' + message.messageID + '/read').set(true)
+        .then(() => {
+            let toast = this.toastCtrl.create({
+                message: message.message,
+                duration: 5000,
+                position: 'middle',
+                showCloseButton: true,
+                closeButtonText: "OK"
+            });
+            toast.present();
+        });        
     }
 }
