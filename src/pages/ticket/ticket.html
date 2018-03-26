@@ -1,6 +1,6 @@
 <ion-header (swipe)="swiped($event)">
   <ion-toolbar color="light">
-    <ion-title><b>Ticket#&nbsp;&nbsp;{{ticket.ticketID}}</b></ion-title>
+    <ion-title><b>Ticket(s) for: &nbsp;&nbsp;"{{ticket.movieName}}"</b></ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="close()">
         <ion-icon name="close" color="dark"></ion-icon>
@@ -50,8 +50,16 @@
         <ion-row nowrap *ngFor="let item of order.items" justify-content-center class="middle">
           <ion-col>{{item.name}}</ion-col>
           <ion-col>QTY: {{item.quantity}}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+              <button ion-button outline block *ngIf="order.status == 0" color="secondary" (click)="prepare(order)">Prepare</button>
+          </ion-col>
+          <ion-col>
+            <button ion-button outline block *ngIf="order.status == 0" color="drkRed" (click)="refundOrder(order)">Cancel</button>
+          </ion-col>
         </ion-row> 
-        <button ion-button outline block *ngIf="order.status == 0" color="secondary" (click)="prepare(order)">Prepare</button>
+        
       </ion-card-content>
     </ion-card>
   </div>
@@ -59,6 +67,10 @@
 
   <button ion-button block padding color="secondary" (click)="addConcessions()" *ngIf="canOrder">
     Add Concessions
+  </button>
+
+  <button ion-button block padding color="danger" (click)="refundTicket()">
+    Refund Ticket
   </button>
 
   <button ion-button block padding color="primary2" (click)="viewCode(true)" *ngIf="!viewQR">
