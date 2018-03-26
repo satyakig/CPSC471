@@ -35,7 +35,7 @@ export class LoginPage {
   login() {
     let loader = this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Logging in...',
+      content: 'Logging in',
     });
     loader.present();
 
@@ -66,7 +66,7 @@ export class LoginPage {
   signUp() {
     let loader = this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Signing up...',
+      content: 'Signing up',
     });
     loader.present();
     

@@ -9,6 +9,7 @@ import { Movie } from './../data_structures/movie';
 import { Show } from './../data_structures/show';
 import { Item } from './../data_structures/item';
 import { Order } from './../data_structures/order';
+import { Ticket } from './../data_structures/ticket';
 import { AuthService } from './authService';
 
 @Injectable()
@@ -35,8 +36,9 @@ export class TheatreService {
 
     private headers;
     private options;
-    private readonly newTicket: string = "https://us-central1-cpsc471-6d9c6.cloudfunctions.net/orderTicket?key=f7a1347006a4f17a409e55bdaa5bbb";
+    private readonly orderTicket: string = "https://us-central1-cpsc471-6d9c6.cloudfunctions.net/orderTicket?key=f7a1347006a4f17a409e55bdaa5bbb";
     private readonly prepareConcession: string = "https://us-central1-cpsc471-6d9c6.cloudfunctions.net/prepareConcession?key=f7a1347006a4f17a409e55bdaa5bbb";
+    private readonly ticketRefund: string = "https://us-central1-cpsc471-6d9c6.cloudfunctions.net/ticketRefund?key=f7a1347006a4f17a409e55bdaa5bbb";
 
     constructor(public fDb: AngularFireDatabase, public auth: AuthService, public http: Http) { 
         this.headers = new Headers({'Content-Type': 'application/json', 'crossDomain': true});
@@ -209,8 +211,13 @@ export class TheatreService {
 
     orderNewTicket() {
         let body = JSON.stringify(this.getTicket());
-        return this.http.post(this.newTicket, body, this.options);
+        return this.http.post(this.orderTicket, body, this.options);
     } 
+
+    refundTicket(ticket: Ticket) {
+        let body = JSON.stringify(ticket);
+        return this.http.post(this.ticketRefund, body, this.options);
+    }
     
     orderConcessions(order: Order, allItems: Item[]) {
         let sortedItems: Item[] = [];
@@ -224,6 +231,7 @@ export class TheatreService {
             }
         }
         order.items = sortedItems;
+        order.totalPrice = Math.round(order.totalPrice * 100)/100;
         this.fDb.object('users/' + this.auth.getUID() + '/orders/' + pKey).set(order);      
         return;  
     }

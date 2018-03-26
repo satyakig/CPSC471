@@ -28,7 +28,7 @@ export class OrdersEmpPage {
   ionViewDidLoad() {
     let loader = this.loaderCtrl.create({
       spinner: 'dots',
-      content: 'Please wait...',
+      content: 'Please wait',
     });
     loader.present();
     this.locations = this.fDb.list<Location>('locations').valueChanges();

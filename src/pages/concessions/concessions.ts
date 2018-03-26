@@ -53,7 +53,7 @@ export class ConcessionsPage {
   ionViewDidLoad() {
     let loader = this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Fetching movie info...',
+      content: 'Fetching movie info',
     });
     loader.present();
     this.ticket = this.navParams.get('ticket');

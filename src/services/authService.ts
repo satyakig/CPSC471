@@ -2,7 +2,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Injectable } from '@angular/core'
 import { Subscription } from 'rxjs/Subscription';
-import { ToastController, AlertController } from 'ionic-angular';
+import { ToastController, AlertController, Platform } from 'ionic-angular';
 import * as moment from 'moment';
 
 import { User } from './../data_structures/user';
@@ -18,8 +18,11 @@ export class AuthService {
     private access: number = 2;
     private card: string = "";
 
+    private desktop: boolean = true;
+
     constructor(private fAuth: AngularFireAuth, private fDb: AngularFireDatabase, public toastCtrl: ToastController,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController, public platform: Platform) {
+        this.desktop = this.platform.is('core');
 
         this.fAuth.authState.subscribe((auth) => {
             if(auth) {
@@ -104,14 +107,26 @@ export class AuthService {
     showToast(message: Message) {
         this.fDb.object('users/' + this.getUID() + '/messages/' + message.messageID + '/read').set(true)
         .then(() => {
-            let toast = this.toastCtrl.create({
-                message: message.message,
-                duration: 5000,
-                position: 'middle',
-                showCloseButton: true,
-                closeButtonText: "OK"
-            });
-            toast.present();
+            if(this.desktop) {
+                let toast = this.toastCtrl.create({
+                    message: message.message,
+                    duration: 3000,
+                    position: 'top',
+                    showCloseButton: true,
+                    closeButtonText: "OK"
+                });
+                toast.present();
+            }
+            else {
+                let toast = this.toastCtrl.create({
+                    message: message.message,
+                    duration: 3000,
+                    position: 'middle',
+                    showCloseButton: true,
+                    closeButtonText: "OK"
+                });
+                toast.present();
+            }
         });        
     }
 }

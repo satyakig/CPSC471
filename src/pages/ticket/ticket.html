@@ -1,6 +1,6 @@
 <ion-header (swipe)="swiped($event)">
   <ion-toolbar color="light">
-    <ion-title><b>Ticket(s) for: &nbsp;&nbsp;"{{ticket.movieName}}"</b></ion-title>
+    <ion-title><b>Ticket(s) for {{ticket.movieName}}</b></ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="close()">
         <ion-icon name="close" color="dark"></ion-icon>
@@ -13,10 +13,10 @@
   <ion-card>
     <ion-card-title style="padding-left: 15px;"><b>{{ticket.movieName}}</b></ion-card-title>
     <ion-card-header>
+      {{ticket.show.type}}<br>
       Theatre #{{ticket.show.theatreNum}}<br>
       {{ticket.show.time | time12}}<br>
       {{ticket.show.unixDate | timeUnix: 'dddd, MMM DD'}}<br>        
-      {{ticket.show.type}}<br>
     </ion-card-header>
 
     <ion-card-content>
@@ -39,7 +39,7 @@
   </ion-card>
 
   <div *ngIf="orders.length > 0">
-    <h6 style="color: #f4f4f4; margin-top: 30px; margin-left: 15px;">Your order(s) for this movie:</h6>
+    <h6 style="color: #f4f4f4; margin-top: 30px; margin-left: 15px;">Your concession order(s) for this movie</h6>
     <ion-card *ngFor="let order of orders">
       <ion-card-header text-wrap>
         Total: {{order.totalPrice | currency:'CAD':'1.2-2'}}<br>
@@ -51,6 +51,7 @@
           <ion-col>{{item.name}}</ion-col>
           <ion-col>QTY: {{item.quantity}}</ion-col>
         </ion-row>
+        
         <ion-row>
           <ion-col>
               <button ion-button outline block *ngIf="order.status == 0" color="secondary" (click)="prepare(order)">Prepare</button>
@@ -73,13 +74,7 @@
     Refund Ticket
   </button>
 
-  <button ion-button block padding color="primary2" (click)="viewCode(true)" *ngIf="!viewQR">
-    QR Code
-  </button>
-  <button ion-button block padding outline color="primary2" (click)="viewCode(false)" *ngIf="viewQR">
-    Cancel
-  </button>
-  <ion-item *ngIf="viewQR" text-center color="dark" no-lines>
+  <ion-item *ngIf="code" text-center color="dark" no-lines>
     <ngx-qrcode [qrc-value]="code"></ngx-qrcode>
   </ion-item>
 

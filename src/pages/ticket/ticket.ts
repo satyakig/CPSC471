@@ -78,11 +78,9 @@ export class TicketPage {
   }; 
 
   code = null;
-  viewQR: boolean = false;
   viewMovie: boolean = false;
   showStarted: boolean = false;
   canOrder: boolean = false;
-  canRefund: boolean = false;
 
   constructor(public viewCtrl: ViewController, public services: Services, public modalCtrl: ModalController,
     public navParams: NavParams, public fDb: AngularFireDatabase, public loadingCtrl: LoadingController,
@@ -107,41 +105,61 @@ export class TicketPage {
 
       let cond1 = Number(data) < ((this.movie.Runtime * 60) + this.ticket.show.unixDateTime);
       let cond2 = this.services.date.getToday() == this.ticket.show.unixDate;
-      this.canOrder = cond1 && cond2;
-      
+      this.canOrder = cond1 && cond2;      
     });
-
   }
 
   refundTicket() {
-    this.canRefund = this.orders.length == 0 && this.showStarted == false;
-    if(!this.canRefund){
-      this.showAlert("Conflicting Orders", "Please cancel any existing concession orders associated with the ticket before proceeding with the refund.");
+    let loader = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Refunding ticket',
+    });
+    loader.present();
+
+    if(this.showStarted == true) {
+      this.showAlert("Show Started", "You can only refund a ticket before the movie has started playing.");
+      loader.dismiss();
     }
-    else{
-      const itemRef = this.fDb.object('users/' + this.services.auth.getUID() + '/tickets/' + this.ticket.ticketID);
-    itemRef.remove().then(() =>{
-      this.viewCtrl.dismiss();
-      this.showAlert("Refund Success!", "Your purchased ticket(s) for " + this.ticket.movieName + " has been refunded.");
-    }).catch(err => {
-      this.showAlert("Error", err.message);
-    })
+    else if(this.orders.length > 0) {
+      this.showAlert("Conflicting Orders", "Please cancel any existing concession orders associated with the ticket before proceeding with the refund.");
+      loader.dismiss();
+    }
+    else {
+      this.services.theatre.refundTicket(this.ticket).subscribe(
+        data => {
+          this.viewCtrl.dismiss();
+          loader.dismiss();
+          this.showAlert("Refund Success!", "Your ticket(s) for " + this.ticket.movieName + " has been refunded.");
+        },
+        err => {
+          this.showAlert("Error", err.text());
+          loader.dismiss();
+        }
+      );
     }
   }
 
-  refundOrder(order: Order){
-    const itemRef = this.fDb.object('users/' + this.services.auth.getUID() + '/orders/' + order.orderID);
-    itemRef.remove().then(() =>{
+  refundOrder(order: Order) {
+    let loader = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Refunding order',
+    });
+    loader.present();
+
+    let itemRef = this.fDb.object('users/' + this.services.auth.getUID() + '/orders/' + order.orderID);
+    itemRef.remove().then(() => {
+      loader.dismiss();
       this.showAlert("Refund Success!", "Your concession order has been refunded.");
     }).catch(err => {
+      loader.dismiss();
       this.showAlert("Error", err.message);
-    })
+    });
   }
 
   prepare(order: Order) {
     let loader = this.loadingCtrl.create({
       spinner: 'dots',
-      content: 'Notifying theatre...',
+      content: 'Notifying theatre',
     });
     loader.present();
 
@@ -163,10 +181,6 @@ export class TicketPage {
 
   viewDetails(value: boolean) {
     this.viewMovie = value;
-  }
-
-  viewCode(value: boolean) {
-    this.viewQR = value;
   }
 
   showTrailers() {

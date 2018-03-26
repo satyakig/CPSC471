@@ -48,5 +48,4 @@ export class TicketScanPage {
     });
     alert.present();
   }
-
 }
