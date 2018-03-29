@@ -1,6 +1,5 @@
 ## Getting started and setting up the project
-1. Install Node.js  
-    https://nodejs.org/en/  
+1. [Install Node.js](https://nodejs.org/en/)
 2. Run command  
     npm install -g cordova ionic
 3. Move to the project directory and run command  
@@ -20,8 +19,15 @@
     npm install --save [library name]
 
 
-## To run app with live-reload a.k.a to view the changes you made to the code as you are editing it
+## To run as a website with live-reload a.k.a to view the changes you made to the code as you are editing it
     ionic serve
+
+## To run as an Android or iOS app
+1. The Android and iOS platforms must be setup first:   
+    * [Android Setup](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)  
+    * [iOS Setup](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)  
+2. Then:  
+    [ionic cordova run --platform](https://ionicframework.com/docs/cli/cordova/run/)  
 
 
 ## Docs for the framework used, libraries, references and guides in this project
@@ -38,5 +44,5 @@
 3. [Apache Cordova (Cross-platform plugins and libraries)](https://cordova.apache.org/plugins/)
 
 
-## Hosted website - live link to project
+## [Demo](https://cpsc471-6d9c6.firebaseapp.com)
     https://cpsc471-6d9c6.firebaseapp.com
