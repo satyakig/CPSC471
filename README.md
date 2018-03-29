@@ -2,7 +2,7 @@
 1. Install Node.js  
     https://nodejs.org/en/  
 2. Run command  
-    npm install -g cordova ionic  
+    npm install -g cordova ionic
 3. Move to the project directory and run command  
     npm install -E  
 4. Start the application with command  
@@ -24,17 +24,19 @@
     ionic serve
 
 
-## Relevant docs for reference and guides:
-Ionic(UI/Frontend) Docs:  
-    https://ionicframework.com/getting-started  
-    https://ionicframework.com/docs/components  
-    https://ionicframework.com/docs/api  
+## Docs for the framework used, libraries, references and guides in this project
+1. Ionic (UI/Frontend) Docs:  
+    * [Getting Started with Ionic](https://ionicframework.com/getting-started)
+    * [Ionic Components](https://ionicframework.com/docs/components)
+    * [Ionic APIs](https://ionicframework.com/docs/api)
 
-Firebase(Authentication/Database/Backend) Docs:  
-    https://github.com/angular/angularfire2  
-    https://firebase.google.com/docs/auth  
-    https://firebase.google.com/docs/database  
-    
+2. Firebase (Authentication/Database/Backend) Docs:  
+    * [Firebase Authentication](https://firebase.google.com/docs/auth)
+    * [Firebase Database](https://firebase.google.com/docs/database)
+    * [Firebase for Ionic/Angular](https://github.com/angular/angularfire2)
+
+3. [Apache Cordova (Cross-platform plugins and libraries)](https://cordova.apache.org/plugins/)
+
 
 ## Hosted website - live link to project
     https://cpsc471-6d9c6.firebaseapp.com
