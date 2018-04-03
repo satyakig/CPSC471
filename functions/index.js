@@ -601,3 +601,30 @@ exports.addShowings = functions.https.onRequest((request, response) => {
         return Promise.all([db.ref().update(updates), response.status(200).send("done")]);
     });
 });
+
+exports.deleteAllData = functions.https.onRequest((request, response) => {
+    const usersRef = db.ref('users').once('value');
+    const locationsRef = db.ref('locations').once('value');
+
+    return Promise.all([usersRef, locationsRef]).then(values => {
+        const userSnap = values[0];
+        const locationSnap = values[1];
+
+        var updates = { };
+
+        userSnap.forEach(uSnap => {
+            updates['users/' + uSnap.key + '/messages'] = null;
+            updates['users/' + uSnap.key + '/orders'] = null;
+            updates['users/' + uSnap.key + '/tickets'] = null;
+        });
+
+        locationSnap.forEach(lSnap => {
+            updates['locations/' + lSnap.key + '/bookedSeats'] = null;
+            updates['locations/' + lSnap.key + '/orders'] = null;
+        });
+        
+        return Promise.all([db.ref().update(updates), response.status(200).send("Done")]);
+    }).catch(err => {
+        console.log(err.message);
+    });    
+});
