@@ -107,26 +107,14 @@ export class AuthService {
     showToast(message: Message) {
         this.fDb.object('users/' + this.getUID() + '/messages/' + message.messageID + '/read').set(true)
         .then(() => {
-            if(this.desktop) {
-                let toast = this.toastCtrl.create({
-                    message: message.message,
-                    duration: 3000,
-                    position: 'top',
-                    showCloseButton: true,
-                    closeButtonText: "OK"
-                });
-                toast.present();
-            }
-            else {
-                let toast = this.toastCtrl.create({
-                    message: message.message,
-                    duration: 3000,
-                    position: 'middle',
-                    showCloseButton: true,
-                    closeButtonText: "OK"
-                });
-                toast.present();
-            }
+            let toast = this.toastCtrl.create({
+                message: message.message,
+                duration: 3000,
+                position: 'top',
+                showCloseButton: true,
+                closeButtonText: "OK"
+            });
+            toast.present();
         });        
     }
 }
