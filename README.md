@@ -1,11 +1,11 @@
 ## Getting started and setting up the project
 1. [Install Node.js](https://nodejs.org/en/)
 2. Open the Node.js terminal
-3. Run this command using the terminal
+3. Run this command using the terminal  
     npm install -g cordova ionic
-4. Move to the project directory and run this command using the terminal
+4. Move to the project directory and run this command using the terminal  
     npm install -E  
-5. Start the application with command (Application will run on localhost) 
+5. Start the application with command (Application will run on localhost)  
     ionic serve  
 
 
