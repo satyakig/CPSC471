@@ -1,26 +1,26 @@
 ## Getting started and setting up the project
 1. [Install Node.js](https://nodejs.org/en/)
-2. Run command  
+2. Open the Node.js terminal
+3. Run this command using the terminal
     npm install -g cordova ionic
-3. Move to the project directory and run command  
+4. Move to the project directory and run this command using the terminal
     npm install -E  
-4. Start the application with command  
+5. Start the application with command (Application will run on localhost) 
     ionic serve  
 
+
+## The Frontend is built using Ionic and the Backend uses Google Firebase
+The backend code is in the functions folder, index.js file. All the code in the index.js file is deployed to Google Firebase which runs on a cloud platform. The code in this file is compiled using Node.js (a.k.a. not pure js)  
+The frontend code is in the src folder
+
+
 ## After cloning from GIT, make sure all the Node.js packages are installed correctly
-    npm install -E
-
-
-## To install all npm libraries in package.json, ALWAYS and ONLY use
     npm install -E
 
 
 ## To install a new Node.js library use
     npm install --save [library name]
 
-
-## To run as a website with live-reload a.k.a to view the changes you made to the code as you are editing it
-    ionic serve
 
 ## To run as an Android or iOS app
 1. The Android and iOS platforms must be setup first:   
