@@ -10,8 +10,7 @@
 
 
 ## The Frontend is built using Ionic and the Backend uses Google Firebase
-The backend code is in the functions folder, index.js file. All the code in the index.js file is deployed to Google Firebase which runs on a cloud platform. The code in this file is compiled using Node.js (a.k.a. not pure js)  
-The frontend code is in the src folder
+The backend code is in the functions folder, index.js file. All the code in the index.js file is deployed to Google Firebase which runs on a cloud platform. The code in this file is compiled using Node.js (a.k.a. not pure js). The frontend code is in the src folder.
 
 
 ## After cloning from GIT, make sure all the Node.js packages are installed correctly
@@ -26,8 +25,8 @@ The frontend code is in the src folder
 1. The Android and iOS platforms must be setup first:   
     * [Android Setup](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)  
     * [iOS Setup](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)  
-2. Then (browser, android or ios):  
-    [ionic cordova run --platform](https://ionicframework.com/docs/cli/cordova/run/)  
+2. Then run command (platform can be: browser, android or ios):  
+    [ionic cordova run [platform]](https://ionicframework.com/docs/cli/cordova/run/)  
 
 
 ## Docs for the framework, platforms, libraries and guides in this project
