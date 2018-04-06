@@ -109,7 +109,7 @@ export class AuthService {
         .then(() => {
             let toast = this.toastCtrl.create({
                 message: message.message,
-                duration: 3000,
+                duration: 5000,
                 position: 'top',
                 showCloseButton: true,
                 closeButtonText: "OK"

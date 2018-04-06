@@ -36,9 +36,10 @@ The backend code is in the functions folder, index.js file. All the code in the 
     * [Ionic APIs](https://ionicframework.com/docs/api)
 
 2. Firebase (Authentication/Database/Backend) Docs:  
+    * [Google Firebase](https://firebase.google.com/docs/)
     * [Firebase Authentication](https://firebase.google.com/docs/auth)
-    * [Firebase Database](https://firebase.google.com/docs/database)
-    * [Firebase for Ionic/Angular](https://github.com/angular/angularfire2)
+    * [Firebase Realtime Database](https://firebase.google.com/docs/database)
+    * [Firebase Library for Ionic/Angular](https://github.com/angular/angularfire2)
 
 3. [Apache Cordova (Cross-platform plugins and libraries)](https://cordova.apache.org/plugins/)
 
