@@ -2,6 +2,13 @@
     background: #222
 }
 
+.alertError {
+    color: red;
+    button {
+        color: red !important;
+    }
+}
+
 ion-icon {
     &[class*="custom-"] {
         mask-size: contain;

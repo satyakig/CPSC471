@@ -157,13 +157,24 @@ export class LoginPage {
     this.viewCtrl.dismiss();
   }
 
-  showAlert(title: string, msg: string) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: msg,
-      buttons: ['OK']
-    });
-    alert.present();
+  showAlert(title: string, message: string) {
+    if(title == "Error") {
+      let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: message,
+        buttons: ['OK'],
+        cssClass: 'alertError'
+      });
+      alert.present();
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: message,
+        buttons: ['OK'],
+      });
+      alert.present();
+    }    
   }
 
   showSuccessSignUp() {

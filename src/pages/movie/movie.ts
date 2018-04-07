@@ -120,6 +120,15 @@ export class MoviePage {
     else {
       let modal = this.modalCtrl.create(LoginPage);
       modal.present();
+
+      let alert = this.alertCtrl.create({
+        title: "Error",
+        subTitle: "You must be logged in to proceed.",
+        buttons: ['OK'],
+        cssClass: 'alertError'
+      });
+      alert.present();
+
       modal.onDidDismiss(() => {
         if(this.services.auth.isLoggedIn())
           this.showSelected(show);

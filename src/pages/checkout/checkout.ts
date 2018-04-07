@@ -152,11 +152,22 @@ export class CheckoutPage {
   }
 
   showAlert(title: string, message: string) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      subTitle: message,
-      buttons: ['OK']
-    });
-    alert.present();
+    if(title == "Error") {
+      let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: message,
+        buttons: ['OK'],
+        cssClass: 'alertError'
+      });
+      alert.present();
+    }
+    else {
+      let alert = this.alertCtrl.create({
+        title: title,
+        subTitle: message,
+        buttons: ['OK'],
+      });
+      alert.present();
+    }    
   }
 }
