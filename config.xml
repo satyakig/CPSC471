@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="project.cpsc.movies" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Movie App</name>
+    <name>Cinexpress</name>
     <description>CPSC 471 - Final Project, Group 5 (University of Calgary)</description>
     <author email="satyakig901@hotmail.com" href="http://ionicframework.com/">Satyaki Ghosh</author>
     <content src="index.html" />
