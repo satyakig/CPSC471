@@ -44,8 +44,8 @@ export class OrdersEmpPage {
     this.locationID = loc.locationID;
     this.locationName = loc.name;
     
-    this.orders = this.fDb.list<Order>('locations/' + this.locationID + '/orders', ref => ref.orderByChild('status').equalTo(1))
-    .valueChanges();
+    this.orders = this.fDb.list<Order>('locations/' + this.locationID + '/orders', ref => ref.orderByChild('status').endAt(1))
+    .valueChanges().map(array => array.reverse());
   }
 
   prepared(order: Order) {

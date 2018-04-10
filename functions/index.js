@@ -22,8 +22,8 @@ exports.userCreate = functions.auth.user().onCreate(event => {
     var mid = db.ref('users/' + event.data.uid + '/messages').push().key;
     var messsage = {
         date: now,
-        title: "Welcome to Movie App",
-        message: "Thank you for signing up to Movie App!",
+        title: "Welcome to Cinexpress",
+        message: "Thank you for signing up to Cinexpress!",
         read: false,
         messageID: mid
     }
@@ -178,16 +178,23 @@ exports.ticketRefund = functions.https.onRequest((request, response) => {
 
 exports.orderConcession = functions.database.ref('/users/{uid}/orders/{oid}').onCreate(event => {
     const uid = event.params.uid;
+    const oid = event.params.oid;
     const now = moment().unix();
     const mid = db.ref('users/' + uid + '/messages').push().key;
-    
-    return db.ref('users/' + uid + '/messages/' + mid).set({
+    const order = event.data.val();
+    console.log(order.location.locationID);
+
+    var updates = { };
+    updates['locations/' + order.location.locationID + '/orders/' + oid] = order;
+    updates['users/' + uid + '/messages/' + mid] = {
         message: 'Please let us know when you would like us to start preparing your order.',
         title: 'New Order',
         date: now,
         read: false,
         messageID: mid
-    });
+    }
+
+    return db.ref().update(updates);
 });
 
 exports.prepareConcession = functions.https.onRequest((request, response) => {
@@ -207,7 +214,7 @@ exports.prepareConcession = functions.https.onRequest((request, response) => {
                     const now = moment().unix();
 
                     var updates = {};
-                    updates['locations/' + locationID + '/orders/' + oid] = info;
+                    updates['locations/' + locationID + '/orders/' + oid + '/status'] = 1;
                     updates['users/' + uid + '/orders/' + oid + '/status'] = 1;
                     updates['users/' + uid + '/messages/' + mid] = {
                         message: 'Your order is now being prepared.',

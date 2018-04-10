@@ -1,3 +1,7 @@
+## [Demo](https://cpsc471-6d9c6.firebaseapp.com)
+    https://cpsc471-6d9c6.firebaseapp.com
+
+
 ## Getting started and setting up the project
 1. [Install Node.js](https://nodejs.org/en/)
 2. Open the Node.js terminal
@@ -31,20 +35,13 @@ The backend code is in the functions folder, index.js file. All the code in the 
 
 ## Docs for the framework, platforms, libraries and guides in this project
 1. Ionic (UI/Frontend) Docs:  
-    * [Getting Started with Ionic](https://ionicframework.com/getting-started)
-    * [Ionic Components](https://ionicframework.com/docs/components)
-    * [Ionic APIs](https://ionicframework.com/docs/api)
-
+    * [Getting Started with Ionic](https://ionicframework.com/getting-started)  
+    * [Ionic Components](https://ionicframework.com/docs/components)  
+    * [Ionic APIs](https://ionicframework.com/docs/api)  
 2. Firebase (Authentication/Database/Backend) Docs:  
-    * [Google Firebase](https://firebase.google.com/docs/)
-    * [Firebase Authentication](https://firebase.google.com/docs/auth)
-    * [Firebase Realtime Database](https://firebase.google.com/docs/database)
-    * [Firebase Library for Ionic/Angular](https://github.com/angular/angularfire2)
-
-3. [Apache Cordova (Cross-platform plugins and libraries)](https://cordova.apache.org/plugins/)
-
-4. [Node Package Manager (npm) Libraries](https://www.npmjs.com/)
-
-
-## [Demo](https://cpsc471-6d9c6.firebaseapp.com)
-    https://cpsc471-6d9c6.firebaseapp.com
+    * [Google Firebase](https://firebase.google.com/docs/)  
+    * [Firebase Authentication](https://firebase.google.com/docs/auth)  
+    * [Firebase Realtime Database](https://firebase.google.com/docs/database)  
+    * [Firebase Library for Ionic/Angular](https://github.com/angular/angularfire2)  
+3. [Apache Cordova (Cross-platform plugins and libraries)](https://cordova.apache.org/plugins/)  
+4. [Node Package Manager (npm) Libraries](https://www.npmjs.com/)  
