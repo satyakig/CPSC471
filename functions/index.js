@@ -182,7 +182,6 @@ exports.orderConcession = functions.database.ref('/users/{uid}/orders/{oid}').on
     const now = moment().unix();
     const mid = db.ref('users/' + uid + '/messages').push().key;
     const order = event.data.val();
-    console.log(order.location.locationID);
 
     var updates = { };
     updates['locations/' + order.location.locationID + '/orders/' + oid] = order;
