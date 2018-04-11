@@ -122,7 +122,7 @@ export class MoviePage {
       modal.present();
 
       let alert = this.alertCtrl.create({
-        title: "Error",
+        title: "Oops!",
         subTitle: "You must be logged in to proceed.",
         buttons: ['OK'],
         cssClass: 'alertError'

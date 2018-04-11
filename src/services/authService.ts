@@ -95,15 +95,6 @@ export class AuthService {
         return moment().unix();
     }
 
-    showAlert(title: string, message: string) {
-        let alert = this.alertCtrl.create({
-          title: title,
-          subTitle: message,
-          buttons: ['OK']
-        });
-        alert.present();
-    }
-
     showToast(message: Message) {
         this.fDb.object('users/' + this.getUID() + '/messages/' + message.messageID + '/read').set(true)
         .then(() => {

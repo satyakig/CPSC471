@@ -3,7 +3,9 @@
 }
 
 .alertError {
-    color: red;
+    .alert-title {
+        color: red; 
+    }    
     button {
         color: red !important;
     }
