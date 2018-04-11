@@ -1,5 +1,15 @@
+# CPSC 471 Final Project (Winter 2018)
+Group 5  
+Satyaki Ghosh, Jenard Cabia, Christopher Baker  
+Prof - Tamer Jarada  
+TA - Animesh Gupta  
+
+
 ## [Demo](https://cpsc471-6d9c6.firebaseapp.com)
     https://cpsc471-6d9c6.firebaseapp.com
+
+
+#### The entire databse for our project can be found in the file titled 'Database.json'. The databse is in JSON format and can only be used for NoSQL databases.
 
 
 ## Getting started and setting up the project

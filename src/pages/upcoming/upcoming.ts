@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Movie } from './../../data_structures/movie';
 import { MoviePage } from './../movie/movie';
+import { Services } from './../../services/services';
 
 @IonicPage()
 @Component({
@@ -26,8 +27,8 @@ export class UpcomingPage {
   spell: boolean = true;
   bounce: number = 500;
 
-  constructor(public db: AngularFireDatabase, public navCtrl: NavController,
-    public loader: LoadingController, public platform: Platform) { }
+  constructor(public db: AngularFireDatabase, public navCtrl: NavController, public loader: LoadingController, 
+    public platform: Platform, public services: Services) { }
 
   ionViewDidLoad() {   
     let loader = this.loader.create({
@@ -38,7 +39,8 @@ export class UpcomingPage {
     loader.present();
 
     this.desktop = this.platform.is('core');
-    this.sub = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Title')).valueChanges().subscribe(data => {
+    this.sub = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Released').startAt(this.services.date.getNextDay()))
+    .valueChanges().subscribe(data => {
       this.allMovies = data;
       this.filterMovies();
       loader.dismiss();
@@ -59,7 +61,8 @@ export class UpcomingPage {
     loader.present().then(() => {
       if(index == 1) {
         this.unsubscribe();
-        this.sub = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Released')).valueChanges().subscribe(data => {
+        this.sub = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Released').startAt(this.services.date.getNextDay()))
+        .valueChanges().subscribe(data => {
           this.allMovies = data;
           this.filterMovies();
         });
@@ -67,11 +70,15 @@ export class UpcomingPage {
       else if(index == 2)
         this.filteredMovies = this.filteredMovies.reverse();
       else {
-        this.unsubscribe();
-        this.sub = this.db.list<Movie>('upcomingMovies', ref => ref.orderByChild('Title')).valueChanges().subscribe(data => {
-          this.allMovies = data;
-          this.filterMovies();
+        this.allMovies.sort(function(a, b) {
+          if (a.Title < b.Title)
+            return -1;
+          else if (a.Title > b.Title)
+            return 1;
+          else
+            return 0
         });
+        this.filterMovies();
       }
     }).then(() => loader.dismiss());
   }
@@ -116,6 +123,6 @@ export class UpcomingPage {
   }
 
   ionViewWillUnload() {
-    this.unsubscribe();
+    this.unsubscribe();    
   }
 }

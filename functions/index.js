@@ -634,3 +634,53 @@ exports.deleteAllData = functions.https.onRequest((request, response) => {
         console.log(err.message);
     });    
 });
+
+exports.updateCurrentMovies = functions.https.onRequest((request, response) => {
+    const now = moment().unix();
+
+    return db.ref('upcomingMovies').once('value').then(snap => {
+        var updates = { };
+        var valid = "";
+        var invalid = "";
+
+        snap.forEach(mSnap => {
+            let movie = mSnap.val();
+
+            if(movie.Released < now) {
+                if(movie.Rated == "N/A" || movie.Runtime == "N/A" || movie.imdbRating == "N/A" || movie.BoxOffice == "N/A" || !movie.Videos || movie.Videos.length == 0) {
+                    updates['upcomingMovies/' + mSnap.key] = null;
+                    invalid += (mSnap.key + " - " + movie.Title + "\n");
+                }
+                else {
+                    try {
+                        let unix = Number(movie.Runtime.split(" ")[0]);
+
+                        if(unix == null || unix == undefined || movie.Runtime.includes("N/A")) {
+                            invalid += (mSnap.key + " - " + movie.Title + "\n");
+                            updates['/upcomingMovies/' + mSnap.key] = null;     
+                        }
+                        else {
+                            movie.Runtime = unix;
+                            updates['currentMovies/' + mSnap.key] = movie;
+                            valid += (mSnap.key + " - " + movie.Title + "\n");
+                        }
+                    }
+                    catch(err) {                
+                        console.log(mSnap.key, err);
+                        invalid += (mSnap.key + " - " + movie.Title + "\n");
+                        updates['upcomingMovies/' + mSnap.key] = null;
+                    }   
+                }
+            }
+        });
+
+        var message = {
+            valid: valid,
+            invalid: invalid
+        }
+        
+        return Promise.all([db.ref().update(updates), response.status(200).send(JSON.stringify(message))]);
+    }).catch(err => {
+        console.log(err.message);
+    });   
+});

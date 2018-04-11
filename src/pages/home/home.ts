@@ -23,14 +23,13 @@ export class HomePage {
   };
 
   constructor(public db: AngularFireDatabase, public navCtrl: NavController, public services: Services) {
-
     this.locations = this.db.list<Location>('locations').valueChanges();
 
     var today = moment();
     this.date = today.format('dddd, MMM DD');
     for(let i = 0; i < 7; i++, today.add(1, "day")) {
       this.dates.push(today.format('dddd, MMM DD'));
-    }  
+    }
   }
 
   ionViewDidLoad() {
