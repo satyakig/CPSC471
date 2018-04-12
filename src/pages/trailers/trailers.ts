@@ -18,7 +18,7 @@ export class TrailersPage {
     let loader = this.loader.create({
       spinner: 'dots',
       content: 'Fetching trailers',
-      duration: 350
+      duration: 500
     });
     loader.present();
     this.videos = this.navParams.get('videos');
