@@ -50,7 +50,7 @@ export class AcctSettingPage {
             if(data.name == null || data.name.length < 1 || data.name == undefined || data.name == true || data.name == false)
               this.showAlert("Error", "Invalid input");                  
             else {
-              this.fDb.database.ref('users/' + this.services.auth.getUID() + '/name').set(String(data.name))
+              this.fDb.object('users/' + this.services.auth.getUID() + '/name').set(String(data.name))
               .catch(err => {
                 this.showAlert("Error", err.message);
               });
@@ -85,7 +85,7 @@ export class AcctSettingPage {
               this.showAlert("Error", "Invalid email format");
             else {
               this.fAuth.auth.currentUser.updateEmail(data.email).then(() => {
-                this.fDb.database.ref('users/' + this.services.auth.getUID() + '/email').set(String(data.email));
+                this.fDb.object('users/' + this.services.auth.getUID() + '/email').set(String(data.email));
               }).catch(err => {
                 this.showAlert("Error", err.message);
               });
@@ -115,7 +115,7 @@ export class AcctSettingPage {
           text: 'Confirm',
           handler: data => {
             if(this.isValidNumber(data.card)) {
-                this.fDb.database.ref('users/' + this.services.auth.getUID() + '/card').set(String(data.card)).catch(err => {
+                this.fDb.object('users/' + this.services.auth.getUID() + '/card').set(String(data.card)).catch(err => {
                   this.showAlert("Error", err.message);
                 });
             }                  
