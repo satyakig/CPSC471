@@ -30,6 +30,10 @@ export class LoginPage {
         card: ['', Validators.required],
         password: ['', Validators.required]
       });
+      this.formSignIn.setValue({
+        email: 'test@gmail.com',
+        password: 'test123'
+      });
     }
 
   login() {
