@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp();
 const db = admin.database();
 const auth = admin.auth();
 
@@ -13,13 +13,11 @@ const moment = require('moment');
 const clientKey = functions.config().client.key;
 
 
-
-
-exports.userCreate = functions.auth.user().onCreate(event => {
+exports.userCreate = functions.auth.user().onCreate((userRecord) => {
     const now = moment().unix();
-    const uid = event.data.uid;
+    const uid = userRecord.uid;
 
-    var mid = db.ref('users/' + event.data.uid + '/messages').push().key;
+    var mid = db.ref('users/' + uid + '/messages').push().key;
     var messsage = {
         date: now,
         title: "Welcome to Cinexpress",
@@ -36,20 +34,20 @@ exports.userCreate = functions.auth.user().onCreate(event => {
     return db.ref().update(updates);
 });
 
-exports.setUserAccess = functions.database.ref('/users/{uid}/access').onWrite(event => {
-    const access = event.data.val();
-    const uid = event.params.uid;
+exports.setUserAccess = functions.database.ref('/users/{uid}/access').onWrite((data, context) => {
+    const access = data.after.val();
+    const uid = context.params.uid;
 
     if(access === 0)
-        return auth.setCustomUserClaims(event.params.uid, {access: 0});
+        return auth.setCustomUserClaims(uid, {access: 0});
     else if(access === 1)
-        return auth.setCustomUserClaims(event.params.uid, {access: 1});
+        return auth.setCustomUserClaims(uid, {access: 1});
     else
-        return auth.setCustomUserClaims(event.params.uid, {access: 2});
+        return auth.setCustomUserClaims(uid, {access: 2});
 });
 
-exports.userDelete = functions.auth.user().onDelete(event => {
-    return db.ref('users/' + event.data.uid).remove();
+exports.userDelete = functions.auth.user().onDelete((userRecord) => {
+    return db.ref('users/' + userRecord.uid).remove();
 });
 
 exports.orderTicket = functions.https.onRequest((request, response) => {
@@ -176,12 +174,12 @@ exports.ticketRefund = functions.https.onRequest((request, response) => {
     });
 });
 
-exports.orderConcession = functions.database.ref('/users/{uid}/orders/{oid}').onCreate(event => {
-    const uid = event.params.uid;
-    const oid = event.params.oid;
+exports.orderConcession = functions.database.ref('/users/{uid}/orders/{oid}').onCreate((data, context) => {
+    const uid = context.params.uid;
+    const oid = context.params.oid;
     const now = moment().unix();
     const mid = db.ref('users/' + uid + '/messages').push().key;
-    const order = event.data.val();
+    const order = data.val();
 
     var updates = { };
     updates['locations/' + order.location.locationID + '/orders/' + oid] = order;
@@ -237,10 +235,10 @@ exports.prepareConcession = functions.https.onRequest((request, response) => {
     });
 });
 
-exports.concessionPrepared = functions.database.ref('/locations/{lid}/orders/{oid}/status').onUpdate(event => {
-    const status = event.data.val();
-    const lid = event.params.lid;
-    const oid = event.params.oid;
+exports.concessionPrepared = functions.database.ref('/locations/{lid}/orders/{oid}/status').onUpdate((data, context) => {
+    const status = data.after.val();
+    const lid = context.params.lid;
+    const oid = context.params.oid;
 
     if(status == 2) {
         return db.ref('locations/' + lid + '/orders/' + oid).once('value', snap => {
