@@ -7,7 +7,6 @@ const auth = admin.auth();
 const http = require('request');
 const compare = require('secure-compare');
 const cors = require('cors')({origin: true});
-const momentTz = require('moment-timezone');
 const moment = require('moment');
 
 const clientKey = functions.config().client.key;

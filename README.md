@@ -1,26 +1,21 @@
 # CPSC 471 Final Project (Winter 2018)
-Group 5  
-Satyaki Ghosh, Jenard Cabia, Christopher Baker  
-Prof - Tamer Jarada  
-TA - Animesh Gupta  
-
+By: Satyaki Ghosh
 
 ## [Demo](https://cpsc471-6d9c6.firebaseapp.com)
-    https://cpsc471-6d9c6.firebaseapp.com
+    https://cinexpress.ghosh.xyz
 
-
-#### The entire databse for our project can be found in the file titled 'Database.json'. The databse is in JSON format and can only be used for NoSQL databases.
+#### The entire database for our project can be found in the file titled 'Database.json'. The database is in JSON format and can only be used for NoSQL databases.
 
 
 ## Getting started and setting up the project
 1. [Install Node.js](https://nodejs.org/en/)
 2. Open the Node.js terminal
 3. Run this command using the terminal  
-    npm install -g cordova ionic
+    `npm install -g cordova ionic`
 4. Move to the project directory and run this command using the terminal  
-    npm install -E  
+    `npm install`
 5. Start the application with command (Application will run on localhost)  
-    ionic serve  
+    `ionic serve` or   
 
 
 ## The Frontend is built using Ionic and the Backend uses Google Firebase
@@ -28,7 +23,7 @@ The backend code is in the functions folder, index.js file. All the code in the 
 
 
 ## After cloning from GIT, make sure all the Node.js packages are installed correctly
-    npm install -E
+    npm install
 
 
 ## To install a new Node.js library use
@@ -40,7 +35,7 @@ The backend code is in the functions folder, index.js file. All the code in the 
     * [Android Setup](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)  
     * [iOS Setup](https://cordova.apache.org/docs/en/latest/guide/platforms/ios/index.html)  
 2. Then run command (platform can be: browser, android or ios):  
-    [ionic cordova run [platform]](https://ionicframework.com/docs/cli/cordova/run/)  
+    [`ionic cordova run [platform]`](https://ionicframework.com/docs/cli/cordova/run/)  
 
 
 ## Docs for the framework, platforms, libraries and guides in this project

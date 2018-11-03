@@ -24,12 +24,12 @@
     <ion-row *ngIf="desktop">
       <ion-col *ngFor="let movie of filteredMovies" col-3>
 
-        <ion-card (click)="movieClick(movie.imdbID)">
+        <ion-card (click)="movieClick(movie.imdbID)" style="cursor: auto;">
           <ion-item>
             <h2 style="text-align: center;"><b>{{movie.Title}}</b></h2>
           </ion-item>
         
-          <img src="{{movie.Poster}}" style="display: block; height: 400px;">
+          <img src="{{movie.Poster}}" style="display: block; height: 400px; cursor: pointer;">
         
           <ion-card-content>
             <p style="text-align: center;">{{movie.Released | released}}</p>
@@ -41,12 +41,12 @@
     </ion-row>
 
     <ion-row *ngIf="!desktop">
-      <ion-card *ngFor="let movie of filteredMovies" (click)="movieClick(movie.imdbID)">
+      <ion-card *ngFor="let movie of filteredMovies" (click)="movieClick(movie.imdbID)" style="cursor: auto;">
         <ion-item>
           <h2 text-wrap style="text-align: center;"><b>{{movie.Title}}</b></h2>
         </ion-item>
       
-        <img src="{{movie.Poster}}" style="display: block; height: 350px;">
+        <img src="{{movie.Poster}}" style="display: block; height: 350px; cursor: pointer;">
       
         <ion-card-content>
           <p text-wrap style="text-align: center;">{{movie.Released | released}}</p>
