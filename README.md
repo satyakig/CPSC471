@@ -1,4 +1,6 @@
-# CPSC 471 Final Project - Winter 2018 - University of Calgary
+# Cinexpress
+
+## CPSC 471 - Winter 2018 - University of Calgary
 
 ## [Project Report](https://drive.google.com/open?id=1URnUVvvyLdu1gRXVbQX27xDGltNV73ELF0d9FckCpcs)
 
